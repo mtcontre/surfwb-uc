@@ -98,6 +98,7 @@ seafloor_colormap = make_colormap({-1:[0.3,0.2,0.1],
 land_colormap = make_colormap({ 0:[0.95,0.9,0.7],
                                           1:[.2,.5,.2]})
 
+land_colors = make_colormap({0:[.5,.7,0], 1:[.2,.5,.2]})
 def test_colormap(cmap):
   from mayavi import mlab
   x,y=meshgrid(linspace(0,100,101),linspace(0,100,101))
@@ -122,6 +123,10 @@ def test_all():
   from mayavi import mlab
   test_colormap(land_colormap)
   mlab.savefig('land_colormap.png')
+  mlab.close()
+  
+  test_colormap(land_colors)
+  mlab.savefig('land_colors.png')
   mlab.close()
 
   test_colormap(seafloor_colormap)
@@ -155,3 +160,5 @@ def test_all():
   test_colormap(geo_water)
   mlab.savefig('geo_water.png')
   mlab.close()
+  
+
