@@ -146,15 +146,15 @@ def test_all():
   mlab.close()
 
   test_colormap(water_land_colormap)
-  mlab.savefig('bathy0_colormap.png')
+  mlab.savefig('water_land_colormap.png')
   mlab.close()
   
   test_colormap(land2_colormap)
-  mlab.savefig('bathy0_colormap.png')
+  mlab.savefig('land2_colormap.png')
   mlab.close()
   
   test_colormap(land1_colormap)
-  mlab.savefig('bathy0_colormap.png')
+  mlab.savefig('land1_colormap.png')
   mlab.close()
   
   test_colormap(geo_water)
