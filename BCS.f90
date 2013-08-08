@@ -98,58 +98,27 @@ SELECT CASE (CB(1))
       end do
     else 
        do j=3,Ny+2
-	zt(1,j)=qxi0g1(1,j-2,nt1+1)*(    t              -nt1*dt_xi0g1)/dt_xi0g1+ &
-		qxi0g1(1,j-2,nt1+2)*((nt1+1)*dt_xi0g1 -    t       )/dt_xi0g1 
-	qt(1,1,j)=qxi0g1(2,j-2,nt1+1)*(    t              -nt1*dt_xi0g1)/dt_xi0g1+ &
-		    qxi0g1(2,j-2,nt1+2)*((nt1+1)*dt_xi0g1 -    t       )/dt_xi0g1 
-	qt(2,1,j)=qxi0g1(3,j-2,nt1+1)*(    t              -nt1*dt_xi0g1)/dt_xi0g1+ &
-		    qxi0g1(3,j-2,nt1+2)*((nt1+1)*dt_xi0g1 -    t       )/dt_xi0g1      
-	qt(3,1,j)=qxi0g1(4,j-2,nt1+1)*(    t              -nt1*dt_xi0g1)/dt_xi0g1+ &
-		    qxi0g1(4,j-2,nt1+2)*((nt1+1)*dt_xi0g1 -    t       )/dt_xi0g1
+	call interpj(nt1*dt_xi0g1,qxi0g1(1,j-2,nt1+1),(nt1+1)*dt_xi0g1,qxi0g1(1,j-2,nt1+2),t,zt(1,j) )
+	call interpj(nt1*dt_xi0g1,qxi0g1(2,j-2,nt1+1),(nt1+1)*dt_xi0g1,qxi0g1(2,j-2,nt1+2),t,qt(1,1,j))
+	call interpj(nt1*dt_xi0g1,qxi0g1(3,j-2,nt1+1),(nt1+1)*dt_xi0g1,qxi0g1(3,j-2,nt1+2),t,qt(2,1,j))
+	call interpj(nt1*dt_xi0g1,qxi0g1(4,j-2,nt1+1),(nt1+1)*dt_xi0g1,qxi0g1(4,j-2,nt1+2),t,qt(3,1,j))
        end do
     end if	
     if (optxi0g2.eq.1) then
       do j=3,Ny+2
-	zt(2,j)=qxi0g2(1,j-2,nt2+1)!z
+	zt(  2,j)=qxi0g2(1,j-2,nt2+1)
 	qt(1,2,j)=qxi0g2(2,j-2,nt2+1)
 	qt(2,2,j)=qxi0g2(3,j-2,nt2+1)
 	qt(3,2,j)=qxi0g2(4,j-2,nt2+1)
       end do
     else
       do j=3,Ny+2    
-	zt(2,j)=qxi0g2(1,j-2,nt2+1)*(    t              -nt2*dt_xi0g2)/dt_xi0g2+ &
-		  qxi0g2(1,j-2,nt2+2)*((nt2+1)*dt_xi0g2 -    t       )/dt_xi0g2
-	qt(1,2,j)=qxi0g2(2,j-2,nt2+1)*(    t              -nt2*dt_xi0g2)/dt_xi0g2+ &
-		  qxi0g2(2,j-2,nt2+2)*((nt2+1)*dt_xi0g2 -    t       )/dt_xi0g2 
-	qt(2,2,j)=qxi0g2(3,j-2,nt2+1)*(    t              -nt2*dt_xi0g2)/dt_xi0g2+ &
-		  qxi0g2(3,j-2,nt2+1)*((nt2+1)*dt_xi0g2 -    t       )/dt_xi0g2     
-	qt(3,2,j)=qxi0g2(4,j-2,nt2+1)*(    t              -nt2*dt_xi0g2)/dt_xi0g2+ &
-		  qxi0g2(4,j-2,nt2+2)*((nt2+1)*dt_xi0g2 -    t       )/dt_xi0g2
+	call interpj(nt2*dt_xi0g2,qxi0g2(1,j-2,nt2+1),(nt2+1)*dt_xi0g2,qxi0g2(1,j-2,nt2+2),t,zt(2,j) )
+	call interpj(nt2*dt_xi0g2,qxi0g2(2,j-2,nt2+1),(nt2+1)*dt_xi0g2,qxi0g2(2,j-2,nt2+2),t,qt(1,2,j))
+	call interpj(nt2*dt_xi0g2,qxi0g2(3,j-2,nt2+1),(nt2+1)*dt_xi0g2,qxi0g2(3,j-2,nt2+2),t,qt(2,2,j))
+	call interpj(nt2*dt_xi0g2,qxi0g2(4,j-2,nt2+1),(nt2+1)*dt_xi0g2,qxi0g2(4,j-2,nt2+2),t,qt(3,2,j))
       end do	 
     end if
-  ! ! 	  !USANDO INTERPOLACION LINEAL ENTRE VALORES
-  ! 	  !z
-  ! 	    z(1,j)=qxi0g1(1,j-2,nt1+1)*(    t              -nt1*dt_xi0g1)/dt_xi0g1+ &
-  ! 		      qxi0g1(1,j-2,nt1+2)*((nt1+1)*dt_xi0g1 -    t       )/dt_xi0g1 !1/dt*(f(x0)(x-x0)+f(x1)*(x1-x))
-  ! 	    z(2,j)=qxi0g2(1,j-2,nt2+1)*(    t              -nt2*dt_xi0g2)/dt_xi0g2+ &
-  ! 		      qxi0g2(1,j-2,nt2+2)*((nt2+1)*dt_xi0g2 -    t       )/dt_xi0g2
-  ! 	  !h
-  ! 	    qt(1,1,j)=qxi0g1(2,j-2,nt1+1)*(    t              -nt1*dt_xi0g1)/dt_xi0g1+ &
-  ! 		      qxi0g1(2,j-2,nt1+2)*((nt1+1)*dt_xi0g1 -    t       )/dt_xi0g1 !1/dt*(f(x0)(x-x0)+f(x1)*(x1-x))
-  ! 	    qt(1,2,j)=qxi0g2(2,j-2,nt2+1)*(    t              -nt2*dt_xi0g2)/dt_xi0g2+ &
-  ! 		      qxi0g2(2,j-2,nt2+2)*((nt2+1)*dt_xi0g2 -    t       )/dt_xi0g2 
-  ! 	  !u
-  ! 	    qt(2,1,j)=qxi0g1(3,j-2,nt1+1)*(    t              -nt1*dt_xi0g1)/dt_xi0g1+ &
-  ! 		      qxi0g1(3,j-2,nt1+2)*((nt1+1)*dt_xi0g1 -    t       )/dt_xi0g1 
-  ! 	    qt(2,2,j)=qxi0g2(3,j-2,nt2+1)*(    t              -nt2*dt_xi0g2)/dt_xi0g2+ &
-  ! 		      qxi0g2(3,j-2,nt2+1)*((nt2+1)*dt_xi0g2 -    t       )/dt_xi0g2 
-  ! 	      
-  ! 	  !v
-  ! 	    qt(3,1,j)=qxi0g1(4,j-2,nt1+1)*(    t              -nt1*dt_xi0g1)/dt_xi0g1+ &
-  ! 		      qxi0g1(4,j-2,nt1+2)*((nt1+1)*dt_xi0g1 -    t       )/dt_xi0g1 
-  ! 	    qt(3,2,j)=qxi0g2(4,j-2,nt2+1)*(    t              -nt2*dt_xi0g2)/dt_xi0g2+ &
-  ! 		      qxi0g2(4,j-2,nt2+2)*((nt2+1)*dt_xi0g2 -    t       )/dt_xi0g2
-
 
   case(1) !Solid Wall !Ojo que son las velocidades contravariantes las que se usan, pero si las metricas se asumen iguales entonces queda lo mismo que en cartesianas.
 	
@@ -326,21 +295,17 @@ SELECT CASE (CB(2))
 	  nt2=min(int(t/dt_xiNg2),nt_xiNg2-1)
 	  if (optxiNg1.eq.1) then
 	    do j=3,Ny+2
-	      zt(Nx+3,j)=qxiNg1(1,j-2,nt1+1)
+	      zt(Nx+3  ,j)=qxiNg1(1,j-2,nt1+1)
 	      qt(1,Nx+3,j)=qxiNg1(2,j-2,nt1+1)
 	      qt(2,Nx+3,j)=qxiNg1(3,j-2,nt1+1)  
 	      qt(3,Nx+3,j)=qxiNg1(4,j-2,nt1+1)
 	    end do
 	  else
 	    do j=3,Ny+2
-	      zt(Nx+3,j)=qxiNg1(1,j-2,nt1+1)*(    t              -nt1*dt_xi0g1)/dt_xiNg1+ &
-			qxiNg1(1,j-2,nt1+2)*((nt1+1)*dt_xiNg1 -    t       )/dt_xiNg1 
-	      qt(1,Nx+3,j)=qxiNg1(2,j-2,nt1+1)*(    t              -nt1*dt_xiNg1)/dt_xiNg1+ &
-			    qxiNg1(2,j-2,nt1+2)*((nt1+1)*dt_xiNg1 -    t       )/dt_xiNg1 
-	      qt(2,Nx+3,j)=qxiNg1(3,j-2,nt1+1)*(    t              -nt1*dt_xi0g1)/dt_xiNg1+ &
-			    qxiNg1(3,j-2,nt1+2)*((nt1+1)*dt_xiNg1 -    t       )/dt_xiNg1      
-	      qt(3,Nx+3,j)=qxiNg1(4,j-2,nt1+1)*(    t              -nt1*dt_xi0g1)/dt_xiNg1+ &
-			    qxiNg1(4,j-2,nt1+2)*((nt1+1)*dt_xiNg1 -    t       )/dt_xiNg1
+	      call interpj(nt1*dt_xiNg1,qxiNg1(1,j-2,nt1+1),(nt1+1)*dt_xiNg1,qxiNg1(1,j-2,nt1+2),t,zt(Nx+3,j) )
+	      call interpj(nt1*dt_xing1,qxiNg1(2,j-2,nt1+1),(nt1+1)*dt_xiNg1,qxiNg1(2,j-2,nt1+2),t,qt(1,Nx+3,j))
+	      call interpj(nt1*dt_xiNg1,qxiNg1(3,j-2,nt1+1),(nt1+1)*dt_xiNg1,qxiNg1(3,j-2,nt1+2),t,qt(2,Nx+3,j))
+	      call interpj(nt1*dt_xiNg1,qxiNg1(4,j-2,nt1+1),(nt1+1)*dt_xiNg1,qxiNg1(4,j-2,nt1+2),t,qt(3,Nx+3,j))
 	    end do
 	  end if
 	  
@@ -353,14 +318,10 @@ SELECT CASE (CB(2))
 	    end do
 	  else
 	    do j=3,Ny+2
-	      zt(Nx+4,j)=qxiNg2(1,j-2,nt1+1)*(    t              -nt1*dt_xiNg1)/dt_xiNg1+ &
-			qxiNg2(1,j-2,nt1+2)*((nt1+1)*dt_xiNg1 -    t       )/dt_xiNg1 
-	      qt(1,Nx+4,j)=qxiNg2(2,j-2,nt1+1)*(    t              -nt1*dt_xiNg1)/dt_xiNg1+ &
-			    qxiNg2(2,j-2,nt1+2)*((nt1+1)*dt_xiNg1 -    t       )/dt_xiNg1 
-	      qt(2,Nx+4,j)=qxiNg2(3,j-2,nt1+1)*(    t              -nt1*dt_xiNg1)/dt_xiNg1+ &
-			    qxiNg2(3,j-2,nt1+2)*((nt1+1)*dt_xiNg1 -    t       )/dt_xiNg1      
-	      qt(3,Nx+4,j)=qxiNg2(4,j-2,nt1+1)*(    t              -nt1*dt_xiNg1)/dt_xiNg1+ &
-			    qxiNg2(4,j-2,nt1+2)*((nt1+1)*dt_xiNg1 -    t       )/dt_xiNg1
+	      call interpj(nt2*dt_xiNg2,qxiNg2(1,j-2,nt2+1),(nt2+1)*dt_xiNg2,qxiNg2(1,j-2,nt2+2),t,zt(Nx+4,j) )
+	      call interpj(nt2*dt_xiNg2,qxiNg2(2,j-2,nt2+1),(nt2+1)*dt_xiNg2,qxiNg2(2,j-2,nt2+2),t,qt(1,Nx+4,j))
+	      call interpj(nt2*dt_xiNg2,qxiNg2(3,j-2,nt2+1),(nt2+1)*dt_xiNg2,qxiNg2(3,j-2,nt2+2),t,qt(2,Nx+4,j))
+	      call interpj(nt2*dt_xiNg2,qxiNg2(4,j-2,nt2+1),(nt2+1)*dt_xiNg2,qxiNg2(4,j-2,nt2+2),t,qt(3,Nx+4,j))
 	    end do
 	  end if
 
@@ -535,14 +496,10 @@ SELECT CASE (CB(3))
 	    end do
 	  else
 	    do i=3,Nx+2
-	      zt(i,1)=qeta0g1(1,j-2,nt1+1)*(    t              -nt1*dt_eta0g1)/dt_eta0g1+ &
-			qeta0g1(1,j-2,nt1+2)*((nt1+1)*dt_eta0g1 -    t       )/dt_eta0g1 
-	      qt(1,i,1)=qeta0g1(2,j-2,nt1+1)*(    t              -nt1*dt_eta0g1)/dt_eta0g1+ &
-			    qeta0g1(2,j-2,nt1+2)*((nt1+1)*dt_eta0g1 -    t       )/dt_eta0g1 
-	      qt(2,i,1)=qeta0g1(3,j-2,nt1+1)*(    t              -nt1*dt_eta0g1)/dt_eta0g1+ &
-			    qeta0g1(3,j-2,nt1+2)*((nt1+1)*dt_eta0g1 -    t       )/dt_eta0g1      
-	      qt(3,i,1)=qeta0g1(4,j-2,nt1+1)*(    t              -nt1*dt_eta0g1)/dt_eta0g1+ &
-			    qeta0g1(4,j-2,nt1+2)*((nt1+1)*dt_eta0g1 -    t       )/dt_eta0g1
+	      call interpj(nt1*dt_eta0g1,qeta0g1(1,i-2,nt2+1),(nt1+1)*dt_eta0g1,qeta0g1(1,i-2,nt1+2),t,zt(i,1) )
+	      call interpj(nt1*dt_eta0g1,qeta0g1(2,i-2,nt2+1),(nt1+1)*dt_eta0g1,qeta0g1(2,i-2,nt1+2),t,qt(1,i,1))
+	      call interpj(nt1*dt_eta0g1,qeta0g1(3,i-2,nt2+1),(nt1+1)*dt_eta0g1,qeta0g1(3,i-2,nt1+2),t,qt(2,i,1))
+	      call interpj(nt1*dt_eta0g1,qeta0g1(4,i-2,nt2+1),(nt1+1)*dt_eta0g1,qeta0g1(4,i-2,nt1+2),t,qt(3,i,1))
 	    end do
 	  end if
 	  
@@ -555,14 +512,10 @@ SELECT CASE (CB(3))
 	    end do
 	  else
 	    do i=3,Nx+2
-	      zt(i,2)=qeta0g2(1,j-2,nt1+1)*(    t              -nt1*dt_eta0g2)/dt_eta0g2+ &
-			qeta0g2(1,j-2,nt1+2)*((nt1+1)*dt_eta0g2 -    t       )/dt_eta0g2 
-	      qt(1,i,2)=qeta0g2(2,j-2,nt1+1)*(    t              -nt1*dt_eta0g2)/dt_eta0g2+ &
-			    qeta0g2(2,j-2,nt1+2)*((nt1+1)*dt_eta0g2 -    t       )/dt_eta0g2 
-	      qt(2,i,2)=qeta0g2(3,j-2,nt1+1)*(    t              -nt1*dt_eta0g2)/dt_xi0g1+ &
-			    qeta0g2(3,j-2,nt1+2)*((nt1+1)*dt_eta0g2 -    t       )/dt_eta0g2      
-	      qt(3,i,2)=qeta0g2(4,j-2,nt1+1)*(    t              -nt1*dt_eta0g2)/dt_xi0g2+ &
-			    qeta0g2(4,j-2,nt1+2)*((nt1+1)*dt_eta0g2 -    t       )/dt_eta0g2	  
+	      call interpj(nt2*dt_eta0g2,qeta0g2(1,i-2,nt2+1),(nt2+1)*dt_eta0g2,qeta0g2(1,i-2,nt2+2),t,zt(i,2) )
+	      call interpj(nt2*dt_eta0g2,qeta0g2(2,i-2,nt2+1),(nt2+1)*dt_eta0g2,qeta0g2(2,i-2,nt2+2),t,qt(1,i,2))
+	      call interpj(nt2*dt_eta0g2,qeta0g2(3,i-2,nt2+1),(nt2+1)*dt_eta0g2,qeta0g2(3,i-2,nt2+2),t,qt(2,i,2))
+	      call interpj(nt2*dt_eta0g2,qeta0g2(4,i-2,nt2+1),(nt2+1)*dt_eta0g2,qeta0g2(4,i-2,nt2+2),t,qt(3,i,2))
 	    end do
 	  end if
 
@@ -639,7 +592,7 @@ SELECT CASE (CB(3))
 		
 		else
 		
-		call INFLOW0_eta(pasoRK,fopt,Cf,Coef,Nx,Ny,Fr2,deta,qsx3,qsy3,etas3,timeS3,Nsenal3,t,dt,qn,zt,eta,xi,qA3,zA3)
+		  call INFLOW0_eta(pasoRK,fopt,Cf,Coef,Nx,Ny,Fr2,deta,qsx3,qsy3,etas3,timeS3,Nsenal3,t,dt,qn,zt,eta,xi,qA3,zA3)
 		
 		end if
 		
@@ -701,14 +654,10 @@ SELECT CASE (CB(4))
 	    end do
 	  else
 	    do i=3,Nx+2
-	      zt(i,Ny+3)=qetaNg1(1,j-2,nt1+1)*(    t              -nt1*dt_etaNg1)/dt_etaNg1+ &
-			qetaNg1(1,j-2,nt1+2)*((nt1+1)*dt_etaNg1 -    t       )/dt_etaNg1 
-	      qt(1,i,Ny+3)=qetaNg1(2,j-2,nt1+1)*(    t              -nt1*dt_etaNg1)/dt_etaNg1+ &
-			    qetaNg1(2,j-2,nt1+2)*((nt1+1)*dt_etaNg1 -    t       )/dt_etaNg1 
-	      qt(2,i,Ny+3)=qetaNg1(3,j-2,nt1+1)*(    t              -nt1*dt_etaNg1)/dt_etaNg1+ &
-			    qetaNg1(3,j-2,nt1+2)*((nt1+1)*dt_etaNg1 -    t       )/dt_etaNg1      
-	      qt(3,i,Ny+3)=qetaNg1(4,j-2,nt1+1)*(    t              -nt1*dt_etaNg1)/dt_etaNg1+ &
-			    qetaNg1(4,j-2,nt1+2)*((nt1+1)*dt_etaNg1 -    t       )/dt_etaNg1
+	      call interpj(nt1*dt_etaNg1,qetaNg1(1,i-2,nt1+1),(nt1+1)*dt_etaNg1,qetaNg1(1,i-2,nt1+2),t,zt(i,Ny+3) )
+	      call interpj(nt1*dt_etaNg1,qetaNg1(2,i-2,nt1+1),(nt1+1)*dt_etaNg1,qetaNg1(2,i-2,nt1+2),t,qt(1,i,Ny+3))
+	      call interpj(nt1*dt_etaNg1,qetaNg1(3,i-2,nt1+1),(nt1+1)*dt_etaNg1,qetaNg1(3,i-2,nt1+2),t,qt(2,i,Ny+3))
+	      call interpj(nt1*dt_etaNg1,qetaNg1(4,i-2,nt1+1),(nt1+1)*dt_etaNg1,qetaNg1(4,i-2,nt1+2),t,qt(3,i,Ny+3))
 	    end do
 	  end if
 	  
@@ -721,14 +670,10 @@ SELECT CASE (CB(4))
 	    end do
 	  else
 	    do i=3,Nx+2  
-	      zt(i,Ny+4)=qetaNg2(1,j-2,nt1+1)*(    t              -nt1*dt_etaNg2)/dt_etaNg2+ &
-			qetaNg2(1,j-2,nt1+2)*((nt1+1)*dt_etaNg2 -    t       )/dt_etaNg2 
-	      qt(1,i,Ny+4)=qetaNg2(2,j-2,nt1+1)*(    t              -nt1*dt_etaNg2)/dt_etaNg2+ &
-			    qetaNg2(2,j-2,nt1+2)*((nt1+1)*dt_etaNg2 -    t       )/dt_etaNg2 
-	      qt(2,i,Ny+4)=qetaNg2(3,j-2,nt1+1)*(    t              -nt1*dt_etaNg2)/dt_xiNg1+ &
-			    qetaNg2(3,j-2,nt1+2)*((nt1+1)*dt_etaNg2 -    t       )/dt_etaNg2      
-	      qt(3,i,Ny+4)=qetaNg2(4,j-2,nt1+1)*(    t              -nt1*dt_etaNg2)/dt_xiNg2+ &
-			    qetaNg2(4,j-2,nt1+2)*((nt1+1)*dt_etaNg2 -    t       )/dt_etaNg2	  
+	      call interpj(nt2*dt_etaNg2,qetaNg2(1,i-2,nt2+1),(nt2+1)*dt_etaNg2,qetaNg2(1,i-2,nt2+2),t,zt(i,Ny+4) )
+	      call interpj(nt2*dt_etaNg2,qetaNg2(2,i-2,nt2+1),(nt2+1)*dt_etaNg2,qetaNg2(2,i-2,nt2+2),t,qt(1,i,Ny+4))
+	      call interpj(nt2*dt_etaNg2,qetaNg2(3,i-2,nt2+1),(nt2+1)*dt_etaNg2,qetaNg2(3,i-2,nt2+2),t,qt(2,i,Ny+4))
+	      call interpj(nt2*dt_etaNg2,qetaNg2(4,i-2,nt2+1),(nt2+1)*dt_etaNg2,qetaNg2(4,i-2,nt2+2),t,qt(3,i,Ny+4))
 	    end do
 	  end if
 
@@ -829,3 +774,16 @@ END SELECT
 
 
 END SUBROUTINE bcs
+
+subroutine interpj(x1,y1,x2,y2,x,y)
+  !interpolates y(x) using the line (x1,y1)-(x2,y2) if x is between x1,x2
+  !extrapolates order 0 if x is outside [x1,x2]  
+  real (kind=8) ::x1,y1,x2,y2,x,y
+  if (x.lt.x1) then
+    y=y1
+  elseif (x2.lt.x) then
+    y=y2
+  else
+    y=y1*(x2-x)/(x2-x1)+y2*(x1-x)/(x1-x2)
+  end if
+end subroutine

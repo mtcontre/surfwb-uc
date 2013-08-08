@@ -172,7 +172,7 @@ qnew_global=q2
 
 !pause
 !V y C para calcular dt
-call VyC2
+call VyC
 
 !-----------------------------------------
 
@@ -181,34 +181,34 @@ END SUBROUTINE solver2
 
 
 
-SUBROUTINE VyC2
-!Subroutine for the CFL condition
-!o adimensional
-USE global_variables
-implicit none
-
-
-integer	:: i,j
-integer, dimension(2)::locMaxV
-real (kind=8)	:: raiz, u2, v2, maxC, maxV, maxu1, maxu2, U1, Um2
-real (kind=8), dimension(2,Nbx,Nby)	:: qnew_global_abs
-DO i=1,Nbx; DO j=1,Nby
-	u2=qnew_global(2,i,j)**2.0D0
-	v2=qnew_global(3,i,j)**2.0D0
-	qnew_global_abs(1,i,j)=abs(qnew_global(2,i,j))
-	qnew_global_abs(2,i,j)=abs(qnew_global(3,i,j))
-	raiz=u2+v2
-	V_global(i,j)=sqrt(raiz)
-	C_global(i,j)=sqrt(qnew_global(1,i,j)/FR2)
-	VC(i,j)=V_global(i,j)+C_global(i,j)
-	
-	U1=qold_global(2,i,j)*xi_global(1,i,j)+qold_global(3,i,j)*xi_global(2,i,j)
-	Um2=qold_global(2,i,j)*eta_global(1,i,j)+qold_global(3,i,j)*eta_global(2,i,j)
-
-	S1_global(i,j)=U1+C_global(i,j)*sqrt(xi_global(1,i,j)**2+xi_global(2,i,j)**2)
-	S2_global(i,j)=Um2+C_global(i,j)*sqrt(eta_global(1,i,j)**2+eta_global(2,i,j)**2)
-	
-END DO; END DO
-
-
-END SUBROUTINE VyC2
+! SUBROUTINE VyC2
+! !Subroutine for the CFL condition
+! !o adimensional
+! USE global_variables
+! implicit none
+! 
+! 
+! integer	:: i,j
+! integer, dimension(2)::locMaxV
+! real (kind=8)	:: raiz, u2, v2, maxC, maxV, maxu1, maxu2, U1, Um2
+! real (kind=8), dimension(2,Nbx,Nby)	:: qnew_global_abs
+! DO i=1,Nbx; DO j=1,Nby
+! 	u2=qnew_global(2,i,j)**2.0D0
+! 	v2=qnew_global(3,i,j)**2.0D0
+! 	qnew_global_abs(1,i,j)=abs(qnew_global(2,i,j))
+! 	qnew_global_abs(2,i,j)=abs(qnew_global(3,i,j))
+! 	raiz=u2+v2
+! 	V_global(i,j)=sqrt(raiz)
+! 	C_global(i,j)=sqrt(qnew_global(1,i,j)/FR2)
+! 	VC(i,j)=V_global(i,j)+C_global(i,j)
+! 	
+! 	U1=qnew_global(2,i,j)*xi_global(1,i,j)+qnew_global(3,i,j)*xi_global(2,i,j)
+! 	Um2=qnew_global(2,i,j)*eta_global(1,i,j)+qnew_global(3,i,j)*eta_global(2,i,j)
+! 
+! 	S1_global(i,j)=U1+C_global(i,j)*sqrt(xi_global(1,i,j)**2+xi_global(2,i,j)**2)
+! 	S2_global(i,j)=Um2+C_global(i,j)*sqrt(eta_global(1,i,j)**2+eta_global(2,i,j)**2)
+! 	
+! END DO; END DO
+! 
+! 
+! END SUBROUTINE VyC2

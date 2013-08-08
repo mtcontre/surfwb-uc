@@ -48,16 +48,18 @@ fgauges='results/timeseries/gauges.' // trim(ncaso)// '.dat'
 
 do i=1,Nts
 		!1.-Encontrar indices del vertice superior derecho de la celda que contiene al punto i
-		m1=minloc((x_global-x0(i))*(x_global-x0(i))+(y_global-y0(i))*(y_global-y0(i)), &
-			  mask=(x_global-x0(i)).ge.0 .and. &
-			       (y_global-y0(i)).ge.0 )	
+! 		m1=minloc((x_global-x0(i))*(x_global-x0(i))+(y_global-y0(i))*(y_global-y0(i)), &
+! 			  mask=(x_global-x0(i)).ge.0 .and. &
+! 			       (y_global-y0(i)).ge.0 )	
+		!nope,mejor encontrar LA celda más cercana, pues son centradas y representan con ese valor a toda esa region
+		m1=minloc((x_global-x0(i))*(x_global-x0(i))+(y_global-y0(i))*(y_global-y0(i)))
 		
 		!3.- Generar los datos interpolados (interpolacion bilineal)
 		!------------------h-------------------------------
-		call interpxy(m1,x_global,y_global,qreal_global(1,:,:),x0(i),y0(i),h_g)
-		call interpxy(m1,x_global,y_global,qreal_global(2,:,:),x0(i),y0(i),u_g)
-		call interpxy(m1,x_global,y_global,qreal_global(3,:,:),x0(i),y0(i),v_g)
-		call interpxy(m1,x_global,y_global,z_global(:,:),x0(i),y0(i),z_g)
+		call interpxy(m1,x_global,y_global,qreal_global(1,:,:),x0(i),y0(i),h_g,0)
+		call interpxy(m1,x_global,y_global,qreal_global(2,:,:),x0(i),y0(i),u_g,0)
+		call interpxy(m1,x_global,y_global,qreal_global(3,:,:),x0(i),y0(i),v_g,0)
+		call interpxy(m1,x_global,y_global,z_global(:,:),x0(i),y0(i),z_g,0)
 ! 		pause
 ! 
 ! 		!------------------u-------------------------------
@@ -120,31 +122,34 @@ end do
 END SUBROUTINE outputgauges
 
 
-subroutine interpxy(m1,x,y,z,x0,y0,z0)
+subroutine interpxy(m1,x,y,z,x0,y0,z0,order)
 use global_variables
-
+integer ::order !que orden de innterpolacion, 0 o 1 
 real (kind=8), dimension(2)::m1 ! par (i,j) del vertice superior derecho de la celda que contiene a x0,y0
 real (kind=8)::x0,y0,z0,f11,f21,f12,f22,x_1,x_2,y_1,y_2
 real (kind=8),dimension(Nbx,Nby)::x,y,z
 
 !2.-Obtener las coordenadas de los vertices 
 
-x_1=x(m1(1)-1,m1(2))
-x_2=x(m1(1),m1(2))
-y_1=y(m1(1),m1(2)-1)
-y_2=y(m1(1),m1(2))
-! pause
-!Interpolar!
+if (order.eq.1) then
+  x_1=x(m1(1)-1,m1(2))
+  x_2=x(m1(1),m1(2))
+  y_1=y(m1(1),m1(2)-1)
+  y_2=y(m1(1),m1(2))
+  ! pause
+  !Interpolar!
 
-f11=z(m1(1)-1,   m1(2)-1)
-f12=z(m1(1)-1,	  m1(2))
-f21=z(m1(1)	 ,m1(2)-1)
-f22=z(m1(1)	 ,m1(2)	)
-!Interpolante bilineal
+  f11=z(m1(1)-1,   m1(2)-1)
+  f12=z(m1(1)-1,	  m1(2))
+  f21=z(m1(1)	 ,m1(2)-1)
+  f22=z(m1(1)	 ,m1(2)	)
+  !Interpolante bilineal
 
-z0= ( f11*(x_2-x0)*(y_2-y0)+ &
-      f21*(x0-x_1)*(y_2-y0)+ &
-      f12*(x_2-x0)*(y0-y_1) + &
-      f22*(x0-x_1)*(y0-y_1) )/((x_2-x_1)*(y_2-y_1)) 
-
+  z0= ( f11*(x_2-x0)*(y_2-y0)+ &
+	f21*(x0-x_1)*(y_2-y0)+ &
+	f12*(x_2-x0)*(y0-y_1) + &
+	f22*(x0-x_1)*(y0-y_1) )/((x_2-x_1)*(y_2-y_1)) 
+elseif (order.eq.0) then
+  z0=z(m1(1),m1(2))
+end if
 end subroutine interpxy

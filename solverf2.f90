@@ -174,7 +174,7 @@ qnew_global=q2F
 
 !pause
 !V y C para calcular dt
-call VyC2
+call VyC
 
 !-----------------------------------------
 

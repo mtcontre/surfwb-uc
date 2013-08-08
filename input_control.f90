@@ -20,12 +20,13 @@ read(1,*) CB(1)	!Boundary Condition for xi_0,j
 !Diferentes tipos de CB
 !Boundary Condition for xi=0
   if (cb(1)==0) then 
-    !Customized values for boundary ghost cells
+    !user-defined values for boundary ghost cells
     call custombc_xi0
     flagxi0=1
   else
     flagxi0=0
   end if
+  
   if (CB(1)==4) then !GENABS 1, 2, 3 o 9
     !Cienfuegos Generation-Absorption boundary condition
     read(1,*) GA1

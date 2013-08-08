@@ -6,6 +6,7 @@ SUBROUTINE solverf4
 USE global_variables
 USE geometries
 USE senales
+use custombc
 implicit none
 
 !Local variables definition
@@ -281,6 +282,9 @@ qnew_global=q4F
 
 !V y C para calcular dt
 call VyC
+if ( (flagxi0.eq.1).or.(flagxiN.eq.1).or.(flageta0.eq.1).or.(flagetaN.eq.1) )then
+    call stability_celerities_boundary(q1T)
+end if
 
 !-----------------------------------------
 

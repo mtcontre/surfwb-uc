@@ -1,4 +1,6 @@
 ! CONDICION DE BORDE PARA EL PRIMER GRUPO (COLUMNA O FILA) DE CELDAS FANTASMA
+! Codigo por Jose Galaz Mora (jdgalaz@uc.cl),2013
+! para el Depto. de Ing. Hidr. y Ambiental de la Esc. de Ing. de la Pontificia Universidad Catolica 
 ! 
 ! 1º Formato de input: Matriz q(t) definida por encabezado+matrizq1+matrizq2+matrizq3
 ! 
