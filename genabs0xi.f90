@@ -369,95 +369,96 @@ borde=1
 
 DO j=1,Ny
 
-IF ((t+dt)>maxval(timeS)) THEN
-    etai=0.0D0;
-ELSE
-! 	print*,'NL', NL
-! 	print*,'t+dt', t+dt
-! 	print*,'etai', etai
-! 	print*,'etaL',shape(etaL(:,j))
-! 	pause
-    call interp1(NL,timeS,etaL(:,j),(t+dt),etai)
-    
-    !print*,'etai', etai
-END IF
-epA=0.0D0
-!print*,'etaL',etaL(:,j)
-!print*,'etai',etai
-!pause
-!DO j=1,Ny
-DO i=1,Nx
-zep_x(i)=(zt(i+3,j+2)-zt(i+2,j+2))/dep	!j+2 porque incluye celdas ficticias
-END DO
+  IF ((t+dt)>maxval(timeS)) THEN
+      etai=0.0D0;    
+  ELSE
+  ! 	print*,'NL', NL
+  ! 	print*,'t+dt', t+dt
+  ! 	print*,'etai', etai
+  ! 	print*,'etaL',shape(etaL(:,j))
+  ! 	pause
+      call interp1(NL,timeS,etaL(:,j),(t+dt),etai)
+      
+      !print*,'etai', etai
+  END IF
+  epA=0.0D0
+!   DO j=1,Ny
+  DO i=1,Nx
+  zep_x(i)=(zt(i+3,j+2)-zt(i+2,j+2))/dep	!j+2 porque incluye celdas ficticias
+  END DO
 
-!ESSAI POUR LA CONDITION ENTRANTE!!!!
-!h0=h0-z_global(1,j)
+  !ESSAI POUR LA CONDITION ENTRANTE!!!!
+  !h0=h0-z_global(1,j)
 
- C0=sqrt((h0-z_global(1,j))/Fr2)
+  C0=sqrt((h0-z_global(1,j))/Fr2)
 
-epL=epA-dt*C0
-hL=etai+h0-z_global(1,j)
-uL=sqrt(hL/Fr2)*(etai)/hL
-call interp1(Nx,coordxi,zep_x,epL,zepL)
+  epL=epA-dt*C0
+  hL=etai+h0-z_global(1,j)
+  !si h0=0 y -zglobal(1,j) es la profundidad del fondo estamos bien
+  !el problema es cuando eta no esta 'centrado' en el 0 del reposo del mar...
+  !ahi habria que editar READGA
+  !h0=sealevel
+  uL=sqrt(hL/Fr2)*(etai)/hL
+  call interp1(Nx,coordxi,zep_x,epL,zepL)
 
-!Situacion Borde
-epx=ep_x(1,:,j)
-call interp1(Nx,coordxi,epx,epA,epxA)
-zepA=(zt(4,j+2)-zt(3,j+2))/dep
+  !Situacion Borde
+  epx=ep_x(1,:,j)
+  call interp1(Nx,coordxi,epx,epA,epxA)
+  zepA=(zt(4,j+2)-zt(3,j+2))/dep
 
-!RL
-call interp1(Nx,coordxi,epx,epL,epxL)
-RL=uL*epxL+2.0D0*sqrt(hL/Fr2)*epxL
+  !RL
+  call interp1(Nx,coordxi,epx,epL,epxL)
+  RL=uL*epxL+2.0D0*sqrt(hL/Fr2)*epxL
 
 
-!Rmas
-if (fopt==0) then
-tauL=0.0D0
-else
-  if (hL/=0.0D0) then
-  C=MC(1,j)
-  call tau(tipo,C,Fr2,hL,uL,tauL)
-  tauL=tauL/hL
-  else
+  !Rmas
+  if (fopt==0) then
   tauL=0.0D0
-  end if
-end if
-
-
-
-Rmas=RL-dt/Fr2*0.5D0*(zepL*epxL**2.0D0+zepA*epxA**2.0D0)-tauL*epxL*dt
-
-!Rmenos
-h=q(1,:,j)	
-u=q(2,:,j)
-! print*, etai,h(1),j
-
-!call fzero0(Fr2,Nx,dep,epx,h,u,zep_x,dt,epR,epxR,uR,hR,zepR)
-call fzero_B(borde,Fr2,Nx,dep,epx,h,u,zep_x,dt,epR,epxR,uR,hR,zepR) ! essai méthode de Brent
-RR=uR*epxR-2.0D0*sqrt(hR/Fr2)*epxR
-
-if (fopt==0) then
-tauR=0
-else
-
-  if (hR/=0.0D0) then
-  C=MC(1,j)
-  call  tau(tipo,C,Fr2,hR,uR,tauR)  
-  tauR=tauR/hR
   else
-  tauR=0.0D0
+    if (hL/=0.0D0) then
+    C=MC(1,j)
+    call tau(tipo,C,Fr2,hL,uL,tauL)
+    tauL=tauL/hL
+    else
+    tauL=0.0D0
+    end if
   end if
-end if
 
 
-Rmenos=RR-0.5D0*dt/Fr2*(zepR*epxR**2.0D0+zepA*epxA**2.0D0)-tauR*dt*epxR
 
-qA(1,j)=Fr2*(Rmas-Rmenos)**2.0D0/(16.0D0*epxA**2.0D0)
-qA(2,j)=(Rmas+Rmenos)/(2.0D0*epxA)
-qA(3,j)=0.0D0
-!print*,(zt(3,j+2)+zt(2,j+2))/2.0D0
-zA(j)=(zt(3,j+2)+zt(2,j+2))/2.0D0
-!print*,j
+  Rmas=RL-dt/Fr2*0.5D0*(zepL*epxL**2.0D0+zepA*epxA**2.0D0)-tauL*epxL*dt
+
+  !Rmenos
+  h=q(1,:,j)	
+  u=q(2,:,j)
+  ! print*, etai,h(1),j
+
+  !call fzero0(Fr2,Nx,dep,epx,h,u,zep_x,dt,epR,epxR,uR,hR,zepR)
+  call fzero_B(borde,Fr2,Nx,dep,epx,h,u,zep_x,dt,epR,epxR,uR,hR,zepR) ! essai méthode de Brent
+  RR=uR*epxR-2.0D0*sqrt(hR/Fr2)*epxR
+
+  if (fopt==0) then
+    tauR=0
+  else
+
+    if (hR/=0.0D0) then
+    C=MC(1,j)
+    call  tau(tipo,C,Fr2,hR,uR,tauR)  
+    tauR=tauR/hR
+    else
+    tauR=0.0D0
+    end if
+  end if
+
+
+  Rmenos=RR-0.5D0*dt/Fr2*(zepR*epxR**2.0D0+zepA*epxA**2.0D0)-tauR*dt*epxR
+
+  qA(1,j)=Fr2*(Rmas-Rmenos)**2.0D0/(16.0D0*epxA**2.0D0)
+  qA(2,j)=(Rmas+Rmenos)/(2.0D0*epxA)
+  qA(3,j)=0.0D0
+  !print*,(zt(3,j+2)+zt(2,j+2))/2.0D0
+  zA(j)=(zt(3,j+2)+zt(2,j+2))/2.0D0
+  !print*,j
 END DO
 
 

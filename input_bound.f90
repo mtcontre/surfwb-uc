@@ -97,8 +97,9 @@ subroutine custombc_xi0
     end if
   end do
   close(unit=100)
-
-  
+  print*,maxval(qxi0g1(1,:,:)),maxval(qxi0g1(2,:,:)),maxval(qxi0g1(3,:,:)),maxval(qxi0g1(4,:,:))
+  print*,maxval(qxi0g2(1,:,:)),maxval(qxi0g2(2,:,:)),maxval(qxi0g2(3,:,:)),maxval(qxi0g2(4,:,:))
+  pause
 end subroutine custombc_xi0
 
 subroutine custombc_xiN
@@ -179,7 +180,8 @@ subroutine custombc_eta0
   allocate(qeta0g1(nvar,Nbx,nt_eta0g1+1))  !(nvars,ny,nt+1)
   do ivar=1,nvar
     read(99,*)((qeta0g1(ivar,ix,indt),indt=1,nt_eta0g1+1),ix=1,Nbx)
-    if (ivar.le.nvar-1) then
+    print*,ix
+      if (ivar.le.nvar-1) then
       read(99,*) !this line is just to separate groups of variables
       !actually usefull when reviewing data 'by eye'
     end if
@@ -204,7 +206,9 @@ subroutine custombc_eta0
     end if
   end do
   close(unit=100)
-
+  print*,maxval(qeta0g1(1,:,:)),maxval(qeta0g1(2,:,:)),maxval(qeta0g1(3,:,:)),maxval(qeta0g1(4,:,:))
+  print*,maxval(qeta0g2(1,:,:)),maxval(qeta0g2(2,:,:)),maxval(qeta0g2(3,:,:)),maxval(qeta0g2(4,:,:))
+  pause
   
 end subroutine custombc_eta0
 
@@ -258,5 +262,7 @@ subroutine custombc_etaN
     end if
   end do
   close(unit=100)
-
+  print*,maxval(qetaNg1(1,:,:)),maxval(qetaNg1(2,:,:)),maxval(qetaNg1(3,:,:)),maxval(qetaNg1(4,:,:))
+  print*,maxval(qetaNg2(1,:,:)),maxval(qetaNg2(2,:,:)),maxval(qetaNg2(3,:,:)),maxval(qetaNg2(4,:,:))
+  pause
 end subroutine custombc_etaN

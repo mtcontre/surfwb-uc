@@ -53,7 +53,7 @@ END SUBROUTINE VyC
 subroutine stability_celerities_boundary_init!creo 2 para no tener conflicto con las variables, este es solo para el instante inicial
   !allocates celerities for in-boundary cells to calculate dt (later in main.f90) 
   !accordin to cfl stability condition
-  
+  use senales
   use global_variables
   use geometries
   use coords
@@ -73,6 +73,8 @@ subroutine stability_celerities_boundary_init!creo 2 para no tener conflicto con
       !a la ghost cell 1 le corresponde la metrica de la celda 2 (las metricas se copian simetricas)
     end do
  end if
+!  
+ 
   
   if (flagxiN.eq.1) then !if xi0 bound ==custom
     allocate(SxiN(Nby,4))

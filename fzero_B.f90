@@ -23,7 +23,7 @@ REAL (kind=8),dimension(N):: ep,epx,h,u,zep
 !Using Brent’s method, find the root of a function func known to lie between x1 and x2.
 !The root, returned as zbrent, will be refined until its accuracy is tol.
 !Parameters: Maximum allowed number of iterations, and machine floating-point precision.
- iter=0
+iter=0
 itmax=10000
 tol=10e-5
 err1=1.0D0

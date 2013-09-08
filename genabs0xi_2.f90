@@ -488,6 +488,7 @@ qA(2,j)=(Rmas+Rmenos)/(2.0D0*epxA)
 qA(3,j)=0.0D0
 zA(j)=(zt(3,j+2)+zt(2,j+2))/2.0D0
 
+
 END DO
 
 

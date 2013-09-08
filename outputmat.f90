@@ -131,11 +131,11 @@ IF (dec==0.0D0.OR.it==0.0D0) THEN
   ncaso=adjustl(ncaso)
   numbercaso=ncaso  
   path='results/'
-  filename='results/SOL2D.'//trim(number)//'.dat'
-  filenameT='results/Time'//trim(numbercaso)//'.dat'
+  filename=trim(path)//'SOL2D.'//trim(number)//'.dat'
+  filenameT=trim(path)//'Time'//trim(numbercaso)//'.dat'
   inquire(FILE=filename, EXIST=lexist)
   inquire(FILE=filenameT, EXIST=lexistT) 
-
+  
   IF (.NOT. lexist) THEN
   open(10,file=filename,status='new',action='write')
   ELSE
@@ -147,7 +147,7 @@ IF (dec==0.0D0.OR.it==0.0D0) THEN
   ELSE
     
     IF (it==0.0D0) THEN
-    open(20,file=filenameT,status='replace',action='write')
+    open(20,file=filenameT,status='replace',action='write')    
     ELSE
     open(20,file=filenameT,status='old',action='write', position='append')
     END IF

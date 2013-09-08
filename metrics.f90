@@ -63,7 +63,7 @@ end do
 
 do i=1,Nbx; do j=1,Nby
 	gj=xc(i,j)*ye(i,j)-xe(i,j)*yc(i,j)
-	if (gj.le.1.0e-12) then
+	if (abs(gj).le.1.0e-12) then
 		print *,'zero jacobian in node=',i,j
 		print *,gj
 		print*, 'xc(i,j)=',xc(i,j)

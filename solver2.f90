@@ -4,6 +4,7 @@ SUBROUTINE solver2
 
 USE global_variables
 USE geometries
+use custombc
 implicit none
 
 !Local variables definition
@@ -173,7 +174,9 @@ qnew_global=q2
 !pause
 !V y C para calcular dt
 call VyC
-
+if ( (flagxi0.eq.1).or.(flagxiN.eq.1).or.(flageta0.eq.1).or.(flagetaN.eq.1).or.(CB(1).eq.4) )then
+    call stability_celerities_boundary(q1T)
+end if
 !-----------------------------------------
 
 !-----------------------------------------

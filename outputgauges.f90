@@ -43,7 +43,7 @@ numbercaso=ncaso
 path='results/'
 write(ncaso,*) caso
 ncaso=(adjustl(ncaso))
-fgauges='results/timeseries/gauges.' // trim(ncaso)// '.dat'
+fgauges=trim(path)//'timeseries/gauges.' // trim(ncaso)// '.dat'
 
 
 do i=1,Nts

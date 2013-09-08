@@ -40,8 +40,8 @@ call init !init function: reads input data and bathymethry, initialize flowfield
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	call LPT () ! Lagrangian Particle Tracking - init
 
 if (outopt==1) then
-	call outputmat(treal)	!write initial conditions into a file
-	call outputgauges(treal)
+  call outputmat(treal)	!write initial conditions into a file
+  call outputgauges(treal)
 else
 	!call outputtec(treal)
 ! 	call outputparaview(treal)
@@ -77,31 +77,8 @@ call cpu_time(time_start)
 DO while(t<=tfinal)
       
   !1. Calculate time step with the CFL condition
-
-  xieta=(/dxi,deta/)
-  minxieta=minval(xieta)
-  maxS1=maxval(S1_global)
-  maxS2=maxval(S2_global)
-  
-  maxUC=maxval((/maxS1,maxS2/))
-  !maxUC=maxval(VC)
-
-  if (flagxi0.eq.1) then    
-    maxUC=maxval((/maxUC,maxval(Sxi0)/))
-  end if
-  
-  if (flagxiN.eq.1) then  
-    maxUC=maxval((/maxUC,maxval(SxiN)/))
-  end if
-  if (flageta0.eq.1) then
-    maxUC=maxval((/maxUC,maxval(Seta0)/))
-  end if
-  if (flagetaN.eq.1) then
-    maxUC=maxval((/maxUC,maxval(SetaN)/))
-  end if
-  dt=CFL*minxieta/maxUC		!This dt is adimensional
-  dtreal=dt*L/U
-
+  !    and boundary timestep
+  call tstep(dtreal)
   
   ! print*,'L,U,dt,minxieta,maxuc',L,U,dt,minxieta,maxUC
   !If the new time is bigger than final time, exit the cycle

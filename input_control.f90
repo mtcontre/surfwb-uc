@@ -94,6 +94,7 @@ read(1,*) CB(1)	!Boundary Condition for xi_0,j
   IF (CB(4)==4) THEN
   read(1,*) GA4
   read(1,*) Nsenal4
+  
   call readGA(4,GA4,Nsenal4)
   END IF
   IF (CB(4)==5) THEN !Outflow or Inflow en 4, se fija una altura o Inflow en 1
