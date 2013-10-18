@@ -38,35 +38,35 @@ subroutine tstep(dtreal)
   dtreal=dt*L/U
   
   ! now fix dtreal so it satisfies t+dtreal<=nt*dtboundary
-  print*,'\n------treal=',treal
-  print*,'------dtreal=',dtreal
+!   print*,'\n------treal=',treal
+!   print*,'------dtreal=',dtreal
   if (flagxi0.eq.1) then
     nt1=int(t/dt_xi0g1)+1!satisfies nt1=min{n : n*dt_xi0g1>t}
     nt2=int(t/dt_xi0g2)+1
     dtreal=minval((/dtreal,nt1*dt_xi0g1-treal,nt2*dt_xi0g2-treal/))
-    print*,'------xi0dtreal=',dtreal,nt1*dt_xi0g1-treal
+!     print*,'------xi0dtreal=',dtreal,nt1*dt_xi0g1-treal
   end if
   if (flagxiN.eq.1) then
     nt1=int(t/dt_xiNg1)+1!satisfies nt1=min{n : n*dt_xi0g1>t}
     nt2=int(t/dt_xiNg2)+1
     dtreal=minval((/dtreal,nt1*dt_xiNg1-treal,nt2*dt_xiNg2-treal/))
-    print*,'------xiNdtreal=',nt1*dt_xiNg1-treal,nt2*dt_xiNg2-treal
+!     print*,'------xiNdtreal=',nt1*dt_xiNg1-treal,nt2*dt_xiNg2-treal
   end if
   if (flageta0.eq.1) then
     nt1=int(t/dt_eta0g1)+1!satisfies nt1=min{n : n*dt_xi0g1>t}
     nt2=int(t/dt_eta0g2)+1
     dtreal=minval((/dtreal,nt1*dt_eta0g1-treal,nt2*dt_eta0g2-treal/))
-    print*,'------eta0dtreal=',nt1*dt_eta0g1-treal
+!     print*,'------eta0dtreal=',nt1*dt_eta0g1-treal
   end if
   if (flagetaN.eq.1) then
     nt1=int(t/dt_etaNg1)+1!satisfies nt1=min{n : n*dt_xi0g1>t}
     nt2=int(t/dt_etaNg2)+1
     dtreal=minval((/dtreal,nt1*dt_etaNg1-treal,nt2*dt_etaNg2-treal/))
-    print*,'------etaNdtreal=',dtreal
+!     print*,'------etaNdtreal=',dtreal
   end if
   
-  print*,'------minxieta=',minxieta
-  print*,'------maxuc=',maxuc
-  print*,'-------maxucloc=',maxloc(S1_global),maxloc(S2_global)
+!   print*,'------minxieta=',minxieta
+!   print*,'------maxuc=',maxuc
+!   print*,'-------maxucloc=',maxloc(S1_global),maxloc(S2_global)
   
 end subroutine
