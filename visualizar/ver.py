@@ -1,4 +1,5 @@
 from pylab import *
+from colormaps import *
 #ion()
 p=loadtxt('../results/param.dat')
 case=int(p[0])
@@ -17,7 +18,7 @@ for i in rango:
   print i
   nfr+=1
   i=int(i)
-  s=loadtxt('../results/SOL2D.%i.dat' %i)
+  s=loadtxt('../results/SOL2D.%i.dat.gz' %i)
   if i==0:
     x=reshape(s[:,0],(ny,nx))
     y=reshape(s[:,1],(ny,nx))
@@ -25,16 +26,16 @@ for i in rango:
   h=reshape(s[:,3],(ny,nx))
   u=reshape(s[:,4],(ny,nx))
   v=reshape(s[:,5],(ny,nx))
-  pcolor(x,y,z,cmap=cm.gist_earth)
-  pcolor(x,y,ma.masked_where(h<=0,z+h),cmap=cm.coolwarm,vmin=5.,vmax=10.0)
-  
+  pcolormesh(x,y,z,cmap=geo_land)
+  pcolormesh(x,y,ma.masked_where(h<=0,z+h),cmap=geo_water,vmin=-0.03,vmax=0.03)
+  colorbar()
   if u.max()>0 or v.max()>0:
     a=1
     #quiver(x,y,ma.masked_where(z>10,u),ma.masked_where(z>10,v))
   if nfr==10:
     #close('all')
     nfr=0
-  axis('tight')
+  #axis('tight')
   #xlim(x.min(),x.max())
   #ylim(y.min(),y.max())
   axis('equal')
