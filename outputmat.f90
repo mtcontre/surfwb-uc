@@ -182,7 +182,7 @@ IF (dec==0.0D0.OR.it==0.0D0) THEN
   close(10)
   close(20)
   
-!   call system('gzip -f '//filename)
+  call system('gzip -f '//filename)
 
 END IF
 
