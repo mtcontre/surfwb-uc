@@ -1,13 +1,3 @@
-%  tfinal   62.0000000000000     
-%   treal+dtreal   62.0102307679407     
-%   Iteraciones   5467.00000000000     
-%   Time Elapsed =    119.595474000000       seconds.
-%  
-%  real    2m4.295s
-%  user    1m38.670s
-%  sys     0m20.989s
-%  	
-
 close all
 clear all
 caso=999;
@@ -16,7 +6,7 @@ input{1}=num2str(caso);
 %----------------------------------------------------
 %---Parámetros de Discretización y adimensionalizacion
 %-----------------------------------------------------
-nx=38;
+nx=80;
 ny=80;
 tfinal=80.0;
 cfl=0.4;
@@ -51,7 +41,7 @@ printf('borde eta = ny \t %s\n',input{length(input)});
 %----------------------------------------------------
 %----------------------Otros parámetros--------------
 %----------------------------------------------------
-dit = 1
+dit = 25
 input{length(input)+1}=num2str(dit);%dit
 input{length(input)+1}='1E-10';%kappa, para los ceros numericos
 input{length(input)+1}='1';%rk4 
@@ -72,30 +62,12 @@ fclose(fout);
 %------------------------BATI------------------------
 %_---------------------------------------------------
 %------------------rompimiento de presa-------------
-% deben ser 3 columnas x,y,z,  en el archivo data/bathy.dat
-s=load('../data/bathy.dat');
-x=reshape(s(:,1),ny,nx);
-y=reshape(s(:,2),ny,nx);
-z=reshape(s(:,3),ny,nx);
-%  nx=40;
-%  ny=40;
-%  [x,y]=meshgrid(linspace(0,200,nx),linspace(0,200,ny));
-%  z=zeros(size(x));
-%  dx=max(diff(x(1,:)));
-%  z(abs(x-100)<dx & y<95-dx)=20;
-%  z(abs(x-100)<dx & y>170-dx)=20;
-%  %----------------------experimento: rotar los ejes, mantener los puntos
-%  x1=x;
-%  y1=y;
-%  %  x=x*cos(pi/12)-y*sin(pi/12);
-%  %  y=x*sin(pi/12)+y*cos(pi/12);
-%  figure()
-%  pcolor(x,y,z)
-%  xyz=[reshape(x,[],1) reshape(y,[],1) reshape(z,[],1)];
-%  save('../data/bathy.dat','-ascii','xyz');
-%  title('Batimetria');
-%  colorbar()
-%  print(gcf,'-dpng','bati.png')
+
+[x,y]=meshgrid(linspace(0,200,nx),linspace(0,200,ny));
+z=zeros(size(x));
+dx=max(diff(x(1,:)));
+z(abs(x-100)<dx & y<95-dx)=20;
+z(abs(x-100)<dx & y>170-dx)=20;
 
 %----------------------------------------------------
 %---------------------CONDICIÓN INICIAL--------------
@@ -103,13 +75,7 @@ z=reshape(s(:,3),ny,nx);
 h=10*ones(size(x));
 u=zeros(size(y));
 v=zeros(size(z));
-%  h(x*cos(pi/12)+y*sin(pi/12)<=100 & z==0)=10;
-%  h(x*cos(pi/12)+y*sin(pi/12)>100)=5;
-%  h(x<100-dx)=10;
-%  h(abs(x-100)<dx & y<95-dx)=0;
-%  h(abs(x-100)<dx & y>170-dx)=00;
-%indices : 22 en adelante queda a la derecha
-%indices:  20 para atras quedan a la izquierda		
+
 figure()
 pcolor(x,y,h);
 
@@ -123,7 +89,6 @@ print(gcf,'-dpng','h0.png')
 %----------------------------------------------------
 %---------------------SERIES DE TIEMPO---------------
 %_---------------------------------------------------
-%Matriz con tres columnas: id  x  y, de los puntos a sacar
 b=[1,50,133+20;
    2,50,133;
    3,50,133-20;
