@@ -1,7 +1,7 @@
 #Archivo para compilar y crear ejecutable de TMGP
 # es comentario
 
-F90	=/opt/intel/composer_xe_2013/bin/ifort 
+F90	=ifort#/opt/intel/composer_xe_2013/bin/ifort 
 #/opt/intel/Compiler/11.1/072/bin/intel64/ifort
 SRC	=src
 FFLAGS	=-O3 
@@ -21,7 +21,7 @@ objects = MODULES.o main.o readGA.o readIO.o init.o input_control.o input_geom.o
 	  kdtree2.o LPT.o lpt_p.o lpt_c.o tracking.o locate.o init_TS.o input_bound.o cfl_celerities.o tstep.o
 	  #genabs0eta.o genabsNeta.o 
 
-tesis: $(objects) makefile
+xsurf: $(objects) makefile
 #	$(F90) $(FFLAGS) -o $@ $(objects) $(LIBs)
 	$(F90) $(FFLAGS) -o $@ $(objects)
 	
@@ -32,10 +32,3 @@ tesis: $(objects) makefile
 
 cleanobj:
 	rm *.o
-
-
-# clean:	
-#  	rm results/*.dat
-# 	rm results/HUV/*.*
-# 	rm LPT/*.*
-# 	rm TimeSeries/*.*

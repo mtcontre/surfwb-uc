@@ -40,7 +40,7 @@ printf('t0 = 0.0 \t tfinal = %.2f \t cfl = %.3f\n', tfinal, cfl);
 input{length(input)+1}=num2str(1);%condicion de borde xi_1, 0=custom (soloxi0), 1 = cerrado, 2 = periodic, 3=abierto
 %    input{length(input)+1}=num2str(9);%GA 9
 %    input{length(input)+1}=num2str(100);%Nsenal
-input{length(input)+1}=num2str(0);%condicion de borde xi=nx
+input{length(input)+1}=num2str(3);%condicion de borde xi=nx
 input{length(input)+1}=num2str(1);%condicion de borde eta=1
 input{length(input)+1}=num2str(1);%condicion de borde eta=ny
 printf('borde xi = 1 \t %s \n',input{length(input)-3});

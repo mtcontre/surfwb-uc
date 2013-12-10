@@ -1,7 +1,7 @@
 #Archivo para compilar y crear ejecutable de TMGP
 # es comentario
 
-F90	=/opt/intel/composer_xe_2013/bin/ifort 
+F90	=ifort#/opt/intel/composer_xe_2013/bin/ifort 
 #/opt/intel/Compiler/11.1/072/bin/intel64/ifort
 SRC	=src
 FFLAGS	=-O3 
@@ -9,8 +9,6 @@ LIBs	=/home/jose/tec360/lib/libtecio.a -lstdc++ #/opt/tecplot/lib/tecio64.a -lst
 
 
 .SUFFIXES: .f90 .o 
-#Agregar diferentes archivos que haya que compilar
-
 objects = MODULES.o main.o readGA.o readIO.o init.o input_control.o input_geom.o bati.o metrics.o \
 	  BCS.o fluxes.o vfroe1.o solver.o outputmat.o outputgauges.o  massbalance.o \
 	  solver2.o metrics8.o pascua.o solverf4.o friccion.o \
@@ -32,10 +30,3 @@ xsurf: $(objects) makefile
 
 cleanobj:
 	rm *.o
-
-
-# clean:	
-#  	rm results/*.dat
-# 	rm results/HUV/*.*
-# 	rm LPT/*.*
-# 	rm TimeSeries/*.*
