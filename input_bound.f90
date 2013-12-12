@@ -97,9 +97,6 @@ subroutine custombc_xi0
     end if
   end do
   close(unit=100)
-  print*,maxval(qxi0g1(1,:,:)),maxval(qxi0g1(2,:,:)),maxval(qxi0g1(3,:,:)),maxval(qxi0g1(4,:,:))
-  print*,maxval(qxi0g2(1,:,:)),maxval(qxi0g2(2,:,:)),maxval(qxi0g2(3,:,:)),maxval(qxi0g2(4,:,:))
-  pause
 end subroutine custombc_xi0
 
 subroutine custombc_xiN
@@ -152,8 +149,6 @@ subroutine custombc_xiN
     end if
   end do
   close(unit=100)
-
-  
 end subroutine custombc_xiN
 
 subroutine custombc_eta0
@@ -166,7 +161,6 @@ subroutine custombc_eta0
   integer:: nvar,ivar,ix,indt !nvar={1:z,2:h,3:u,4:v}
   nvar=4!number of variables to read: (z,h,u,v)
   print*,'Reading customized BC for eta0'
-  pause
   !1: first group (row,column,whatever) of ghost cells
   open(unit=99,file='data/bceta0g1.dat')
   read(99,*) nt_eta0g1
@@ -205,11 +199,7 @@ subroutine custombc_eta0
       !actually usefull when reviewing data 'by eye'
     end if
   end do
-  close(unit=100)
-  print*,maxval(qeta0g1(1,:,:)),maxval(qeta0g1(2,:,:)),maxval(qeta0g1(3,:,:)),maxval(qeta0g1(4,:,:))
-  print*,maxval(qeta0g2(1,:,:)),maxval(qeta0g2(2,:,:)),maxval(qeta0g2(3,:,:)),maxval(qeta0g2(4,:,:))
-  pause
-  
+  close(unit=100)  
 end subroutine custombc_eta0
 
 subroutine custombc_etaN
@@ -262,7 +252,4 @@ subroutine custombc_etaN
     end if
   end do
   close(unit=100)
-  print*,maxval(qetaNg1(1,:,:)),maxval(qetaNg1(2,:,:)),maxval(qetaNg1(3,:,:)),maxval(qetaNg1(4,:,:))
-  print*,maxval(qetaNg2(1,:,:)),maxval(qetaNg2(2,:,:)),maxval(qetaNg2(3,:,:)),maxval(qetaNg2(4,:,:))
-  pause
 end subroutine custombc_etaN
