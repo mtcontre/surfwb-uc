@@ -32,8 +32,6 @@ dt=0.0D0
 t=0.0D0!0.0D0
 treal=0.0D0!960.0D0 !0.0D0
 
-
-print*, 'OLI'
 ! Initialize calculation
 
 call init !init function: reads input data and bathymethry, initialize flowfield, calculates metrics
