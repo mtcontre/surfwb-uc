@@ -109,8 +109,6 @@ subroutine custombc_xiN
   integer:: nvar,ivar,ix,indt !nvar={1:z,2:h,3:u,4:v}
   nvar=4!number of variables to read: (z,h,u,v)
   print*,'Reading customized BC for xi_N'
-  pause
-
   !1: first group (row,column,whatever) of ghost cells
   open(unit=99,file='data/bcxiNg1.dat')
   read(99,*) nt_xiNg1
@@ -174,8 +172,7 @@ subroutine custombc_eta0
   allocate(qeta0g1(nvar,Nbx,nt_eta0g1+1))  !(nvars,ny,nt+1)
   do ivar=1,nvar
     read(99,*)((qeta0g1(ivar,ix,indt),indt=1,nt_eta0g1+1),ix=1,Nbx)
-    print*,ix
-      if (ivar.le.nvar-1) then
+    if (ivar.le.nvar-1) then
       read(99,*) !this line is just to separate groups of variables
       !actually usefull when reviewing data 'by eye'
     end if
