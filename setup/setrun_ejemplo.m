@@ -1,13 +1,3 @@
-%  tfinal   62.0000000000000     
-%   treal+dtreal   62.0102307679407     
-%   Iteraciones   5467.00000000000     
-%   Time Elapsed =    119.595474000000       seconds.
-%  
-%  real    2m4.295s
-%  user    1m38.670s
-%  sys     0m20.989s
-%  	
-
 close all
 clear all
 caso=999;
@@ -22,47 +12,64 @@ tfinal=80.0;
 cfl=0.9;
 input{length(input)+1}=[num2str(tfinal) 'D0'];%tfinal
 input{length(input)+1}=[num2str(cfl) 'D0' ];%cfl
-input{length(input)+1}=num2str(nx);%nx
-input{length(input)+1}=num2str(ny);%ny
+input{length(input)+1}=num2str(ny);%nxi (filas)
+input{length(input)+1}=num2str(nx);%neta (columnas)
 input{length(input)+1}='1.0D0';%dxi
 input{length(input)+1}='1.0D0';%deta
-input{length(input)+1}='1.0D0';%H
-input{length(input)+1}='1.0D0';%U	
-input{length(input)+1}='1.0D0';%V
+input{length(input)+1}='1.0D0';%L: escala horizontal de longitud
+input{length(input)+1}='1.0D0';%H: escala vertical de longitud
+input{length(input)+1}='1.0D0';%U: escala de velocidades horizontales
 printf('---------init.dat--------\n');
-printf('nx = %i \t ny =%i \t nelem = %i \n',nx,ny,(nx-1)*(ny-1) );
+printf('nx = %i \t ny =%i \t nelem = %i \n',nx,ny,nx*ny);
 printf('t0 = 0.0 \t tfinal = %.2f \t cfl = %.3f\n', tfinal, cfl);
 
-%%
-%  %----------------------------------------------------
-%  %-------Parámetros de condiciones de borde-----------
-%  %----------------------------------------------------
-input{length(input)+1}=num2str(1);%condicion de borde xi_1, 0=custom (soloxi0), 1 = cerrado, 2 = periodic, 3=abierto
-%    input{length(input)+1}=num2str(9);%GA 9
-%    input{length(input)+1}=num2str(100);%Nsenal
-input{length(input)+1}=num2str(3);%condicion de borde xi=nx
-input{length(input)+1}=num2str(1);%condicion de borde eta=1
-input{length(input)+1}=num2str(1);%condicion de borde eta=ny
-printf('borde xi = 1 \t %s \n',input{length(input)-3});
-printf('borde xi = nx \t %s\n',input{length(input)-2});
-printf('borde eta = 1 \t %s\n',input{length(input)-1});
-printf('borde eta = ny \t %s\n',input{length(input)});
+%----------------------------------------------------
+%-------Parámetros de condiciones de borde-----------
+%----------------------------------------------------
+  %condiciones de borde implementadas:
+  %0=custom, 1 = cerrado, 2 = periodic, 3=abierto, 4=GenAbs (?), 5=Inflow-Outflow (?)
+  %          borde xi=xi(1,:)
+  input{length(input)+1}=num2str(1);%%condicion de borde xi=xi(1,:), 
+  printf('borde xi = 1 \t %s \n',input{end});
+  if input{end}=='4'
+    %GA=1,2,3,9...??..se que la 9 es la variable y que sí funciona en el borde xi0    
+    input{length(input)+1}=num2str(9);%GA
+    input{length(input)+1}=num2str(100);%Nsenal 
+    %MEJORAS: leer nombre de archivo desde el input.dat------------------------------------------------------
+             %...cual nombre de archivo??
+  end
+  
+  %         borde xi=xi(nxi,:)
+  input{length(input)+1}=num2str(3);%condicion de borde xi=nx
+  printf('borde xi = nx \t %s\n',input{end});
+
+  %         borde eta=eta(:,1)
+  input{length(input)+1}=num2str(1);%condicion de borde eta=1
+  printf('borde eta = 1 \t %s\n',input{end});
+
+  %         borde eta=eta(:,neta)
+  input{length(input)+1}=num2str(1);%condicion de borde eta=ny
+  printf('borde eta = ny \t %s\n',input{end});
 
 %----------------------------------------------------
 %----------------------Otros parámetros--------------
 %----------------------------------------------------
-dit = 25
-input{length(input)+1}=num2str(dit);%dit
-input{length(input)+1}='1E-10';%kappa, para los ceros numericos
-input{length(input)+1}='1';%rk4 
-input{length(input)+1}='1';%minmod 
-printf('imprimir cada \t dit = %i \t interaciones\n',dit);
+  input{length(input)+1}='25';%%print every ** iterations
+  input{length(input)+1}='1E-5';%kappa, para los ceros numericos
+  input{length(input)+1}='1';%Runge Kutta time stepping method: 1=Rk4, 2=Rk2 
+  input{length(input)+1}='1';%1=Minmod, 2=Superbee Limiters 
+  printf('imprimir cada \t dit = %i \t interaciones\n',dit);
 
 %----------------------------------------------------
 %--------------------Fricción------------------------
 %----------------------------------------------------
-input{length(input)+1}='0';%fopt friccion
-input{length(input)+1}='1';%outopt 1 = matlab 
+input{length(input)+1}='0';%friction: 0:No, 1:Si
+if input{end}=='1'
+  input{length(input)+1}='1' %=1: coeficiente unico; =2: matriz de coef: MEJORAR----------------------------
+  input{length(input)+1}='1' %tipo de friccion Maning==1, Chezy==2, Sampson==3
+  input{length(input)+1}='0.02' %el coeficiente de friccion
+end
+input{length(input)+1}='1';%formato output 1 = matlab 
 fout=fopen('../data/input.dat','w');
 for i=1:length(input)
   fprintf(fout,'%s\n', input{i});
