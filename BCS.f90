@@ -471,8 +471,6 @@ SELECT CASE (CB(2))
 		
 		end if
 		
-		
-		
 		DO j=3,Ny+2
 
 		qt(1,Nx+4,j)=qA2(1,j-2)		!h-1=h2

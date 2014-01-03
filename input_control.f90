@@ -10,6 +10,22 @@ read(1,*) tfinal
 read(1,*) CFL
 read(1,*) Nbx
 read(1,*) Nby
+read(1,*) batiopt
+if ((batiopt==0).or.(batiopt==1))then
+ read(1,'(A)') batiname(1)!Xmatrix
+ read(1,'(A)') batiname(2)!Ymatrix
+ read(1,'(A)') batiname(3)!Zmatrix
+else if ((batiopt==2).or.(batiopt==3)) then
+ read(1,'(A)') batiname(1)!3columns X,Y,Z
+end if
+read(1,*) initqopt
+if ((initqopt==0).or.(initqopt==1))then
+ read(1,'(A)') initqname(1)!h-matrix
+ read(1,'(A)') initqname(2)!u-matrix
+ read(1,'(A)') initqname(3)!v-matrix
+else if ((initqopt==2).or.(initqopt==3)) then
+ read(1,'(A)') initqname(1)!recolumns, h,u,v
+end if
 read(1,*) dxi
 read(1,*) deta
 read(1,*) L

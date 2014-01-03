@@ -11,56 +11,60 @@ USE senales
 implicit none
 
 real (kind=8), dimension(:), allocatable :: xaux, yaux, zaux
+integer	:: i,j
+allocate (x_global(Nbx,Nby), y_global(Nbx,Nby),z_global(Nbx,Nby))
 
-real (kind=8):: dx,dy,zf,Lx, Ly, dx1, dx2, ri, rext, ds, xo, yo, sigma,r, ho, a, beta
-
-integer	:: i,j,Ntot
-
-SELECT CASE (caso)
-CASE(999)	!Ensayo para un perfil de playa
-	  allocate (x_global(Nbx,Nby), y_global(Nbx,Nby),z_global(Nbx,Nby))
-	  allocate(xaux(Nbx*Nby),yaux(Nbx*Nby), zaux(Nbx*Nby))
-	  Ntot=Nbx*Nby
-	  !Lee batimetria Leandro
-	  open(unit=99,file='data/bathy.dat')
-	  Do i=1,Ntot
-	    read(99,*) xaux(i), yaux(i), zaux(i)
-	  End Do
-	  close(unit=99)
-	  do i=1,Nbx,1; do j=1,Nby,1
-	  x_global(i,j)=xaux(j+(i-1)*Nby)+0.00
-	  y_global(i,j)=yaux(j+(i-1)*Nby)
-	  z_global(i,j)=zaux(j+(i-1)*Nby)+0.00
-	  end do; end do
-	  print *, 'bathy', x_global(1,1)
-	  !Ensayo para caso 2D	  
+SELECT CASE (int(batiopt))
+  CASE(0)
+    open(unit=2,file=batiname(1),form='unformatted')
+    read(2) ((x_global(i,j),j=1,Nby),i=1,Nbx)
+    close(unit=2)
+    
+    open(unit=2,file=batiname(2),form='unformatted')
+    read(2) ((y_global(i,j),j=1,Nby),i=1,Nbx)
+    close(unit=2)
+    
+    open(unit=2,file=batiname(3),form='unformatted')
+    read(2) ((z_global(i,j),j=1,Nby),i=1,Nbx)
+    close(unit=2)
+  CASE(1)
+    open(unit=2,file=batiname(1))
+    read(2,*) ((x_global(i,j),j=1,Nby),i=1,Nbx)
+    close(unit=2)
+    
+    open(unit=2,file=batiname(2))
+    read(2,*) ((y_global(i,j),j=1,Nby),i=1,Nbx)
+    close(unit=2)
+    
+    open(unit=2,file=batiname(3))
+    read(2,*) ((z_global(i,j),j=1,Nby),i=1,Nbx)
+    close(unit=2)
+  CASE(2)	
+    allocate(xaux(Nbx*Nby),yaux(Nbx*Nby), zaux(Nbx*Nby))
+    open(unit=2,file=batiname(1))
+    Do i=1,Nbx*Nby
+      read(2,*) xaux(i), yaux(i), zaux(i)
+    End Do
+    close(unit=2)
+    do i=1,Nbx,1; do j=1,Nby,1
+      x_global(i,j)=xaux(j+(i-1)*Nby)
+      y_global(i,j)=yaux(j+(i-1)*Nby)
+      z_global(i,j)=zaux(j+(i-1)*Nby)
+    end do; end do
+    deallocate(xaux,yaux,zaux)
+  CASE(3)
+    allocate(xaux(Nbx*Nby),yaux(Nbx*Nby), zaux(Nbx*Nby))
+    open(unit=2,file=batiname(1))
+    Do i=1,Nbx*Nby
+      read(2,*) xaux(i), yaux(i), zaux(i)
+    End Do
+    close(unit=2)
+    do j=1,Nby,1; do i=1,Nbx,1
+      x_global(i,j)=xaux(i+(j-1)*Nbx)
+      y_global(i,j)=yaux(i+(j-1)*Nbx)
+      z_global(i,j)=zaux(i+(j-1)*Nbx)
+    end do; end do
+    deallocate(xaux,yaux,zaux)
 END SELECT
- 
-
 
 END SUBROUTINE input_geom
-! SUBROUTINE input_geom
-! 
-! USE global_variables
-! USE geometries
-! 
-! implicit none
-! 
-! integer::i,j
-! 
-! allocate (x_global(Nbx,Nby),y_global(Nbx,Nby),z_global(Nbx,Nby))
-! 
-! print*, Nbx, Nby
-! open	(unit=2, file ='gridX.dat', form='unformatted')
-! read	(unit=2) ((x_global(i,j),i=1,Nbx),j=1,Nby)
-! close(unit=2)
-! 
-! open	(unit=3, file ='gridY.dat', form='unformatted')
-! read	(unit=3) ((y_global(i,j),i=1,Nbx),j=1,Nby)
-! close(unit=3)
-! 
-! open	(unit=4,file='gridZ.dat', form='unformatted')
-! read	(unit=4) ((z_global(i,j),i=1,Nbx),j=1,Nby)
-! close(unit=4)
-! 
-! END SUBROUTINE input_geom

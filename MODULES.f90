@@ -15,9 +15,11 @@ real (kind=8),dimension(:,:),save,allocatable	::xc,yc,xe,ye, aj_global,MCoef
 
 
 !Input control
-real (kind=8)	::CFL,tfinal,L,H,U, t, iteration, dt, FR2, g,dxi,deta, hmin, kappa, it, Pvol, vol0, treal, Coef
+real (kind=8)	::CFL,tfinal,L,H,U, t, iteration, dt, FR2, g,dxi,&
+deta, hmin, kappa, it, Pvol, vol0, treal, Coef, batiopt,initqopt
 integer,dimension(4) :: CB
 integer	::caso,Nbx, Nby, dit, mmopt, rk, outopt, fopt, fM, Cf
+character (len=120),dimension(3) :: batiname,initqname
 
 !Lagrangian Particle tracking
 integer, parameter :: Nbz=1
