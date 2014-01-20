@@ -106,7 +106,6 @@ do i=1,Nts
 		else    
 		  if (it==0.0D0 .and. i==1) then
 		   print*,it,i
-		   pause
 		    open(20,file=fgauges,status='replace',action='write')
 		  else
 		    open(20,file=fgauges,status='old',action='write', position='append')
@@ -115,7 +114,7 @@ do i=1,Nts
 		!se podria guardar id,x,y, en otro archivo aparte
 		
 		write(20,21) id0(i),treal,x0(i),y0(i),z_g,h_g+z_g,u_g,v_g 
-		21 format(I	, TR1, F15.5, TR1,	F15.5, TR1, F15.5, TR1, F15.5, TR1, F15.5, TR1, F15.5, TR1, F15.5 / )
+		21 format(I3.3	, TR1, F15.5, TR1,	F15.5, TR1, F15.5, TR1, F15.5, TR1, F15.5, TR1, F15.5, TR1, F15.5 / )
 		close(20)
 		
 end do
@@ -125,7 +124,7 @@ END SUBROUTINE outputgauges
 subroutine interpxy(m1,x,y,z,x0,y0,z0,order)
 use global_variables
 integer ::order !que orden de innterpolacion, 0 o 1 
-real (kind=8), dimension(2)::m1 ! par (i,j) del vertice superior derecho de la celda que contiene a x0,y0
+integer, dimension(2)::m1 ! par (i,j) del vertice superior derecho de la celda que contiene a x0,y0
 real (kind=8)::x0,y0,z0,f11,f21,f12,f22,x_1,x_2,y_1,y_2
 real (kind=8),dimension(Nbx,Nby)::x,y,z
 

@@ -9,7 +9,8 @@ implicit none
 
 !Local variables definition
 integer	:: i,j
-real (kind=8)	:: u1max, v1max, u2max, v2max,u3max, v3max,u4max, v4max, VCmax, Vmax,maxC, umax, vvmax, dxi1, deta1, kappa2, maxDF, maxDFloc, dtBC
+real (kind=8)	:: u1max, v1max, u2max, v2max,u3max, v3max,u4max, v4max, &
+  VCmax, Vmax,maxC, umax, vvmax, dxi1, deta1, kappa2, maxDF, maxDFloc, dtBC
 real (kind=8),dimension(2):: locu1, locv1, DFloc
 real (kind=8),dimension(:,:,:),allocatable :: q1,q2,q3,q4, &
 				     q1T,q2T,q3T,q4T, &
@@ -80,7 +81,8 @@ End do; End do
 
 !Calculates q(n+1/2*)
 dtBC=0.5D0*dt
-call bcs(fopt,Cf,MCoef,1,t,dtBC,FR2,caso,qold_global,z_global,Nbx,Nby,CB,xi_global,eta_global,aj_global,dxi,deta,q1T,xi_T,eta_T,zT)
+call bcs(fopt,Cf,MCoef,1,t,dtBC,FR2,caso,qold_global,z_global,&
+  Nbx,Nby,CB,xi_global,eta_global,aj_global,dxi,deta,q1T,xi_T,eta_T,zT)
 
 call fluxes(CB,mmopt,hmin,q1T,zT,xi_T,eta_T,dxi,deta,Nbx,Nby,FR2,F1mas,F1menos,G1mas,G1menos,SC)
 
@@ -172,7 +174,8 @@ END DO; END DO
 !Third RK Stage
 !Calculates q(n+1*)
 
-call bcs(fopt,Cf,MCoef,3,t+0.5D0*dt,0.5D0*dt,FR2,caso,q2,z_global,Nbx,Nby,CB,xi_global,eta_global,aj_global,dxi,deta,q3T,xi_T,eta_T,zT)
+call bcs(fopt,Cf,MCoef,3,t+0.5D0*dt,0.5D0*dt,FR2,caso,q2,z_global,&
+  Nbx,Nby,CB,xi_global,eta_global,aj_global,dxi,deta,q3T,xi_T,eta_T,zT)
 
 call fluxes(CB,mmopt,hmin,q3T,zT,xi_T,eta_T,dxi,deta,Nbx,Nby,FR2,F3mas,F3menos,G3mas,G3menos,SC)
 
@@ -219,7 +222,8 @@ END DO; END DO
 !4th RK Stage, 
 !Calculates q(new)
 
-call bcs(fopt,Cf,MCoef,4,t+0.5D0*dt,0.5D0*dt,FR2,caso,q3,z_global,Nbx,Nby,CB,xi_global,eta_global,aj_global,dxi,deta,q4T,xi_T,eta_T,zT)
+call bcs(fopt,Cf,MCoef,4,t+0.5D0*dt,0.5D0*dt,FR2,caso,q3,z_global,&
+  Nbx,Nby,CB,xi_global,eta_global,aj_global,dxi,deta,q4T,xi_T,eta_T,zT)
 call fluxes(CB,mmopt,hmin,q4T,zT,xi_T,eta_T,dxi,deta,Nbx,Nby,FR2,F4mas,F4menos,G4mas,G4menos,SC)
 
 

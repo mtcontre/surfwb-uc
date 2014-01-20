@@ -75,8 +75,6 @@ select case(borde)
     read(90,*) ((etaL9(i,j),i=1,Ns),j=1,Nby)
 	!etaL9=etaL9+0.001D0
 	!etaL9=etaL9*1.5D0
-    print*,'asdf',h01
-    pause
     close(unit=50)
     print*,'fdsa',shape(etaL9)
     print*,'Ns',Ns

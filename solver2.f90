@@ -78,7 +78,8 @@ End do; End do
 
 !Calculates q(n+1/2*)
 
-call bcs(fopt,Cf,MCoef,1,t,0.5D0*dt,FR2,caso,qold_global,z_global,Nbx,Nby,CB,xi_global,eta_global,aj_global,dxi,deta,q1T,xi_T,eta_T,zT)
+call bcs(fopt,Cf,MCoef,1,t,0.5D0*dt,FR2,caso,qold_global,z_global,&
+  Nbx,Nby,CB,xi_global,eta_global,aj_global,dxi,deta,q1T,xi_T,eta_T,zT)
 
 call fluxes(CB,mmopt,hmin,q1T,zT,xi_T,eta_T,dxi,deta,Nbx,Nby,FR2,F1mas,F1menos,G1mas,G1menos,SC)
 
@@ -122,7 +123,8 @@ END DO; END DO
 !Second RK Stage
 !Calculates q(n+1)
 
-call bcs(fopt,Cf,MCoef,2,t+0.5D0*dt,0.5D0*dt,FR2,caso,q1,z_global,Nbx,Nby,CB,xi_global,eta_global,aj_global,dxi,deta,q2T,xi_T,eta_T,zT)
+call bcs(fopt,Cf,MCoef,2,t+0.5D0*dt,0.5D0*dt,FR2,caso,q1,z_global,&
+  Nbx,Nby,CB,xi_global,eta_global,aj_global,dxi,deta,q2T,xi_T,eta_T,zT)
 
 call fluxes(CB,mmopt,hmin,q2T,zT,xi_T,eta_T,dxi,deta,Nbx,Nby,FR2,F2mas,F2menos,G2mas,G2menos,SC)
 

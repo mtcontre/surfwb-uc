@@ -106,7 +106,7 @@ MODULE TimeSeries ! Time Series at different points
 !check init_TS.f90
 integer, dimension(:),save,allocatable ::id0
 real (kind=8), dimension(:),save,allocatable ::x0, y0, i0, j0, H0, Uts, Vts
-real (kind=8), dimension(2)::m1,m2
+integer, dimension(2)::m1,m2
 real (kind=8), dimension(:),save,allocatable ::r, s, x ! Interpolation by blending (see blend.f90, function blend_102)
 real (kind=8), dimension(:,:),save,allocatable ::x00, x01, x10, x11 
 ! real (kind=8), dimension(:,:),save,allocatable :: x1,x2,y1,y2

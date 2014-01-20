@@ -8,11 +8,6 @@ SUBROUTINE metrics
   real (kind=8)			::gj
   !real (kind=8)			::Sc,Se,Sz,SL
 
-if (caso==8) then
-
-call metrics8
-
-else
 
 !Define tamaño de matrices
   allocate(xc(Nbx,Nby),yc(Nbx,Nby),&
@@ -78,8 +73,6 @@ do i=1,Nbx; do j=1,Nby
 	eta_global(1,i,j)=-aj_global(i,j)*yc(i,j) !eta_x
 	eta_global(2,i,j)=aj_global(i,j)*xc(i,j) !eta_y
 end do; end do
-
-end if
 
 
 call jacs(xc,xe,yc,ye,Nbx,Nby,Jac_global_xi,Jac_global_eta)

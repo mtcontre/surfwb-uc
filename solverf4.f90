@@ -88,7 +88,8 @@ End do; End do
 
 !Boundary Conditions
 
-call bcs(fopt,Cf,MCoef,1,t,0.5D0*dt,FR2,caso,q1F,z_global,Nbx,Nby,CB,xi_global,eta_global,aj_global,dxi,deta,q1T,xi_T,eta_T,zT)
+call bcs(fopt,Cf,MCoef,1,t,0.5D0*dt,FR2,caso,q1F,z_global,&
+  Nbx,Nby,CB,xi_global,eta_global,aj_global,dxi,deta,q1T,xi_T,eta_T,zT)
 
 call fluxes(CB,mmopt,hmin,q1T,zT,xi_T,eta_T,dxi,deta,Nbx,Nby,FR2,F1mas,F1menos,G1mas,G1menos,SC)
 
@@ -137,7 +138,8 @@ END DO; END DO
 !Second RK Stage
 !Calculates q(n+1/2**)
 
-call bcs(fopt,Cf,MCoef,2,t,0.5D0*dt,FR2,caso,q1,z_global,Nbx,Nby,CB,xi_global,eta_global,aj_global,dxi,deta,q2T,xi_T,eta_T,zT)
+call bcs(fopt,Cf,MCoef,2,t,0.5D0*dt,FR2,caso,q1,z_global,&
+  Nbx,Nby,CB,xi_global,eta_global,aj_global,dxi,deta,q2T,xi_T,eta_T,zT)
 
 call fluxes(CB,mmopt,hmin,q2T,zT,xi_T,eta_T,dxi,deta,Nbx,Nby,FR2,F2mas,F2menos,G2mas,G2menos,SC)
 
@@ -182,7 +184,8 @@ END DO; END DO
 !Third RK Stage
 !Calculates q(n+1*)
 
-call bcs(fopt,Cf,MCoef,3,t+0.5D0*dt,0.5D0*dt,FR2,caso,q2,z_global,Nbx,Nby,CB,xi_global,eta_global,aj_global,dxi,deta,q3T,xi_T,eta_T,zT)
+call bcs(fopt,Cf,MCoef,3,t+0.5D0*dt,0.5D0*dt,FR2,caso,q2,z_global,&
+  Nbx,Nby,CB,xi_global,eta_global,aj_global,dxi,deta,q3T,xi_T,eta_T,zT)
 
 call fluxes(CB,mmopt,hmin,q3T,zT,xi_T,eta_T,dxi,deta,Nbx,Nby,FR2,F3mas,F3menos,G3mas,G3menos,SC)
 
@@ -228,7 +231,8 @@ END DO; END DO
 !4th RK Stage, 
 !Calculates q(new)
 
-call bcs(fopt,Cf,MCoef,4,t+0.5D0*dt,0.5D0*dt,FR2,caso,q3,z_global,Nbx,Nby,CB,xi_global,eta_global,aj_global,dxi,deta,q4T,xi_T,eta_T,zT)
+call bcs(fopt,Cf,MCoef,4,t+0.5D0*dt,0.5D0*dt,FR2,caso,q3,z_global,&
+  Nbx,Nby,CB,xi_global,eta_global,aj_global,dxi,deta,q4T,xi_T,eta_T,zT)
 call fluxes(CB,mmopt,hmin,q4T,zT,xi_T,eta_T,dxi,deta,Nbx,Nby,FR2,F4mas,F4menos,G4mas,G4menos,SC)
 
 DO i=1,Nbx; DO j=1,Nby

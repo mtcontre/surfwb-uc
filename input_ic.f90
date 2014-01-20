@@ -75,23 +75,23 @@ SELECT CASE (int(initqopt))
     deallocate(hin,uin,vin)
 
 END SELECT
-print*,'h------------'
-do i =1,3
-  print*,qold_global(1,i,1),qold_global(1,i,2),qold_global(1,i,3)
-end do
-pause
-
-print*,'u------------'
-do i =1,3
-  print*,qold_global(2,i,1),qold_global(2,i,2),qold_global(2,i,3)
-end do
-pause
-
-print*,'v------------'
-do i =1,3
-  print*,qold_global(3,i,1),qold_global(3,i,2),qold_global(3,i,3)
-end do
-pause
+! print*,'h------------'
+! do i =1,3
+!   print*,qold_global(1,i,1),qold_global(1,i,2),qold_global(1,i,3)
+! end do
+! pause
+! 
+! print*,'u------------'
+! do i =1,3
+!   print*,qold_global(2,i,1),qold_global(2,i,2),qold_global(2,i,3)
+! end do
+! pause
+! 
+! print*,'v------------'
+! do i =1,3
+!   print*,qold_global(3,i,1),qold_global(3,i,2),qold_global(3,i,3)
+! end do
+! pause
 
 
 END SUBROUTINE input_ic

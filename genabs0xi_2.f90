@@ -18,7 +18,8 @@ USE coords
 !Borde xi=0
 
 implicit none
-real (kind=8):: C,t,dt,Fr2,h0,C0,etai, epA, hL, uL, epL, epxL, RL,dep, zepL, epxA,zepA,tauL,epR,epxR,uR,hR,zepR, tauR,RR, Rmas, Rmenos, &
+real (kind=8):: C,t,dt,Fr2,h0,C0,etai, epA, hL, uL, epL, epxL, RL,dep, zepL, &
+  epxA,zepA,tauL,epR,epxR,uR,hR,zepR, tauR,RR, Rmas, Rmenos, &
 		hAo,uAo,tauAo
 integer:: Nx,Ny,j,i, NL, fopt, tipo, borde
 real (kind=8), dimension(3,Nx,Ny)::q
@@ -129,7 +130,8 @@ SUBROUTINE genabs0xi_2_2(fopt,tipo,MC,Nx,Ny,Fr2,dep,qs,hs,h0,Ns,t,dt,q,zt,ep_x,q
 !Borde eta=0
 USE coords
 implicit none
-real (kind=8):: C,t,dt,Fr2,h0,C0,etai, epA, qL,hL, uL, epL, epxL, RL,dep, zepL, epxA,zepA,tauL,epR,epxR,uR,hR,zepR, tauR,RR, Rmas, Rmenos, &
+real (kind=8):: C,t,dt,Fr2,h0,C0,etai, epA, qL,hL, uL, epL, epxL, RL,dep, zepL,&
+  epxA,zepA,tauL,epR,epxR,uR,hR,zepR, tauR,RR, Rmas, Rmenos, &
 		hAo,uAo,tauAo
 integer:: Nx,Ny,j,i, Ns, fopt, tipo, borde
 real (kind=8), dimension(3,Nx,Ny)::q
@@ -246,7 +248,8 @@ SUBROUTINE genabs0xi_3_2(fopt,tipo,MC,Nx,Ny,Fr2,dep,us,hs,h0,Ns,t,dt,q,zt,ep_x,q
 !Borde eta=0
 USE coords
 implicit none
-real (kind=8):: C,t,dt,Fr2,h0,C0,etai, epA, qL,hL, uL, epL, epxL, RL,dep, zepL, epxA,zepA,tauL,epR,epxR,uR,hR,zepR, tauR,RR, Rmas, Rmenos, &
+real (kind=8):: C,t,dt,Fr2,h0,C0,etai, epA, qL,hL, uL, epL, epxL, RL,dep, zepL,&
+  epxA,zepA,tauL,epR,epxR,uR,hR,zepR, tauR,RR, Rmas, Rmenos, &
 		hAo,uAo,tauAo
 integer:: Nx,Ny,j,i, Ns, fopt, tipo, borde
 real (kind=8), dimension(3,Nx,Ny)::q
@@ -381,7 +384,8 @@ USE geometries
 !Borde xi=0
 
 implicit none
-real (kind=8):: C,t,dt,Fr2,h0,C0,etai, epA, hL, uL, epL, epxL, RL,dep, zepL, epxA,zepA,tauL,epR,epxR,uR,hR,zepR, tauR,RR, Rmas, Rmenos, &
+real (kind=8):: C,t,dt,Fr2,h0,C0,etai, epA, hL, uL, epL, epxL, RL,dep, zepL,&
+  epxA,zepA,tauL,epR,epxR,uR,hR,zepR, tauR,RR, Rmas, Rmenos, &
 		hAo,uAo,tauAo
 integer:: Nx,Ny,j,i, NL, fopt, tipo, borde
 real (kind=8), dimension(3,Nx,Ny)::q
