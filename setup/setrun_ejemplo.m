@@ -6,8 +6,8 @@ input{1}=num2str(caso);
 %----------------------------------------------------
 %---Parámetros de Discretización y adimensionalizacion
 %-----------------------------------------------------
-nx=20;
-ny=10;
+nx=100;
+ny=100;
 nxi=ny;%filas=ny, en funcion meshgrid
 neta=nx;%numero de columnas, en funcion meshgrid(x,y) es nx
 tfinal=80.0;
@@ -87,7 +87,7 @@ input{length(input)+1}='25';%%print every ** iterations
 input{length(input)+1}='1E-5';%kappa, para los ceros numericos
 input{length(input)+1}='1';%Runge Kutta time stepping method: 1=Rk4, 2=Rk2 
 input{length(input)+1}='1';%1=Minmod, 2=Superbee Limiters 
-printf('imprimir cada \t dit = %i \t in%teraciones\n',dit);
+%  printf('imprimir cada \t dit = %i \t in%teraciones\n',dit);
 
 %----------------------------------------------------
 %--------------------Fricción------------------------
@@ -130,17 +130,17 @@ save('../data/gridZ.dat','-ascii','z');
 %----------------------------------------------------
 %---------------------CONDICIÓN INICIAL--------------
 %_---------------------------------------------------
-%  h=10*ones(size(x));
-%  u=zeros(size(y));
-%  v=zeros(size(z));
-%  h(x*cos(pi/12)+y*sin(pi/12)<=100 & z==0)=10;
-%  h(x*cos(pi/12)+y*sin(pi/12)>100)=5;
-%  h(x<100-dx)=10;
-%  h(abs(x-100)<dx & y<95-dx)=0;
-%  h(abs(x-100)<dx & y>170-dx)=00;
-h=0.5*x;
-u=0.5*y;
-v=10*x+0.5*y;
+h=10*ones(size(x));
+u=zeros(size(y));
+v=zeros(size(z));
+h(x*cos(pi/12)+y*sin(pi/12)<=100 & z==0)=10;
+h(x*cos(pi/12)+y*sin(pi/12)>100)=5;
+h(x<100-dx)=10;
+h(abs(x-100)<dx & y<95-dx)=0;
+h(abs(x-100)<dx & y>170-dx)=00;
+%  h=0.5*x;
+%  u=0.5*y;
+%  v=10*x+0.5*y;
 figure()
 pcolor(x,y,h);
 title('Condicion inicial para h')
