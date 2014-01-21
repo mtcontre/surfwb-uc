@@ -6,16 +6,14 @@ input{1}=num2str(caso);
 %----------------------------------------------------
 %---Parámetros de Discretización y adimensionalizacion
 %-----------------------------------------------------
-nx=100;
-ny=100;
-nxi=ny;%filas=ny, en funcion meshgrid
-neta=nx;%numero de columnas, en funcion meshgrid(x,y) es nx
+nxi=300;
+neta=300;
+tinit=0.0;
 tfinal=80.0;
 cfl=0.9;
 batiopt=1;
 initqopt=1;
-input{length(input)+1}=[num2str(tfinal) 'D0'];%tfinal
-input{length(input)+1}=[num2str(cfl) 'D0' ];%cfl
+input{length(input)+1}=[num2str(tinit) 'D0 ' num2str(tfinal) 'D0 ' num2str(cfl) 'D0 '];%tfinal
 input{length(input)+1}=num2str(nxi);%nxi (filas)
 input{length(input)+1}=num2str(neta);%neta (columnas)
 input{length(input)+1}=num2str(batiopt); %batiopt
@@ -50,7 +48,7 @@ input{length(input)+1}='1.0D0';%H: escala vertical de longitud
 input{length(input)+1}='1.0D0';%U: escala de velocidades horizontales
 
 printf('---------init.dat--------\n');
-printf('nx = %i \t ny =%i \t nelem = %i \n',nx,ny,nx*ny);
+printf('nx = %i \t ny =%i \t nelem = %i \n',neta,nxi,neta*nxi);
 printf('t0 = 0.0 \t tfinal = %.2f \t cfl = %.3f\n', tfinal, cfl);
 
 %----------------------------------------------------
@@ -108,7 +106,7 @@ fclose(fout);
 %------------------------BATI------------------------
 %_---------------------------------------------------
 %------------------rompimiento de presa-------------
-[x,y]=meshgrid(linspace(0,200,nx),linspace(0,200,ny));
+[x,y]=meshgrid(linspace(0,200,neta),linspace(0,200,nxi));
 z=zeros(size(x));
 dx=max(diff(x(1,:)));
 z(abs(x-100)<dx & y<95-dx)=20;

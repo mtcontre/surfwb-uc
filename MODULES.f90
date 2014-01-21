@@ -1,5 +1,4 @@
 MODULE global_variables
-
 !Global Variables MGP
 
 !Variables de Estado
@@ -15,39 +14,88 @@ real (kind=8),dimension(:,:),save,allocatable	::xc,yc,xe,ye, aj_global,MCoef
 
 
 !Input control
-real (kind=8)	::CFL,tfinal,L,H,U, t, iteration, dt, FR2, g,dxi,&
-deta, hmin, kappa, it, Pvol, vol0, treal, Coef, batiopt,initqopt
+real (kind=8)	::CFL,tinit,tfinal,L,H,U, t, iteration, dt, FR2, g,dxi,&
+deta, hmin, kappa, it, Pvol, vol0, treal, Coef
 integer,dimension(4) :: CB
 integer	::caso,Nbx, Nby, dit, mmopt, rk, outopt, fopt, fM, Cf
-character (len=120),dimension(3) :: batiname,initqname
 
 !Lagrangian Particle tracking
 integer, parameter :: Nbz=1
-
-
 END MODULE global_variables
+
+!(jdgalaz@,2014): once parallelized and the overlapped grid system implemented
+!the idea is to define new 'global variables' for each processor, just as
+!when the code was not parallelized
+!routine init.f90 takes care of this
+MODULE mpi_surf
+  integer,parameter::ndim=2
+  integer,dimension(2)::dims,coords
+  logical,dimension(2)::isperiodic  
+  logical::reorder
+  integer::comm2d
+  integer,parameter::master=0
+  integer::ierror,myrank,nproc,myrank2
+  
+END MODULE
+MODULE multigrid_surf  
+  integer::ngrids !total number of grids
+  integer::si,ei,sj,ej!first and last index in global matrices
+  integer::myzone=1!current zone,should vary between groups of cores
+!   integer, dimension(:),allocatable::myzone!current zone
+  integer, dimension(:),allocatable::nxi,neta !vectors with size for each zone 
+  character(len=255),dimension(:,:),allocatable::batiname,initqname
+  integer,dimension(:),allocatable::batiopt,initqopt
+  type gridarray
+      real(kind=8),dimension(:,:),allocatable :: X
+      real(kind=8),dimension(:,:),allocatable :: Y
+      real(kind=8),dimension(:,:),allocatable :: Z
+  endtype gridarray
+  
+  type initqarray
+    real(kind=8),dimension(:,:),allocatable ::H
+    real(kind=8),dimension(:,:),allocatable ::U
+    real(kind=8),dimension(:,:),allocatable ::V
+  endtype initqarray
+  
+  type bMcoef!for buffering the Mcoef
+    real(kind=8),dimension(:,:),allocatable ::bMcoef
+  end type bMcoef
+  
+  !send/recv buffers
+  type(gridarray), dimension(:),allocatable ::geom
+  type(initqarray),dimension(:),allocatable ::initq
+  type(bmcoef),dimension(:),allocatable ::buffMcoef !buff for 
+  
+  !mpi buffers datatype...to bcast structures....
+!   type(mpi_datatype)::type_geo
+!   type(mpi_datatype)::type_initq
+!   type(mpi_datatype)::
+  
+  
+  
+END MODULE
+
+
 module custombc
-! Customized ghost cells for boundary conditions
-integer:: nt_xi0g1, nt_xi0g2,nt_xiNg1, nt_xiNg2, nt_eta0g1,nt_eta0g2,nt_etaNg1,nt_etaNg2
-integer:: optxi0g1,optxi0g2,optxiNg1,optxiNg2,opteta0g1,opteta0g2,optetaNg1,optetaNg2    !if 1 then use piecewise constant, if 2 use linear interpolation
-real (kind=8) :: dt_xi0g1, dt_xi0g2,dt_xiNg1, dt_xiNg2, dt_eta0g1,dt_eta0g2,dt_etaNg1,dt_etaNg2
-real (kind=8), dimension(:,:,:), allocatable :: qxi0g1,qxi0g2,qxiNg1,qxiNg2,qeta0g1,qeta0g2,qetaNg1,qetaNg2
-integer:: flagxi0,flagxiN,flageta0,flagetaN !revisar init.f90 la parte del cfl inicial
-real (kind=8), dimension(:,:), allocatable ::Sxi0,SxiN,Seta0,SetaN
-! real (kind=8), dimension(:,:), allocatable S2xi0,S2xiN,S2eta0,S2etaN
+  ! Customized ghost cells for boundary conditions
+  integer:: nt_xi0g1, nt_xi0g2,nt_xiNg1, nt_xiNg2, nt_eta0g1,nt_eta0g2,nt_etaNg1,nt_etaNg2
+  integer:: optxi0g1,optxi0g2,optxiNg1,optxiNg2,opteta0g1,opteta0g2,optetaNg1,optetaNg2    !if 1 then use piecewise constant, if 2 use linear interpolation
+  real (kind=8) :: dt_xi0g1, dt_xi0g2,dt_xiNg1, dt_xiNg2, dt_eta0g1,dt_eta0g2,dt_etaNg1,dt_etaNg2
+  real (kind=8), dimension(:,:,:), allocatable :: qxi0g1,qxi0g2,qxiNg1,qxiNg2,qeta0g1,qeta0g2,qetaNg1,qetaNg2
+  integer:: flagxi0,flagxiN,flageta0,flagetaN !revisar init.f90 la parte del cfl inicial
+  real (kind=8), dimension(:,:), allocatable ::Sxi0,SxiN,Seta0,SetaN
+  ! real (kind=8), dimension(:,:), allocatable S2xi0,S2xiN,S2eta0,S2etaN
 end
 MODULE coords
 !Coordenadas Curvilíneas
-real (kind=8),dimension(:), save, allocatable :: coordxi, coordeta
-real (kind=8),dimension(:),save,allocatable :: angulo1,angulo2,angulo3,angulo4
-
+  real (kind=8),dimension(:), save, allocatable :: coordxi, coordeta
+  real (kind=8),dimension(:),save,allocatable :: angulo1,angulo2,angulo3,angulo4
 END MODULE coords
 
 
 MODULE geometries
   real (kind=8),dimension(:,:),save,allocatable	::x_global,y_global,z_global
   real (kind=8),dimension(:,:,:),save,allocatable	:: z_LPT
-
 END MODULE geometries
 
 MODULE senales
@@ -107,12 +155,15 @@ MODULE TimeSeries ! Time Series at different points
 integer, dimension(:),save,allocatable ::id0
 real (kind=8), dimension(:),save,allocatable ::x0, y0, i0, j0, H0, Uts, Vts
 integer, dimension(2)::m1,m2
-real (kind=8), dimension(:),save,allocatable ::r, s, x ! Interpolation by blending (see blend.f90, function blend_102)
+real (kind=8), dimension(:),save,allocatable ::r, s, x 
+  ! Interpolation by blending (see blend.f90, function blend_102)
 real (kind=8), dimension(:,:),save,allocatable ::x00, x01, x10, x11 
-! real (kind=8), dimension(:,:),save,allocatable :: x1,x2,y1,y2
+  ! real (kind=8), dimension(:,:),save,allocatable :: x1,x2,y1,y2
 
 integer	:: Nts ! Number of points for the time series
 real (kind=8):: dt_TS ! timestep to record the time serie
 real (kind=8):: sav_TS ! timestep to record the time serie
 END MODULE
+
+
 
