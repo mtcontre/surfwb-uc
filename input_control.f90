@@ -8,7 +8,7 @@ subroutine input_control
 
   open(1,file='data/input.dat')
   read(1,*) caso
-  read(1,*) tinit,tfinal,CFL			
+  read(1,*) tinit,tfinal,CFL	  
   ngrids=1			!number of overlapped grids (1fornow)
   allocate(Nxi(ngrids),Neta(ngrids),&
     batiname(ngrids,3),initqname(ngrids,3),batiopt(ngrids),initqopt(ngrids)) 
@@ -35,7 +35,11 @@ subroutine input_control
   read(1,*) deta
   read(1,*) L
   read(1,*) H
-  read(1,*) U
+  read(1,*) U  
+  !now i can assign time
+  treal=tinit
+  !adimensionalize
+  t=treal*U/L
   read(1,*) CB(1)	!Boundary Condition for xi_0,j
 
   !*Boundary conditions for the coarsest level
@@ -140,22 +144,25 @@ subroutine input_control
     end if
   END IF
   read(1,*) outopt !1=Matlab, 2=Tecplot files
-
+  FR2=U**2.0D0/(g*H)
+  
   close(1)
 
   write(*,100) caso
   100 FORMAT ('Caso: ', T25, I4)
-
+  
+  write(*,'("T_init (s)",T25,F8.2)') tinit
+  
   write(*,110) tfinal
   110 FORMAT ('T_final (s): ', T25, F8.2)
 
   write(*,120) CFL
   120 FORMAT ('CFL: ', T25, F5.2)
 
-  write(*,130) Nbx
+  write(*,130) Nxi(1)
   130 FORMAT ('Nbx: ', T25,  I6)
 
-  write(*,140) Nby
+  write(*,140) Neta(1)
   140 FORMAT ('Nby: ', T25, I6)
 
 
@@ -176,7 +183,7 @@ subroutine input_control
   163 FORMAT ('Usando limitador MC, mmopt= ', T30, 4I2)
   end if
 
-  FR2=U**2.0D0/(g*H)
+  
   print*, 'Fr2= ', FR2
 
 end subroutine input_control

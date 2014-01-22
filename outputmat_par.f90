@@ -17,8 +17,7 @@ subroutine outputmat_par
     write(ofmt,'("(",I3,"(A5,I4.4,X))")') ngrids
     write(unit=50,fmt=ofmt)'nxi =',nxi
     write(unit=50,fmt=ofmt)'neta=',neta    
-    close(unit=50)
-    
+    close(unit=50)    
     inquire(file='results/grids/.',exist=dir_e)    
     if( .not. dir_e) then
       call system('mkdir results/grids')

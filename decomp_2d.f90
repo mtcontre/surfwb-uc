@@ -76,16 +76,17 @@ subroutine bcast_input_control
   
   !CB=6: parallel/multigrid boundary...for internal use
   !i should save original bcs....
-  CB(1)=6 
-  CB(2)=6
-  CB(3)=6
-  CB(4)=6
+  CB(1)=1 
+  CB(2)=1
+  CB(3)=1
+  CB(4)=1
   call mpi_bcast(dit,1,mpi_double_precision,master,comm2d,ierror)
   call mpi_bcast(kappa,1,mpi_double_precision,master,comm2d,ierror)
   call mpi_bcast(rk,1,mpi_integer,master,comm2d,ierror)
   call mpi_bcast(mmopt,1,mpi_integer,master,comm2d,ierror)
   call mpi_bcast(fopt,1,mpi_integer,master,comm2d,ierror) 
   call mpi_bcast(outopt,1,mpi_integer,master,comm2d,ierror)
+  call mpi_bcast(Fr2,1,mpi_double_precision,master,comm2d,ierror)
   
 end subroutine
 

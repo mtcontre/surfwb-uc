@@ -19,7 +19,6 @@ subroutine setdt
   maxS2=maxval(S2_global)  
   maxUC=maxval((/maxS1,maxS2/))
   
-  
   ! check celerities in ghost cells
   if (flagxi0.eq.1) then    
     maxUC=maxval((/maxUC,maxval(Sxi0)/))
@@ -58,5 +57,6 @@ subroutine setdt
     nt2=int(t/dt_etaNg2)+1
     dtreal=minval((/dtreal,nt1*dt_etaNg1-treal,nt2*dt_etaNg2-treal/))
   end if
-
+  
+  dt=dtreal*U/L
 end subroutine

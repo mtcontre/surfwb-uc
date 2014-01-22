@@ -13,11 +13,12 @@ program main
     if (outopt==1) then
       call outputmat_par
     end if
+    
     do while(t<=tfinal)
       !Dimensionalize and write results into a file
       
       !set a stable delta t
-      call setdt(dtreal)      
+      call setdt      
       
       !pick one solver from input_control params
       if (fopt==0) then
@@ -34,7 +35,7 @@ program main
 	end if
       end if	
       t=t+dt
-      treal=t*L/U
+      treal=t+dtreal
       it=it+1	
       
       !print screen information for this iteration
@@ -42,7 +43,6 @@ program main
       
       !Lagrangian Particle Tracking
       !call LPT () 
-      
       !print current new results
       if (outopt==1) then
 	call outputmat_par

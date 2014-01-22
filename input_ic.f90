@@ -70,22 +70,22 @@ SUBROUTINE input_ic
     END SELECT
   end do
   !for debugging..show first 3row/columns
-  level=1
-  print*,'h------------'
-  do i =1,3
-    print*,initq(level)%H(i,1),initq(level)%H(i,2),initq(level)%H(i,3)
-  end do
-!   pause
-  
-  print*,'u------------'
-  do i =1,3
-    print*,initq(level)%U(i,1),initq(level)%U(i,2),initq(level)%U(i,3)
-  end do
-!   pause
-  
-  print*,'v------------'
-  do i =1,3
-    print*,initq(level)%V(i,1),initq(level)%V(i,2),initq(level)%V(i,3)
-  end do
+!   level=1
+!   print*,'h------------'
+!   do i =1,3
+!     print*,initq(level)%H(i,1),initq(level)%H(i,2),initq(level)%H(i,3)
+!   end do
+! !   pause
+!   
+!   print*,'u------------'
+!   do i =1,3
+!     print*,initq(level)%U(i,1),initq(level)%U(i,2),initq(level)%U(i,3)
+!   end do
+! !   pause
+!   
+!   print*,'v------------'
+!   do i =1,3
+!     print*,initq(level)%V(i,1),initq(level)%V(i,2),initq(level)%V(i,3)
+!   end do
 
 END SUBROUTINE input_ic

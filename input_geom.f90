@@ -71,21 +71,21 @@ SUBROUTINE input_geom
   end do
   
   !for debugging..show first 3row/columns
-  print*,'X------------'
-  level=1
-  do i =1,3
-    print*,geom(level)%X(i,1),geom(level)%X(i,2),geom(level)%X(i,3)
-  end do
-!   pause
-  
-  print*,'Y------------'
-  do i =1,3
-    print*,geom(level)%Y(i,1),geom(level)%Y(i,2),geom(level)%Y(i,3)
-  end do
-!   pause
-  
-  print*,'Z------------'
-  do i =1,3
-    print*,geom(level)%Z(i,1),geom(level)%Z(i,2),geom(level)%Z(i,3)
-  end do
+!   print*,'X------------'
+!   level=1
+!   do i =1,3
+!     print*,geom(level)%X(i,1),geom(level)%X(i,2),geom(level)%X(i,3)
+!   end do
+! !   pause
+!   
+!   print*,'Y------------'
+!   do i =1,3
+!     print*,geom(level)%Y(i,1),geom(level)%Y(i,2),geom(level)%Y(i,3)
+!   end do
+! !   pause
+!   
+!   print*,'Z------------'
+!   do i =1,3
+!     print*,geom(level)%Z(i,1),geom(level)%Z(i,2),geom(level)%Z(i,3)
+!   end do
 END SUBROUTINE input_geom

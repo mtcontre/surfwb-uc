@@ -17,7 +17,7 @@ SUBROUTINE init
   !some relevant parameters
   g=9.812D0
   hmin=1.0E-7
-  it=0.0D0
+  it=0
   dt=0.0D0
   t=0.0D0!0.0D0
   treal=0.0D0!960.0D0 !0.0D0  
@@ -48,7 +48,7 @@ SUBROUTINE init
   
   call decomp_2d
   
-  call printq0
+  call print_params
   
   !up to this point
   !everyone should have their one 'global variables'(x,y,z,h,u,v,nbx,nby,etc)
@@ -85,7 +85,6 @@ SUBROUTINE init
 	  S1_global(i,j)=abs(U1)+C_global(i,j)*sqrt(xi_global(1,i,j)**2+xi_global(2,i,j)**2)
 	  S2_global(i,j)=abs(U2)+C_global(i,j)*sqrt(eta_global(1,i,j)**2+eta_global(2,i,j)**2)
   end do; end do
-
   if ( (flagxi0.eq.1).or.(flagxiN.eq.1).or.(flageta0.eq.1).or.(flagetaN.eq.1) )then
     call stability_celerities_boundary_init
   end if
@@ -94,7 +93,32 @@ SUBROUTINE init
 
 END SUBROUTINE init
 
-subroutine printq0
+SUBROUTINE ADIMENSION
+  !Function that aplies the adimensionalization to the initial conditions
+  !Funcion que aplica la adimensionalizacion a las condiciones inciales y a todo
+  USE global_variables
+  USE geometries
+  implicit none
+  integer :: i,j
+  allocate(V_global(Nbx,Nby),C_global(Nbx,Nby),VC(Nbx,Nby))
+  ! real (kind=8)::U1,U2
+  
+  do i=1,Nbx; do j=1,Nby
+    x_global(i,j)=x_global(i,j)/L
+    y_global(i,j)=y_global(i,j)/L
+    z_global(i,j)=z_global(i,j)/H
+    qold_global(1,i,j)=qold_global(1,i,j)/H
+    qold_global(2,i,j)=qold_global(2,i,j)/U
+    qold_global(3,i,j)=qold_global(3,i,j)/U
+    V_global(i,j)=sqrt((qold_global(2,i,j))**2.0D0+(qold_global(3,i,j))**2.0D0)
+    C_global(i,j)=sqrt(qold_global(1,i,j)/FR2)
+    VC(i,j)=V_global(i,j)+C_global(i,j)			
+  end do; end do
+!   print*,maxval(sqrt(qold_global(1,i,j)/FR2))
+  
+END SUBROUTINE ADIMENSION
+
+subroutine print_params
   !prints everything and q0 to files
   use global_variables
   use geometries
@@ -131,14 +155,9 @@ subroutine printq0
   write(unit=myrank+100,fmt='( I3.3, "  sj" )') sj
   write(unit=myrank+100,fmt='( I3.3, "  ej" )') ej
   write(unit=myrank+100,fmt='( I3.3, "  coord(1)" )') coords(1)
-  write(unit=myrank+100,fmt='( I3.3, "  coord(2)" )') coords(1)
+  write(unit=myrank+100,fmt='( I3.3, "  coord(2)" )') coords(2)
   write(unit=myrank+100,fmt='( I3.3, "  dims(1)" )') dims(1)
-  write(unit=myrank+100,fmt='( I3.3, "  dims(2)" )') dims(1)
-  do i=1,Nbx
-    do j=1,Nbx
-      write(unit=myrank+100,fmt='(6(E15.5,2X))') x_global(i,j),y_global(i,j), z_global(i,j)
-    end do
-  end do
+  write(unit=myrank+100,fmt='( I3.3, "  dims(2)" )') dims(2)
   close(unit=myrank+100)
   
   !copy gridX,gridY and gridZ
@@ -153,26 +172,6 @@ subroutine printq0
       end if
     end do
   end if
-end subroutine printq0
+end subroutine print_params
 
-SUBROUTINE ADIMENSION
-  !Function that aplies the adimensionalization to the initial conditions
-  !Funcion que aplica la adimensionalizacion a las condiciones inciales y a todo
-  USE global_variables
-  USE geometries
-  implicit none
-  integer :: i,j
-  allocate(V_global(Nbx,Nby),C_global(Nbx,Nby),VC(Nbx,Nby))
-  ! real (kind=8)::U1,U2
-  do i=1,Nbx; do j=1,Nby
-    x_global(i,j)=x_global(i,j)/L
-    y_global(i,j)=y_global(i,j)/L
-    z_global(i,j)=z_global(i,j)/H
-    qold_global(1,i,j)=qold_global(1,i,j)/H
-    qold_global(2,i,j)=qold_global(2,i,j)/U
-    qold_global(3,i,j)=qold_global(3,i,j)/U
-    V_global(i,j)=sqrt((qold_global(2,i,j))**2.0D0+(qold_global(3,i,j))**2.0D0)
-    C_global(i,j)=sqrt(qold_global(1,i,j)/FR2)
-    VC(i,j)=V_global(i,j)+C_global(i,j)			
-  end do; end do
-END SUBROUTINE ADIMENSION
+
