@@ -2,40 +2,40 @@ MODULE global_variables
 !Global Variables MGP
 
 !Variables de Estado
-real (kind=8), dimension(:,:),save,allocatable	:: V_global, C_global, VC, S1_global, S2_global
+real (kind=8), dimension(:,:),save,allocatable	:: &
+  V_global, C_global, VC, S1_global, S2_global
 
 !Metrics
-real (kind=8), dimension(:,:,:),save,allocatable	::xi_global, eta_global, &
-					  qnew_global, qold_global, &
-					  qreal_global
+real (kind=8), dimension(:,:,:),save,allocatable:: &
+  xi_global, eta_global, qnew_global, qold_global,qreal_global
 
 !q real es la variable dimensionalizada					  
 real (kind=8),dimension(:,:),save,allocatable	::xc,yc,xe,ye, aj_global,MCoef
 
 
 !Input control
-real (kind=8)	::CFL,tinit,tfinal,L,H,U, t, iteration, dt, FR2, g,dxi,&
-deta, hmin, kappa, it, Pvol, vol0, treal, Coef
+real (kind=8)	::CFL,tinit,tfinal,L,H,U, t, iteration, dt,dtreal, FR2, g,dxi,&
+deta, hmin, kappa, Pvol, vol0, treal, Coef
 integer,dimension(4) :: CB
-integer	::caso,Nbx, Nby, dit, mmopt, rk, outopt, fopt, fM, Cf
+integer	::caso,Nbx, Nby, it,dit, mmopt, rk, outopt, fopt, fM, Cf
 
 !Lagrangian Particle tracking
 integer, parameter :: Nbz=1
 END MODULE global_variables
+
 
 !(jdgalaz@,2014): once parallelized and the overlapped grid system implemented
 !the idea is to define new 'global variables' for each processor, just as
 !when the code was not parallelized
 !routine init.f90 takes care of this
 MODULE mpi_surf
-  integer,parameter::ndim=2
-  integer,dimension(2)::dims,coords
   logical,dimension(2)::isperiodic  
   logical::reorder
+  integer,parameter::ndim=2,master=0
+  integer,dimension(2)::dims,coords
   integer::comm2d
-  integer,parameter::master=0
   integer::ierror,myrank,nproc,myrank2
-  
+  real (kind=8) :: time_start,time_finish, time_estim
 END MODULE
 MODULE multigrid_surf  
   integer::ngrids !total number of grids
@@ -165,5 +165,6 @@ real (kind=8):: dt_TS ! timestep to record the time serie
 real (kind=8):: sav_TS ! timestep to record the time serie
 END MODULE
 
-
-
+MODULE performance_stats
+  
+END MODULE

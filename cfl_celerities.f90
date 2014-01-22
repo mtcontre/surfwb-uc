@@ -26,6 +26,7 @@ END DO; END do
 END SUBROUTINE VyC
 
 
+
 ! subroutine VyC!stability_celerities_in
 !   !allocates celerities for in-domain cells to  calculate dt (later in main.f90)
 !   !accordin to cfl stability condition
