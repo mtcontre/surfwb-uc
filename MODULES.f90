@@ -42,9 +42,11 @@ MODULE multigrid_surf
   integer::si,ei,sj,ej!first and last index in global matrices
   integer::myzone=1!current zone,should vary between groups of cores
 !   integer, dimension(:),allocatable::myzone!current zone
+  integer,dimension(4)::CB_real
   integer, dimension(:),allocatable::nxi,neta !vectors with size for each zone 
-  character(len=255),dimension(:,:),allocatable::batiname,initqname
   integer,dimension(:),allocatable::batiopt,initqopt
+  character(len=255),dimension(:,:),allocatable::batiname,initqname
+  
   type gridarray
       real(kind=8),dimension(:,:),allocatable :: X
       real(kind=8),dimension(:,:),allocatable :: Y

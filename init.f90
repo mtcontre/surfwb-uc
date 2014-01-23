@@ -79,11 +79,12 @@ SUBROUTINE init
   call angulo
 !   call VyC(qold_global(3,Nbx,Nby))
   allocate(S1_global(Nbx,Nby),S2_global(Nbx,Nby))
-  do i=1,Nbx; do j=1,Nby
-	  U1=qold_global(2,i,j)*xi_global(1,i,j)+qold_global(3,i,j)*xi_global(2,i,j)
-	  U2=qold_global(2,i,j)*eta_global(1,i,j)+qold_global(3,i,j)*eta_global(2,i,j)
-	  S1_global(i,j)=abs(U1)+C_global(i,j)*sqrt(xi_global(1,i,j)**2+xi_global(2,i,j)**2)
-	  S2_global(i,j)=abs(U2)+C_global(i,j)*sqrt(eta_global(1,i,j)**2+eta_global(2,i,j)**2)
+  do i=1,Nbx; do j=1,Nby	
+    C_global(i,j)=sqrt(qold_global(1,i,j)/FR2)
+    U1=qold_global(2,i,j)*xi_global(1,i,j)+qold_global(3,i,j)*xi_global(2,i,j)
+    U2=qold_global(2,i,j)*eta_global(1,i,j)+qold_global(3,i,j)*eta_global(2,i,j)
+    S1_global(i,j)=abs(U1)+C_global(i,j)*sqrt(xi_global(1,i,j)**2+xi_global(2,i,j)**2)
+    S2_global(i,j)=abs(U2)+C_global(i,j)*sqrt(eta_global(1,i,j)**2+eta_global(2,i,j)**2)
   end do; end do
   if ( (flagxi0.eq.1).or.(flagxiN.eq.1).or.(flageta0.eq.1).or.(flagetaN.eq.1) )then
     call stability_celerities_boundary_init
@@ -110,8 +111,7 @@ SUBROUTINE ADIMENSION
     qold_global(1,i,j)=qold_global(1,i,j)/H
     qold_global(2,i,j)=qold_global(2,i,j)/U
     qold_global(3,i,j)=qold_global(3,i,j)/U
-    V_global(i,j)=sqrt((qold_global(2,i,j))**2.0D0+(qold_global(3,i,j))**2.0D0)
-    C_global(i,j)=sqrt(qold_global(1,i,j)/FR2)
+    V_global(i,j)=sqrt((qold_global(2,i,j))**2.0D0+(qold_global(3,i,j))**2.0D0)    
     VC(i,j)=V_global(i,j)+C_global(i,j)			
   end do; end do
 !   print*,maxval(sqrt(qold_global(1,i,j)/FR2))
@@ -130,26 +130,39 @@ subroutine print_params
   character(len=255) ::filename,ofmt
   logical::dir_e
   if (myrank==master) then
-
-    open(unit=50,file='results/gridproperties.dat')
-    write(unit=50,fmt='("nproc=",I3.3)') nproc  
-    write(unit=50,fmt='("dims=",I3.3,X,I3.3)') dims(1),dims(2)
-    write(unit=50,fmt='("ngrids=",I3.3)') ngrids
-    write(ofmt,'("(",I3,"(A5,I4.4,X))")') ngrids
-    write(unit=50,fmt=ofmt)'nxi =',nxi
-    write(unit=50,fmt=ofmt)'neta=',neta    
-    close(unit=50)
-    
     inquire(file='results/grids/.',exist=dir_e)    
     if( .not. dir_e) then
       call system('mkdir results/grids')
-    end if    
+    end if 
+
+    open(unit=50,file='results/grids/gridproperties.dat')
+    write(unit=50,fmt='("dit ",I5.5)') dit
+    write(unit=50,fmt='("nproc ",I3.3)') nproc  
+    write(unit=50,fmt='("dims ",I3.3,X,I3.3)') dims(1),dims(2)
+    write(unit=50,fmt='("ngrids ",I3.3)') ngrids
+    write(ofmt,'("(",I3,"(A5,I4.4,X))")') ngrids!seria muy raro tener una matriz de 10000x10000
+    write(unit=50,fmt=ofmt)'nxi  ',nxi
+    write(unit=50,fmt=ofmt)'neta ',neta    
+    
+    
+    do i=1,ngrids
+      if( (batiopt(i)==0).or.(batiopt(i)==1) )then
+	call system('cp '//batiname(i,1)//' results/.')
+	call system('cp '//batiname(i,2)//' results/.')
+	call system('cp '//batiname(i,3)//' results/.')
+	write(unit=50,fmt=*) trim(batiname(i,1)),' ',trim(batiname(i,2)),' ',trim(batiname(i,3))
+      else if( (batiopt(i)==2).or.(batiopt(i)==3) )then
+	call system('cp '//batiname(i,1)//' results/.')
+	write(unit=50,fmt=*) trim(batiname(i,1))
+      end if
+    end do
+    close(unit=50)       
   end if
   
   write(filename,'("results/grids/grid",I3.3,"_",I3.3,".dat")') coords(1),coords(2)
   open(unit=myrank+100,file=filename)
   write(unit=myrank+100,fmt='( I3.3, "  Nbx" )') Nbx
-  write(unit=myrank+100,fmt='( I3.3, "  Nbx" )') Nby
+  write(unit=myrank+100,fmt='( I3.3, "  Nby" )') Nby
   write(unit=myrank+100,fmt='( I3.3, "  si" )') si
   write(unit=myrank+100,fmt='( I3.3, "  ei" )') ei
   write(unit=myrank+100,fmt='( I3.3, "  sj" )') sj
@@ -157,21 +170,11 @@ subroutine print_params
   write(unit=myrank+100,fmt='( I3.3, "  coord(1)" )') coords(1)
   write(unit=myrank+100,fmt='( I3.3, "  coord(2)" )') coords(2)
   write(unit=myrank+100,fmt='( I3.3, "  dims(1)" )') dims(1)
-  write(unit=myrank+100,fmt='( I3.3, "  dims(2)" )') dims(2)
+  write(unit=myrank+100,fmt='( I3.3, "  dims(2)" )') dims(2)  
   close(unit=myrank+100)
+  !copy gridX,gridY and gridZ and savenames
+
   
-  !copy gridX,gridY and gridZ
-  if (myrank==0) then
-    do i=1,ngrids
-      if( (batiopt(i)==0).or.(batiopt(i)==1) )then
-	call system('cp '//batiname(i,1)//' results/.')
-	call system('cp '//batiname(i,2)//' results/.')
-	call system('cp '//batiname(i,3)//' results/.')
-      else if( (batiopt(i)==2).or.(batiopt(i)==3) )then
-	call system('cp '//batiname(i,1)//' results/.')
-      end if
-    end do
-  end if
 end subroutine print_params
 
 

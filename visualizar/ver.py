@@ -1,5 +1,9 @@
 from pylab import *
 from colormaps import *
+import pypar
+l=pypar.size()
+r=pypar.rank()#cuidado que no sean muy pocas iteraciones
+print 'this is rank %i'%r
 font = {'size'   : 8}
 matplotlib.rc('font', **font)
 #ion()
@@ -10,8 +14,10 @@ ny=int(p[2])
 dit=int(p[-1])
 t=loadtxt('../results/Time'+str(case)+'.dat')
 ntoplot=len(t)-1#min(len(t)-1,10)
-rango=linspace(0,len(t)*dit,len(t)+1)
-rango=range(0,len(t)*dit,dit)
+frames=linspace(0,len(t)*dit,len(t)+1)
+frames=range(0,len(t)*dit,dit)
+rango=arange(0,len(frames),l)+r
+
 x=array([])
 y=array([])
 figure()
@@ -19,22 +25,26 @@ nfr=0
 pt=loadtxt('../data/gauges.dat')
 #rango=array([4250,4375,5000,5500,6375,7625,10500,14750])
 
-for i in rango:
+for j in rango:
+  if j<=len(frames)-1:
+    i=frames[j]
+  else:
+    break
   print i
   nfr+=1
   i=int(i)
   
   s=loadtxt('../results/SOL2D.%i.dat.gz' %i)
-  if i==rango[0]:
+  if j==rango[0]:
     x=reshape(s[:,0],(ny,nx))
     y=reshape(s[:,1],(ny,nx))
     z=reshape(s[:,2],(ny,nx))
   h=reshape(s[:,3],(ny,nx))
   u=reshape(s[:,4],(ny,nx))
   v=reshape(s[:,5],(ny,nx))
-  f=figure(figsize=(5.5,0.8*3.4))
+  f=figure()#figsize=(5.5,0.8*3.4))
   pcolormesh(x,y,z,cmap=geo_land)
-  pcolormesh(x,y,ma.masked_where(h<=0,z+h),cmap=geo_water,vmin=0.0-1.,vmax=0.+1.)#
+  pcolormesh(x,y,ma.masked_where(h<=0,z+h),cmap=geo_water)#
   colorbar()
   #for k in range(pt.shape[0]):
     #xn=pt[k][1]
@@ -62,4 +72,5 @@ for i in rango:
   savefig('fig'+str(i).rjust(6,'0')+'.png',bbox_inches='tight')
   close()
   
+pypar.finalize()
 

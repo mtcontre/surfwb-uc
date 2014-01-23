@@ -7,21 +7,22 @@ subroutine outputmat_par
   use multigrid_surf
   implicit none
   integer::i,j
-  character(len=255) ::filename,ofmt
-  logical::dir_e
+  character(len=255) ::filename,filenameT,ofmt
+  logical::dir_exists,t_exists
   if (myrank==master) then
-    open(unit=50,file='results/gridproperties.dat')
-    write(unit=50,fmt='("nproc=",I3.3)') nproc  
-    write(unit=50,fmt='("dims=",I3.3,X,I3.3)') dims(1),dims(2)
-    write(unit=50,fmt='("ngrids=",I3.3)') ngrids
-    write(ofmt,'("(",I3,"(A5,I4.4,X))")') ngrids
-    write(unit=50,fmt=ofmt)'nxi =',nxi
-    write(unit=50,fmt=ofmt)'neta=',neta    
-    close(unit=50)    
-    inquire(file='results/grids/.',exist=dir_e)    
-    if( .not. dir_e) then
-      call system('mkdir results/grids')
-    end if    
+    filenameT='results/time.dat'
+    inquire(file=filenameT,exist=t_exists)
+    if (.not. t_exists) then
+      open(1,file=filenameT,status='new',action='write')
+    else
+      if (treal==tinit) then
+	open(1,file=filenameT,status='replace',action='write')
+      else
+	open(1,file=filenameT,status='old',action='write',position='append')
+      end if
+    end if
+    write(unit=1,fmt='(E20.10)') treal
+    close(1)    
   end if
   
   !allocate at first time step
@@ -39,8 +40,8 @@ subroutine outputmat_par
     write(filename,'("results/frame",I8.8,".",I3.3,"_",I3.3,".dat")') it,coords(1),coords(2)
     open(unit=myrank+100,file=filename)
     do i=1,Nbx
-      do j=1,Nbx
-	write(unit=myrank+100,fmt='(6(E15.5,2X))') qold_global(1,i,j),qold_global(1,i,j),qold_global(1,i,j)
+      do j=1,Nby
+	write(unit=myrank+100,fmt='(6(E20.10,2X))') qold_global(1,i,j),qold_global(2,i,j),qold_global(3,i,j)
       end do
     end do
     close(unit=myrank+100)

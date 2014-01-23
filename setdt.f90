@@ -6,9 +6,12 @@ subroutine setdt
   !then tnext=min{t+dt,0+k*dtxi0}, withk = min{k : k*dtxi0>t}
   
   ! min grid size, max celerity inside the domain
-  
+  use mpi
+  use mpi_surf
+  use multigrid_surf
   use custombc
   use global_variables
+  
   real (kind=8) ::minxieta,maxS1,maxS2,maxUC
   integer :: nt1,nt2
   
@@ -59,4 +62,12 @@ subroutine setdt
   end if
   
   dt=dtreal*U/L
+  
+  !now everyone gets the smallest dt
+  call mpi_allreduce(dtreal,dtreal,1,mpi_double_precision,mpi_min,comm2d,ierror)
+  call mpi_allreduce(dt,dt,1,mpi_double_precision,mpi_min,comm2d,ierror)
+!   CALL MPI Allreduce( &
+! send buffer, recv buffer, count, MPI DOUBLE PRECISION, &
+! oper, MPI COMM WORLD, ierror)
+  
 end subroutine

@@ -13,7 +13,8 @@ program main
     if (outopt==1) then
       call outputmat_par
     end if
-    
+   
+    time_start=mpi_wtime()
     do while(t<=tfinal)
       !Dimensionalize and write results into a file
       

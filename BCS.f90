@@ -87,8 +87,7 @@ SELECT CASE (CB(1))
     ! piecewise constant:  f(x)=f([x])
     ! linear interpolated: f(x)=1/dx*(f(x_k)*(x-x_k)+f(x_{k+1})(x_{k+1}-x),k=0,..,nt-1
     !como indice de q (que va de 1 a nt+1), hay que sumarle uno!! (por eso qxi01(1,j-2,NT1+2))
-    !nt1 va de 0 hasta nt1-1
-    
+    !nt1 va de 0 hasta nt1-1    
     if (optxi0g1.eq.1) then
       do j=3,Ny+2
 	zt(  1,j)=qxi0g1(1,j-2,nt1+1)!z
@@ -120,7 +119,7 @@ SELECT CASE (CB(1))
       end do	 
     end if
 
-  case(1) !Solid Wall !Ojo que son las velocidades contravariantes las que se usan, pero si las metricas se asumen iguales entonces queda lo mismo que en cartesianas.
+  CASE(1) !Solid Wall !Ojo que son las velocidades contravariantes las que se usan, pero si las metricas se asumen iguales entonces queda lo mismo que en cartesianas.
 	
 	DO j=3,Ny+2
 	
@@ -183,114 +182,73 @@ SELECT CASE (CB(1))
 
 	
   CASE(4)
-		IF (pasoRK==1.OR.pasoRK==3) then
-
-			IF (GA1==1) THEN
-			  call genabs0xi_1_1(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,etaL1,Nsenal1,h01,t,dt,qn,zt,xi,qA1,zA1)
-			ELSE IF (GA1==2) THEN
-			  call genabs0xi_2_1(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,qs1,hs1,h01,Nsenal1,t,dt,qn,zt,xi,qA1,zA1)
-			
-			ELSE IF (GA1==3) THEN
-			  call genabs0xi_3_1(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,us1,hs1,h01,Nsenal1,t,dt,qn,zt,xi,qA1,zA1)
-			
+    IF (pasoRK==1.OR.pasoRK==3) then
+      IF (GA1==1) THEN
+	call genabs0xi_1_1(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,etaL1,Nsenal1,h01,t,dt,qn,zt,xi,qA1,zA1)
+      ELSE IF (GA1==2) THEN
+	call genabs0xi_2_1(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,qs1,hs1,h01,Nsenal1,t,dt,qn,zt,xi,qA1,zA1)
+      ELSE IF (GA1==3) THEN
+	call genabs0xi_3_1(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,us1,hs1,h01,Nsenal1,t,dt,qn,zt,xi,qA1,zA1)
 ! 			ELSE IF (GA1==4) THEN
-! 			call genabs0xi_4_1(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,hs1,h01,Nsenal1,t,dt,qn,zt,xi,qA1,zA1)
- 			
+! 			call genabs0xi_4_1(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,hs1,h01,Nsenal1,t,dt,qn,zt,xi,qA1,zA1) 			
 			! GENABS Con diferentes señales en cada nodo
-			ELSE IF (GA1==9) THEN
-			    call genabs0xi_9_1(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,etaL9,timeS9,Nsenal1,h01,t,dt,qn,zt,xi,qA1,zA1)
-		
-			END IF
-			
-		END IF	
- 		qA10=qA1
-
-		
-		IF (pasoRK==2.OR.pasoRK==4) then
-
-			IF (GA1==1) THEN
-			call genabs0xi_1_2(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,etaL1,Nsenal1,h01,t,dt,qn,zt,xi,qA10,qA1,zA1)
-			
-			ELSE IF (GA1==2) THEN
-			call genabs0xi_2_2(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,qs1,hs1,h01,Nsenal1,t,dt,qn,zt,xi,qA10,qA1,zA1)
-			
-			ELSE IF (GA1==3) THEN
-			call genabs0xi_3_2(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,us1,hs1,h01,Nsenal1,t,dt,qn,zt,xi,qA10,qA1,zA1)
-			
+      ELSE IF (GA1==9) THEN
+	call genabs0xi_9_1(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,etaL9,timeS9,Nsenal1,h01,t,dt,qn,zt,xi,qA1,zA1)
+      END IF
+    END IF	
+    qA10=qA1
+    
+    IF (pasoRK==2.OR.pasoRK==4) then
+      IF (GA1==1) THEN
+	call genabs0xi_1_2(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,etaL1,Nsenal1,h01,t,dt,qn,zt,xi,qA10,qA1,zA1)
+      ELSE IF (GA1==2) THEN
+	call genabs0xi_2_2(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,qs1,hs1,h01,Nsenal1,t,dt,qn,zt,xi,qA10,qA1,zA1)
+      ELSE IF (GA1==3) THEN
+	call genabs0xi_3_2(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,us1,hs1,h01,Nsenal1,t,dt,qn,zt,xi,qA10,qA1,zA1)			
 ! 			ELSE IF (GA1==4) THEN
 ! 			call genabs0xi_4_2(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,hs1,h01,Nsenal1,t,dt,qn,zt,xi,qA10,qA1,zA1)
-			ELSE IF (GA1==9) THEN
-			  if ((t+dt).gt.maxval(timeS9)) then
-				do j=3,Ny+2	
-				  qt(1,1,j)=qn(1,2,j-2)		!h-1=h2
-				  qt(1,2,j)=qn(1,1,j-2)		!h0=h1
-				  
-				  qt(2,1,j)=qn(2,2,j-2)		!u-1=-u2
-				  qt(2,2,j)=qn(2,1,j-2)		!u0=-u1
-				  
-				  qt(3,1,j)=qn(3,2,j-2)		!v-1=-v2
-				  qt(3,2,j)=qn(3,1,j-2)		!v0=-v1				
-				end do	  
-			  else
-			    call genabs0xi_9_2(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,etaL9,timeS9,Nsenal1,h01,t,dt,qn,zt,xi,qA10,qA1,zA1)
-				DO j=3,Ny+2
-				  qt(1,1,j)=qA1(1,j-2)		!h-1=h2
-				  qt(1,2,j)=qA1(1,j-2)		!h0=h1
-				  
-				  qt(2,1,j)=qA1(2,j-2)		!u-1=-u2
-				  qt(2,2,j)=qA1(2,j-2)		!u0=-u1
-				  
-				  qt(3,1,j)=qA1(3,j-2)		!v-1=-v2
-				  qt(3,2,j)=qA1(3,j-2)		!v0=-v1
-			      END DO	
-			  end if
+      ELSE IF (GA1==9) THEN
+	if ((t+dt).gt.maxval(timeS9)) then
+	  do j=3,Ny+2	
+	    qt(1,1,j)=qn(1,2,j-2)		!h-1=h2
+	    qt(1,2,j)=qn(1,1,j-2)		!h0=h1
+	    qt(2,1,j)=qn(2,2,j-2)		!u-1=-u2
+	    qt(2,2,j)=qn(2,1,j-2)		!u0=-u1	    
+	    qt(3,1,j)=qn(3,2,j-2)		!v-1=-v2
+	    qt(3,2,j)=qn(3,1,j-2)		!v0=-v1
+	  end do	  
+	else
+	  call genabs0xi_9_2(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,etaL9,timeS9,Nsenal1,h01,t,dt,qn,zt,xi,qA10,qA1,zA1)
+	  DO j=3,Ny+2
+	    qt(1,1,j)=qA1(1,j-2)		!h-1=h2
+	    qt(1,2,j)=qA1(1,j-2)		!h0=h1
+	    qt(2,1,j)=qA1(2,j-2)		!u-1=-u2
+	    qt(2,2,j)=qA1(2,j-2)		!u0=-u1	
+	    qt(3,1,j)=qA1(3,j-2)		!v-1=-v2
+	    qt(3,2,j)=qA1(3,j-2)		!v0=-v1
+	  END DO	
+	end if
 ! call genabs0xi_9_2(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,etaL9,timeS9,Nsenal1,h01,t,dt,qn,zt,xi,qA1,zA1)
-			END IF
-		
-		END IF
-
-
-! 		  DO j=3,Ny+2
-! 		    qt(1,1,j)=qA1(1,j-2)		!h-1=h2
-! 		    qt(1,2,j)=qA1(1,j-2)		!h0=h1
-! 		    
-! 		    qt(2,1,j)=qA1(2,j-2)		!u-1=-u2
-! 		    qt(2,2,j)=qA1(2,j-2)		!u0=-u1
-! 		    
-! 		    qt(3,1,j)=qA1(3,j-2)		!v-1=-v2
-! 		    qt(3,2,j)=qA1(3,j-2)		!v0=-v1
-! 		  END DO	
-
-		
-
-
-	 CASE(5) 
-	 		
-		if (IO1==2) then !Outflow, !Cota fija aguas afuera 
-		 !OUTFLOW0_xi(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,hs1,Nsenal1,t,dt,qn,zt,xi,qA1,zA1)
-		!OUTFLOW0_xi(pasoRK,fopt,tipo,MC,Nx,Ny,Fr2,dep,etas1,timeS,Ns,t,dt,q,zt,ep_x,ep2_x,qA,zA)
-		call OUTFLOW0_xi(pasoRK,fopt,Cf,Coef,Nx,Ny,Fr2,dxi,etas1,timeS1,Nsenal1,t,dt,qn,zt,xi,eta,qA1,zA1)
-		else
-		call INFLOW0_xi(pasoRK,fopt,Cf,Coef,Nx,Ny,Fr2,dxi,qsx1,qsy1,etas1,timeS1,Nsenal1,t,dt,qn,zt,xi,eta,qA1,zA1)
-		end if
-		
-		
-		DO j=3,Ny+2
-		
-		qt(1,1,j)=qA1(1,j-2)		!h-1=h2
-		qt(1,2,j)=qA1(1,j-2)		!h0=h1
-		
-		qt(2,1,j)=qA1(2,j-2)		!u-1=-u2
-		qt(2,2,j)=qA1(2,j-2)		!u0=-u1
-		
-		qt(3,1,j)=qA1(3,j-2)		!v-1=-v2
-		qt(3,2,j)=qA1(3,j-2)		!v0=-v1
-	
-		END DO
-	CASE(6) !custom boundary
-	
-	
-	
+      END IF		
+    END IF    
+  CASE(5)
+    if (IO1==2) then !Outflow, !Cota fija aguas afuera 
+    !OUTFLOW0_xi(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,hs1,Nsenal1,t,dt,qn,zt,xi,qA1,zA1)
+    !OUTFLOW0_xi(pasoRK,fopt,tipo,MC,Nx,Ny,Fr2,dep,etas1,timeS,Ns,t,dt,q,zt,ep_x,ep2_x,qA,zA)
+      call OUTFLOW0_xi(pasoRK,fopt,Cf,Coef,Nx,Ny,Fr2,dxi,etas1,timeS1,Nsenal1,t,dt,qn,zt,xi,eta,qA1,zA1)
+    else
+      call INFLOW0_xi(pasoRK,fopt,Cf,Coef,Nx,Ny,Fr2,dxi,qsx1,qsy1,etas1,timeS1,Nsenal1,t,dt,qn,zt,xi,eta,qA1,zA1)
+    end if
+    DO j=3,Ny+2
+      qt(1,1,j)=qA1(1,j-2)		!h-1=h2
+      qt(1,2,j)=qA1(1,j-2)		!h0=h1
+      qt(2,1,j)=qA1(2,j-2)		!u-1=-u2
+      qt(2,2,j)=qA1(2,j-2)		!u0=-u1
+      qt(3,1,j)=qA1(3,j-2)		!v-1=-v2
+      qt(3,2,j)=qA1(3,j-2)		!v0=-v1 
+  CASE(6)
+    call communicate_grids
+  END DO	
 END SELECT
 !---------------------------------------------------------------------------
 !Xi=Nx, CB(2)
@@ -355,8 +313,8 @@ SELECT CASE (CB(2))
 	qt(2,Nx+4,j)=-qn(2,Nx-1,j-2)	!uNx+4=-uNx-1
 	qt(2,Nx+3,j)=-qn(2,Nx,j-2)	!uNx+3=-uNx
 	
-	qt(3,Nx+4,j)=qn(3,Nx-1,j-2)	!vNx+4=-vNx-1
-	qt(3,Nx+3,j)=qn(3,Nx,j-2)	!vNx+3=-vNx
+	qt(3,Nx+4,j)=-qn(3,Nx-1,j-2)	!vNx+4=-vNx-1
+	qt(3,Nx+3,j)=-qn(3,Nx,j-2)	!vNx+3=-vNx
 	
 	END DO
 		
@@ -483,6 +441,8 @@ SELECT CASE (CB(2))
 		qt(3,Nx+3,j)=qA2(3,j-2)		!v0=-v1
 	
 		END DO	
+	CASE(6)
+	  call communicate_grids
 END SELECT
 !---------------------------------------------------------------------------
 !Eta=1, CB(3)
@@ -626,6 +586,8 @@ SELECT CASE (CB(3))
 		qt(3,i,2)=qA3(3,i-2)		!v0=-v1
 	
 		END DO	
+	CASE(6)
+	  call communicate_grids
 
 END SELECT
 !----------------------------------------------------------------------------------
@@ -704,8 +666,8 @@ SELECT CASE (CB(4))
 	qt(2,i,Ny+4)=-qn(2,i-2,Ny-1)	!uNy+4=-uNy-1
 	qt(2,i,Ny+3)=-qn(2,i-2,Ny)	!uNy+3=-uNy
 	
-	qt(3,i,Ny+4)=qn(3,i-2,Ny-1)	!vNy+4=-vNy-1
-	qt(3,i,Ny+3)=qn(3,i-2,Ny)	!vNy+3=-vNy
+	qt(3,i,Ny+4)=-qn(3,i-2,Ny-1)	!vNy+4=-vNy-1
+	qt(3,i,Ny+3)=-qn(3,i-2,Ny)	!vNy+3=-vNy
 	
 	END DO
 	
@@ -787,6 +749,8 @@ SELECT CASE (CB(4))
 		qt(3,i,Ny+3)=qA4(3,i-2)		!v0=-v1
 	
 		END DO	
+	CASE(6)
+	  call communicate_grids
 END SELECT
 
 
