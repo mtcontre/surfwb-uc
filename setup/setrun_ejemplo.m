@@ -7,7 +7,7 @@ input{1}=num2str(caso);
 %---Parámetros de Discretización y adimensionalizacion
 %-----------------------------------------------------
 nxi=300;
-neta=300;
+neta=150;
 tinit=0.0;
 tfinal=80.0;
 cfl=0.9;
@@ -68,20 +68,20 @@ if input{end}=='4'
   %...cual nombre de archivo??
 end  
 %         borde xi=xi(nxi,:)
-input{length(input)+1}=num2str(3);%condicion de borde xi=nx
+input{length(input)+1}=num2str(1);%condicion de borde xi=nx
 printf('borde xi = nx \t %s\n',input{end});
 %         borde eta=eta(:,1)
 input{length(input)+1}=num2str(1);%condicion de borde eta=1
 printf('borde eta = 1 \t %s\n',input{end});
 %         borde eta=eta(:,neta)
-input{length(input)+1}=num2str(1);%condicion de borde eta=ny
+input{length(input)+1}=num2str(3);%condicion de borde eta=ny
 printf('borde eta = ny \t %s\n',input{end});
 
 %----------------------------------------------------
 %----------------------Otros parámetros--------------
 %----------------------------------------------------
-dit=25
-input{length(input)+1}='25';%%print every ** iterations
+dit=20
+input{length(input)+1}=num2str(dit);%%print every ** iterations
 input{length(input)+1}='1E-5';%kappa, para los ceros numericos
 input{length(input)+1}='1';%Runge Kutta time stepping method: 1=Rk4, 2=Rk2 
 input{length(input)+1}='1';%1=Minmod, 2=Superbee Limiters 
@@ -106,11 +106,11 @@ fclose(fout);
 %------------------------BATI------------------------
 %_---------------------------------------------------
 %------------------rompimiento de presa-------------
-[x,y]=meshgrid(linspace(0,200,neta),linspace(0,200,nxi));
+[x,y]=meshgrid(linspace(-50,50,neta),linspace(-100,100,nxi));
 z=zeros(size(x));
 dx=max(diff(x(1,:)));
-z(abs(x-100)<dx & y<95-dx)=20;
-z(abs(x-100)<dx & y>170-dx)=20;
+%  z(abs(x)<dx & y<-50-dx)=20;%-5
+%  z(abs(x)<dx & y>50+dx)=20;%-30
 figure()
 pcolor(x,y,z)
 
@@ -128,14 +128,14 @@ save('../data/gridZ.dat','-ascii','z');
 %----------------------------------------------------
 %---------------------CONDICIÓN INICIAL--------------
 %_---------------------------------------------------
-h=10*ones(size(x));
+h=5*ones(size(x));
 u=zeros(size(y));
 v=zeros(size(z));
-h(x*cos(pi/12)+y*sin(pi/12)<=100 & z==0)=10;
-h(x*cos(pi/12)+y*sin(pi/12)>100)=5;
-h(x<100-dx)=10;
-h(abs(x-100)<dx & y<95-dx)=0;
-h(abs(x-100)<dx & y>170-dx)=00;
+%  h(x*cos(pi/12)+y*sin(pi/12)<=100 & z==0)=10;
+%  h(x*cos(pi/12)+y*sin(pi/12)>100)=5;
+h(x<-dx)=10;
+%  h(abs(x)<dx & y<-50-dx)=0;
+%  h(abs(x)<dx & y>50+dx)=00;
 %  h=0.5*x;
 %  u=0.5*y;
 %  v=10*x+0.5*y;
@@ -162,6 +162,7 @@ b=[1,50,133+20;
    4,150,133+20;
    5,150,133;
    6,150,133-20];
+b(:,2:3)=b(:,2:3)-100;
 fid=fopen('../data/gauges.dat','w');
 fprintf(fid,'%i\n',size(b,1))
 for i=1:size(b,1)

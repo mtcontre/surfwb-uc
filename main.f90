@@ -50,7 +50,7 @@ program main
       end if
       
       !Actualization of the global variables (adimensionalized)
-      qold_global=qnew_global  
+      qold_global=qnew_global
     end do
     
     !print the last iteration

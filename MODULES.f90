@@ -33,8 +33,8 @@ MODULE mpi_surf
   logical::reorder
   integer,parameter::ndim=2,master=0
   integer,dimension(2)::dims,coords
-  integer::comm2d
-  integer::ierror,myrank,nproc,myrank2
+  integer::comm2d,myleft,myright,myfront,myback,shift=1
+  integer::ierror,myrank,nproc,myrank2d
   real (kind=8) :: time_start,time_finish, time_estim
 END MODULE
 MODULE multigrid_surf  

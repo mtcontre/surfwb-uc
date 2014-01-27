@@ -162,7 +162,7 @@ subroutine print_params
   write(filename,'("results/grids/grid",I3.3,"_",I3.3,".dat")') coords(1),coords(2)
   open(unit=myrank+100,file=filename)
   write(unit=myrank+100,fmt='( I3.3, "  Nbx" )') Nbx
-  write(unit=myrank+100,fmt='( I3.3, "  Nby" )') Nby
+  write(unit=myrank+100,fmt='( I3.3, "  Nby" )') Nby  
   write(unit=myrank+100,fmt='( I3.3, "  si" )') si
   write(unit=myrank+100,fmt='( I3.3, "  ei" )') ei
   write(unit=myrank+100,fmt='( I3.3, "  sj" )') sj
@@ -171,6 +171,11 @@ subroutine print_params
   write(unit=myrank+100,fmt='( I3.3, "  coord(2)" )') coords(2)
   write(unit=myrank+100,fmt='( I3.3, "  dims(1)" )') dims(1)
   write(unit=myrank+100,fmt='( I3.3, "  dims(2)" )') dims(2)  
+  write(unit=myrank+100,fmt='( I3.3, "  rank2d" )') myrank2d
+  write(unit=myrank+100,fmt='( I4.3, "  left" )') myleft
+  write(unit=myrank+100,fmt='( I4.3, "  right" )') myright
+  write(unit=myrank+100,fmt='( I4.3, "  back" )') myback
+  write(unit=myrank+100,fmt='( I4.3, "  front" )') myfront
   close(unit=myrank+100)
   !copy gridX,gridY and gridZ and savenames
 

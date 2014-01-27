@@ -246,8 +246,6 @@ SELECT CASE (CB(1))
       qt(2,2,j)=qA1(2,j-2)		!u0=-u1
       qt(3,1,j)=qA1(3,j-2)		!v-1=-v2
       qt(3,2,j)=qA1(3,j-2)		!v0=-v1 
-  CASE(6)
-    call communicate_grids
   END DO	
 END SELECT
 !---------------------------------------------------------------------------
@@ -441,8 +439,7 @@ SELECT CASE (CB(2))
 		qt(3,Nx+3,j)=qA2(3,j-2)		!v0=-v1
 	
 		END DO	
-	CASE(6)
-	  call communicate_grids
+	
 END SELECT
 !---------------------------------------------------------------------------
 !Eta=1, CB(3)
@@ -586,9 +583,7 @@ SELECT CASE (CB(3))
 		qt(3,i,2)=qA3(3,i-2)		!v0=-v1
 	
 		END DO	
-	CASE(6)
-	  call communicate_grids
-
+	
 END SELECT
 !----------------------------------------------------------------------------------
 !Eta=Ny, CB(4)
@@ -748,13 +743,14 @@ SELECT CASE (CB(4))
 		qt(3,i,Ny+4)=qA4(3,i-2)		!v-1=-v2
 		qt(3,i,Ny+3)=qA4(3,i-2)		!v0=-v1
 	
-		END DO	
-	CASE(6)
-	  call communicate_grids
+		END DO		
 END SELECT
 
 
 END SUBROUTINE bcs
+
+
+
 
 subroutine interpj(x1,y1,x2,y2,x,y)
   !interpolates y(x) using the line (x1,y1)-(x2,y2) if x is between x1,x2

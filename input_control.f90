@@ -40,12 +40,12 @@ subroutine input_control
   treal=tinit
   !adimensionalize
   t=treal*U/L
-  read(1,*) CB(1)	!Boundary Condition for xi_0,j
+  read(1,*) CB_real(1)	!Boundary Condition for xi_0,j
 
   !*Boundary conditions for the coarsest level
   !Diferentes tipos de CB
   !Boundary Condition for xi=0
-  if (CB(1)==0) then 
+  if (CB_real(1)==0) then 
   !user-defined values for boundary ghost cells
     call custombc_xi0
     flagxi0=1
@@ -53,14 +53,14 @@ subroutine input_control
     flagxi0=0
   end if
     
-  if (CB(1)==4) then !GENABS 1, 2, 3 o 9
+  if (CB_real(1)==4) then !GENABS 1, 2, 3 o 9
     !Cienfuegos Generation-Absorption boundary condition
     read(1,*) GA1
     read(1,*) Nsenal1
     call readGA(1,GA1,Nsenal1)
   end if
 
-  if (CB(1)==5) then !Outflow en 1, se fija una altura o Inflow en 1
+  if (CB_real(1)==5) then !Outflow en 1, se fija una altura o Inflow en 1
     !Brett-Sanders Inflow-Outflow boundary condition
     read(1,*) IO1
     read(1,*) Nsenal1
@@ -68,35 +68,35 @@ subroutine input_control
   end if
 
   !Boundary Condition for xi=nbx
-  read(1,*) CB(2)	
-  if (cb(2)==0) then 
+  read(1,*) CB_real(2)	
+  if (CB_real(2)==0) then 
     !Customized values for boundary ghost cells
     call custombc_xiN
     flagxiN=1
   else
     flagxiN=0
   end if  
-  IF (CB(2)==4) THEN
+  IF (CB_real(2)==4) THEN
     read(1,*) GA2
     read(1,*) Nsenal2
     call readGA(2,GA2,Nsenal2)
   END IF
-  IF (CB(2)==5) THEN !Outflow or Inflow en 2, se fija una altura o Inflow en 1
+  IF (CB_real(2)==5) THEN !Outflow or Inflow en 2, se fija una altura o Inflow en 1
     read(1,*) IO2
     read(1,*) Nsenal2
     call readIO(2,IO2,Nsenal2)
   END IF
    
   !Boundary Condition for eta_i,0
-  read(1,*) CB(3)
-  if (cb(3)==0) then 
+  read(1,*) CB_real(3)
+  if (CB_real(3)==0) then 
     !Customized values for boundary ghost cells
     call custombc_eta0
     flageta0=1
   else
     flageta0=0
   end if
-  IF (CB(3)==4) THEN
+  IF (CB_real(3)==4) THEN
     read(1,*) GA3
     read(1,*) Nsenal3
   call readGA(3,GA3,Nsenal3)
@@ -108,20 +108,20 @@ subroutine input_control
   END IF
 
   !Boundary Condition for eta_i,Nby
-  read(1,*) CB(4)
-  if (cb(4)==0) then 
+  read(1,*) CB_real(4)
+  if (CB_real(4)==0) then 
     !Customized values for boundary ghost cells
     call custombc_etaN
     flagetaN=1
   else
     flagetaN=0
   end if
-  IF (CB(4)==4) THEN
+  IF (CB_real(4)==4) THEN
     read(1,*) GA4
     read(1,*) Nsenal4
     call readGA(4,GA4,Nsenal4)
   END IF
-  IF (CB(4)==5) THEN !Outflow or Inflow en 4, se fija una altura o Inflow en 1
+  IF (CB_real(4)==5) THEN !Outflow or Inflow en 4, se fija una altura o Inflow en 1
     read(1,*) IO4
     read(1,*) Nsenal4
     call readIO(4,IO4,Nsenal4)

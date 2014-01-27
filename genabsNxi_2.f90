@@ -368,7 +368,7 @@ else
     if (hR/=0.0D0) then
     C=MC(Nx,1)
     call tau(tipo,C,Fr2,hR,uR,tauR)
-		   pause
+		   
     tauR=tauR/hR
     else
     tauR=0.0D0

@@ -76,8 +76,8 @@ for i in rango:
 	ei=ei-2
 	ej=ej-2
 	#colorbar()
-	plot([x[si,sj],x[si,ej],x[ei,ej],x[ei,sj],x[si,sj]],\
-	  [y[si,sj],y[si,ej],y[ei,ej],y[ei,sj],y[si,sj]],color='k')
+	#plot([x[si,sj],x[si,ej],x[ei,ej],x[ei,sj],x[si,sj]],\
+	  #[y[si,sj],y[si,ej],y[ei,ej],y[ei,sj],y[si,sj]],color='k')
 
 	    #linewidth=3,color='k')
 	title('t=%.3fs'%(t[it/dit]))      
