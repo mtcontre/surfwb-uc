@@ -77,17 +77,19 @@ MODULE multigrid_surf
   
 END MODULE
 
-
-module custombc
-  ! Customized ghost cells for boundary conditions
+MODULE couplingbc
+  !Coupling boundary conditions
+  !specify explicit values for h,u,v
+  !interpolate in time if neccesary
   integer:: nt_xi0g1, nt_xi0g2,nt_xiNg1, nt_xiNg2, nt_eta0g1,nt_eta0g2,nt_etaNg1,nt_etaNg2
   integer:: optxi0g1,optxi0g2,optxiNg1,optxiNg2,opteta0g1,opteta0g2,optetaNg1,optetaNg2    !if 1 then use piecewise constant, if 2 use linear interpolation
   real (kind=8) :: dt_xi0g1, dt_xi0g2,dt_xiNg1, dt_xiNg2, dt_eta0g1,dt_eta0g2,dt_etaNg1,dt_etaNg2
   real (kind=8), dimension(:,:,:), allocatable :: qxi0g1,qxi0g2,qxiNg1,qxiNg2,qeta0g1,qeta0g2,qetaNg1,qetaNg2
   integer:: flagxi0,flagxiN,flageta0,flagetaN !revisar init.f90 la parte del cfl inicial
   real (kind=8), dimension(:,:), allocatable ::Sxi0,SxiN,Seta0,SetaN
-  ! real (kind=8), dimension(:,:), allocatable S2xi0,S2xiN,S2eta0,S2etaN
-end
+  !real (kind=8), dimension(:,:), allocatable S2xi0,S2xiN,S2eta0,S2etaN
+END MODULE
+
 MODULE coords
 !Coordenadas Curvilíneas
   real (kind=8),dimension(:), save, allocatable :: coordxi, coordeta

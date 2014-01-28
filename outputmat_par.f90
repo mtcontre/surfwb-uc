@@ -10,7 +10,9 @@ subroutine outputmat_par
   character(len=255) ::filename,filenameT,ofmt
   logical::dir_exists,t_exists
   if (myrank==master) then
-    filenameT='results/time.dat'
+!     filenameT='results/time.dat'
+
+    write(filenameT,'("results/timeP",I3.3,".dat")')nproc
     inquire(file=filenameT,exist=t_exists)
     if (.not. t_exists) then
       open(1,file=filenameT,status='new',action='write')
@@ -37,7 +39,7 @@ subroutine outputmat_par
   qreal_global(3,:,:)=qnew_global(3,:,:)*U  
   
   if (mod(it,dit)==0) then
-    write(filename,'("results/frame",I8.8,".",I3.3,"_",I3.3,".dat")') it,coords(1),coords(2)
+    write(filename,'("results/P",I3.3,"frame",I8.8,".",I3.3,"_",I3.3,".dat")') nproc,it,coords(1),coords(2)
     open(unit=myrank+100,file=filename)
     do i=1,Nbx
       do j=1,Nby

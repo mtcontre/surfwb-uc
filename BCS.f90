@@ -79,7 +79,7 @@ END DO
 
 
 SELECT CASE (CB(1))
-  case(0) !Fixed User-defined boundary condition
+  case(0) !Couplingb boundary condition
     !1 Interpolate
     nt1=min(int(t/dt_xi0g1),nt_xi0g1-1)!busca el menor entre el penultimo y int(t/dt)
     nt2=min(int(t/dt_xi0g2),nt_xi0g2-1)!la idea es encontrar el punto que esté más atrás e interpolar
@@ -88,7 +88,7 @@ SELECT CASE (CB(1))
     ! linear interpolated: f(x)=1/dx*(f(x_k)*(x-x_k)+f(x_{k+1})(x_{k+1}-x),k=0,..,nt-1
     !como indice de q (que va de 1 a nt+1), hay que sumarle uno!! (por eso qxi01(1,j-2,NT1+2))
     !nt1 va de 0 hasta nt1-1    
-    if (optxi0g1.eq.1) then
+    if (optxi0g1.eq.0) then
       do j=3,Ny+2
 	zt(  1,j)=qxi0g1(1,j-2,nt1+1)!z
 	qt(1,1,j)=qxi0g1(2,j-2,nt1+1)!h
@@ -103,7 +103,7 @@ SELECT CASE (CB(1))
 	call interpj(nt1*dt_xi0g1,qxi0g1(4,j-2,nt1+1),(nt1+1)*dt_xi0g1,qxi0g1(4,j-2,nt1+2),t,qt(3,1,j))
        end do
     end if	
-    if (optxi0g2.eq.1) then
+    if (optxi0g2.eq.0) then
       do j=3,Ny+2
 	zt(  2,j)=qxi0g2(1,j-2,nt2+1)
 	qt(1,2,j)=qxi0g2(2,j-2,nt2+1)
@@ -268,7 +268,7 @@ SELECT CASE (CB(2))
 	  !1 Interpolate
 	  nt1=min(int(t/dt_xiNg1),nt_xiNg1-1)
 	  nt2=min(int(t/dt_xiNg2),nt_xiNg2-1)
-	  if (optxiNg1.eq.1) then
+	  if (optxiNg1.eq.0) then
 	    do j=3,Ny+2
 	      zt(Nx+3  ,j)=qxiNg1(1,j-2,nt1+1)
 	      qt(1,Nx+3,j)=qxiNg1(2,j-2,nt1+1)
@@ -284,7 +284,7 @@ SELECT CASE (CB(2))
 	    end do
 	  end if
 	  
-	  if (optxiNg2.eq.1) then
+	  if (optxiNg2.eq.0) then
 	    do j=3,Ny+2
 	      zt(Nx+4,j)=qxiNg2(1,j-2,nt1+1)
 	      qt(1,Nx+4,j)=qxiNg2(2,j-2,nt1+1)
@@ -461,7 +461,7 @@ SELECT CASE (CB(3))
 	  nt2=min(int(t/dt_eta0g2),nt_eta0g2-1)
 ! 	  print*t,dt_xiNg1*nt1,dt_xiNg2*nt2
 ! 	  pause
-	  if (opteta0g1.eq.1) then
+	  if (opteta0g1.eq.0) then
 	    do i=3,Nx+2
 	      zt(i,1)=qeta0g1(1,i-2,nt1+1)
 	      qt(1,i,1)=qeta0g1(2,i-2,nt1+1)
@@ -477,7 +477,7 @@ SELECT CASE (CB(3))
 	    end do
 	  end if
 	  
-	  if (opteta0g2.eq.1) then
+	  if (opteta0g2.eq.0) then
 	    do i=3,Nx+2
 	      zt(i,2)=qeta0g2(1,i-2,nt2+1)
 	      qt(1,i,2)=qeta0g2(2,i-2,nt2+1)
@@ -508,17 +508,15 @@ SELECT CASE (CB(3))
 	
 	CASE(2) !Periodic
 	
-	DO i=3,Nx+2
-	
-	qt(1,i,1)=qn(1,i-2,Ny-1)	!h-1=hNy-1
-	qt(1,i,2)=qn(1,i-2,Ny)		!h0=hNy
-	
-	qt(2,i,1)=qn(2,i-2,Ny-1)	!u-1=uNy-1
-	qt(2,i,2)=qn(2,i-2,Ny)		!u0=uNy
-	
-	qt(3,i,1)=qn(3,i-2,Ny-1)	!v-1=vNy-1
-	qt(3,i,2)=qn(3,i-2,Ny)		!v0=vNy
-	
+	DO i=3,Nx+2	
+	  qt(1,i,1)=qn(1,i-2,Ny-1)	!h-1=hNy-1
+	  qt(1,i,2)=qn(1,i-2,Ny)		!h0=hNy
+	  
+	  qt(2,i,1)=qn(2,i-2,Ny-1)	!u-1=uNy-1
+	  qt(2,i,2)=qn(2,i-2,Ny)		!u0=uNy
+	  
+	  qt(3,i,1)=qn(3,i-2,Ny-1)	!v-1=vNy-1
+	  qt(3,i,2)=qn(3,i-2,Ny)		!v0=vNy	
 	END DO	
 	
 
@@ -619,7 +617,7 @@ SELECT CASE (CB(4))
 	  nt2=min(int(t/dt_etaNg2),nt_etaNg2-1)
 ! 	  print*t,dt_xiNg1*nt1,dt_xiNg2*nt2
 ! 	  pause
-	  if (optetaNg1.eq.1) then
+	  if (optetaNg1.eq.0) then
 	    do i=3,Nx+2
 	      zt(i,Ny+3)=qetaNg1(1,i-2,nt1+1)
 	      qt(1,i,Ny+3)=qetaNg1(2,i-2,nt1+1)
@@ -635,7 +633,7 @@ SELECT CASE (CB(4))
 	    end do
 	  end if
 	  
-	  if (optetaNg2.eq.1) then
+	  if (optetaNg2.eq.0) then
 	    do i=3,Nx+2
 	      zt(i,Ny+4)=qetaNg2(1,i-2,nt2+1)
 	      qt(1,i,Ny+4)=qetaNg2(2,i-2,nt2+1)

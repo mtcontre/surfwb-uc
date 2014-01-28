@@ -10,14 +10,13 @@ program main
     
     call massbalance
     
+    !write initial condition
     if (outopt==1) then
       call outputmat_par
     end if
    
     time_start=mpi_wtime()
     do while(t<=tfinal)
-      !Dimensionalize and write results into a file
-      
       !set a stable delta t
       call setdt      
       

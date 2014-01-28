@@ -1,7 +1,7 @@
 subroutine input_control
   use global_variables
   use senales
-  use custombc
+  use couplingbc
   use multigrid_surf
   implicit none
   integer ::i
@@ -47,8 +47,14 @@ subroutine input_control
   !Boundary Condition for xi=0
   if (CB_real(1)==0) then 
   !user-defined values for boundary ghost cells
-    call custombc_xi0
+    read(1,*) nt_xi0g1
+    read(1,*) dt_xi0g1
+    read(1,*) optxi0g1
+    read(1,*) nt_xi0g2
+    read(1,*) dt_xi0g2
+    read(1,*) optxi0g2
     flagxi0=1
+    call couplingbc_xi0    
   else
     flagxi0=0
   end if
@@ -71,7 +77,13 @@ subroutine input_control
   read(1,*) CB_real(2)	
   if (CB_real(2)==0) then 
     !Customized values for boundary ghost cells
-    call custombc_xiN
+    read(1,*) nt_xiNg1
+    read(1,*) dt_xiNg1
+    read(1,*) optxiNg1
+    read(1,*) nt_xiNg2
+    read(1,*) dt_xiNg2
+    read(1,*) optxiNg2
+    call couplingbc_xiN
     flagxiN=1
   else
     flagxiN=0
@@ -91,7 +103,13 @@ subroutine input_control
   read(1,*) CB_real(3)
   if (CB_real(3)==0) then 
     !Customized values for boundary ghost cells
-    call custombc_eta0
+    read(1,*) nt_eta0g1
+    read(1,*) dt_eta0g1
+    read(1,*) opteta0g1
+    read(1,*) nt_eta0g2
+    read(1,*) dt_eta0g2
+    read(1,*) opteta0g2
+    call couplingbc_eta0
     flageta0=1
   else
     flageta0=0
@@ -111,7 +129,13 @@ subroutine input_control
   read(1,*) CB_real(4)
   if (CB_real(4)==0) then 
     !Customized values for boundary ghost cells
-    call custombc_etaN
+    read(1,*) nt_etaNg1
+    read(1,*) dt_etaNg1
+    read(1,*) optetaNg1
+    read(1,*) nt_etaNg2
+    read(1,*) dt_etaNg2
+    read(1,*) optetaNg2
+    call couplingbc_etaN
     flagetaN=1
   else
     flagetaN=0
