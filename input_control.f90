@@ -47,9 +47,11 @@ subroutine input_control
   !Boundary Condition for xi=0
   if (CB_real(1)==0) then 
   !user-defined values for boundary ghost cells
+    read(1,*) fnamexi0(1)
     read(1,*) nt_xi0g1
     read(1,*) dt_xi0g1
     read(1,*) optxi0g1
+    read(1,*) fnamexi0(2)
     read(1,*) nt_xi0g2
     read(1,*) dt_xi0g2
     read(1,*) optxi0g2
@@ -72,14 +74,16 @@ subroutine input_control
     read(1,*) Nsenal1
     call readIO(1,IO1,Nsenal1)
   end if
-
+      
   !Boundary Condition for xi=nbx
   read(1,*) CB_real(2)	
   if (CB_real(2)==0) then 
     !Customized values for boundary ghost cells
+    read(1,*) fnamexiN(1)
     read(1,*) nt_xiNg1
     read(1,*) dt_xiNg1
     read(1,*) optxiNg1
+    read(1,*) fnamexiN(2)
     read(1,*) nt_xiNg2
     read(1,*) dt_xiNg2
     read(1,*) optxiNg2
@@ -103,12 +107,14 @@ subroutine input_control
   read(1,*) CB_real(3)
   if (CB_real(3)==0) then 
     !Customized values for boundary ghost cells
+    read(1,'(A)') fnameeta0(1)
     read(1,*) nt_eta0g1
     read(1,*) dt_eta0g1
     read(1,*) opteta0g1
+    read(1,'(A)') fnameeta0(2)
     read(1,*) nt_eta0g2
     read(1,*) dt_eta0g2
-    read(1,*) opteta0g2
+    read(1,*) opteta0g2    
     call couplingbc_eta0
     flageta0=1
   else
@@ -129,12 +135,15 @@ subroutine input_control
   read(1,*) CB_real(4)
   if (CB_real(4)==0) then 
     !Customized values for boundary ghost cells
+    read(1,'(A)') fnameetaN(1)
     read(1,*) nt_etaNg1
     read(1,*) dt_etaNg1
     read(1,*) optetaNg1
+    read(1,'(A)') fnameetaN(2)
     read(1,*) nt_etaNg2
     read(1,*) dt_etaNg2
     read(1,*) optetaNg2
+    print*,trim(fnameetaN(1)),trim(fnameetaN(2))
     call couplingbc_etaN
     flagetaN=1
   else
@@ -193,7 +202,7 @@ subroutine input_control
   write(*,150)  L, H, U
   150 FORMAT ('Escalas (L, H, U): ', T25, 3F5.2)
 
-  write(*,160) CB(1), CB(2), CB(3), CB(4)
+  write(*,160) CB_real(1), CB_real(2), CB_real(3), CB_real(4)
   160 FORMAT ('Condiciones de Borde: ', T25, 4I2)
 
   if (mmopt==1) then
@@ -206,7 +215,6 @@ subroutine input_control
   write(*,163) mmopt
   163 FORMAT ('Usando limitador MC, mmopt= ', T30, 4I2)
   end if
-
   
   print*, 'Fr2= ', FR2
 

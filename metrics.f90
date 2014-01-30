@@ -1,10 +1,11 @@
 !Subrutina que crea las mallas xix, xiy, etax, etay
 SUBROUTINE metrics 
+  USE MPI
   USE geometries
   USE global_variables
   USE Jacobianos
   implicit none
-  integer		::i,j
+  integer		::i,j,ierror
   real (kind=8)			::gj
   !real (kind=8)			::Sc,Se,Sz,SL
 
@@ -61,11 +62,11 @@ do i=1,Nbx; do j=1,Nby
 	if (abs(gj).le.1.0e-12) then
 		print *,'zero jacobian in node=',i,j
 		print *,gj
-		print*, 'xc(i,j)=',xc(i,j)
+		print*, 'xc(i,j)=', xc(i,j)
 		print*, 'ye(i,j)=', ye(i,j)
-		print*, 'xe(i,j)=',xe(i,j)
-		print*, 'yc(i,j)=',yc(i,j)
-		!stop
+		print*, 'xe(i,j)=', xe(i,j)
+		print*, 'yc(i,j)=', yc(i,j)
+		call mpi_abort(mpi_comm_world,1000,ierror)
 	end if
 	aj_global(i,j)=1.0D0/gj !Jacobiano, es una varibale global, J(i,j)
 	xi_global(1,i,j)=aj_global(i,j)*ye(i,j) !xi_x

@@ -4,7 +4,7 @@ SUBROUTINE solver2
 
 USE global_variables
 USE geometries
-use custombc
+use couplingbc
 implicit none
 
 !Local variables definition
@@ -171,6 +171,7 @@ END DO; END DO
 
 
 !New Result (n+1)
+
 qnew_global=q2
 
 !pause

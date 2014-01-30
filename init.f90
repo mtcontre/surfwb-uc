@@ -5,7 +5,7 @@ SUBROUTINE init
   use mpi_surf
   use global_variables
   
-  use custombc
+  use couplingbc
   use global_variables
   use geometries
   use coords
@@ -45,7 +45,7 @@ SUBROUTINE init
   !read friction matrix if neccesary
   call input_friction  
   !decompose the domain, distribute parameters to everyone
-  
+
   call decomp_2d
   
   call print_params
@@ -86,11 +86,13 @@ SUBROUTINE init
     S1_global(i,j)=abs(U1)+C_global(i,j)*sqrt(xi_global(1,i,j)**2+xi_global(2,i,j)**2)
     S2_global(i,j)=abs(U2)+C_global(i,j)*sqrt(eta_global(1,i,j)**2+eta_global(2,i,j)**2)
   end do; end do
+  
   if ( (flagxi0.eq.1).or.(flagxiN.eq.1).or.(flageta0.eq.1).or.(flagetaN.eq.1) )then
     call stability_celerities_boundary_init
   end if
 
   print*, 'Simulacion Incializada'
+  
 
 END SUBROUTINE init
 
@@ -114,7 +116,7 @@ SUBROUTINE ADIMENSION
     V_global(i,j)=sqrt((qold_global(2,i,j))**2.0D0+(qold_global(3,i,j))**2.0D0)    
     VC(i,j)=V_global(i,j)+C_global(i,j)			
   end do; end do
-!   print*,maxval(sqrt(qold_global(1,i,j)/FR2))
+
   
 END SUBROUTINE ADIMENSION
 

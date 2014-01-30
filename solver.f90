@@ -3,7 +3,7 @@ SUBROUTINE solver1
   ! NO friction, 4th order RK
   USE global_variables
   USE geometries
-  USE custombc
+  USE couplingbc
   USE mpi
   USE mpi_surf
   implicit none
@@ -77,7 +77,7 @@ SUBROUTINE solver1
     end if
     
   End do; End do
-
+  
   !First RK Stage
 
   !Calculates q(n+1/2*)
@@ -85,7 +85,7 @@ SUBROUTINE solver1
   call bcs(fopt,Cf,MCoef,1,t,dtBC,FR2,caso,qold_global,z_global,&
     Nbx,Nby,CB,xi_global,eta_global,aj_global,dxi,deta,q1T,xi_T,eta_T,zT)
 
-  call exchange_2d(q1T)    
+!   call exchange_2d(q1T)    
     
   call fluxes(CB,mmopt,hmin,q1T,zT,xi_T,eta_T,dxi,deta,Nbx,Nby,FR2,F1mas,F1menos,G1mas,G1menos,SC)
 
@@ -97,7 +97,6 @@ SUBROUTINE solver1
 
   !q1
   DO i=1,Nbx; DO j=1,Nby
-
     IF (qaux1(1,i,j).le.hmin) THEN	!Dry Cell
       qaux1(1,i,j)=0.0D0
       qaux1(2,i,j)=0.0D0
@@ -124,8 +123,6 @@ SUBROUTINE solver1
     END IF
     
     v1(i,j)=sqrt(q1(2,i,j)**2.0D0+q1(3,i,j)**2.0D0)
-    
-  
   END DO; END DO
 
   !Second RK Stage
@@ -134,7 +131,7 @@ SUBROUTINE solver1
   call bcs(fopt,Cf,MCoef,2,t,0.5D0*dt,FR2,caso,q1,z_global,Nbx,Nby,&
     CB,xi_global,eta_global,aj_global,dxi,deta,q2T,xi_T,eta_T,zT)
   
-  call exchange_2d(q2T)
+!   call exchange_2d(q2T)
 
   call fluxes(CB,mmopt,hmin,q2T,zT,xi_T,eta_T,dxi,deta,Nbx,Nby,FR2,F2mas,F2menos,G2mas,G2menos,SC)
 
@@ -183,7 +180,7 @@ SUBROUTINE solver1
   call bcs(fopt,Cf,MCoef,3,t+0.5D0*dt,0.5D0*dt,FR2,caso,q2,z_global,&
     Nbx,Nby,CB,xi_global,eta_global,aj_global,dxi,deta,q3T,xi_T,eta_T,zT)
     
-  call exchange_2d(q3T)
+!   call exchange_2d(q3T)
 
   call fluxes(CB,mmopt,hmin,q3T,zT,xi_T,eta_T,dxi,deta,Nbx,Nby,FR2,F3mas,F3menos,G3mas,G3menos,SC)
 
@@ -207,16 +204,15 @@ SUBROUTINE solver1
     q3(1,i,j)=qaux3(1,i,j)
     
     IF (q3(1,i,j)==0.0D0) THEN
-    q3(2,i,j)=0.0D0
-    q3(3,i,j)=0.0D0
-    ELSE
-    
-    q3(2,i,j)=qaux3(2,i,j)/qaux3(1,i,j)
-    q3(3,i,j)=qaux3(3,i,j)/qaux3(1,i,j)
+      q3(2,i,j)=0.0D0
+      q3(3,i,j)=0.0D0
+    ELSE    
+      q3(2,i,j)=qaux3(2,i,j)/qaux3(1,i,j)
+      q3(3,i,j)=qaux3(3,i,j)/qaux3(1,i,j)
     END IF
     
     IF (abs(q3(2,i,j)).le.kappa) THEN
-    q3(2,i,j)=0.0D0
+      q3(2,i,j)=0.0D0
     END IF
     
     IF (abs(q3(3,i,j)).le.kappa) THEN
@@ -232,9 +228,7 @@ SUBROUTINE solver1
 
   call bcs(fopt,Cf,MCoef,4,t+0.5D0*dt,0.5D0*dt,FR2,caso,q3,z_global,&
     Nbx,Nby,CB,xi_global,eta_global,aj_global,dxi,deta,q4T,xi_T,eta_T,zT)
-    
-  call exchange_2d(q4T)
-  
+
   call fluxes(CB,mmopt,hmin,q4T,zT,xi_T,eta_T,dxi,deta,Nbx,Nby,FR2,F4mas,F4menos,G4mas,G4menos,SC)
   
   
@@ -248,7 +242,7 @@ SUBROUTINE solver1
 
   END DO; END DO
 
-
+  
   !q_new
   DO i=1,Nbx; DO j=1,Nby
 
@@ -285,10 +279,9 @@ SUBROUTINE solver1
   !New Result (n+1)
   qnew_global=q4
 
-
   !V y C para calcular dt
   call VyC!stability_celerities_in
-  if ( (flagxi0.eq.1).or.(flagxiN.eq.1).or.(flageta0.eq.1).or.(flagetaN.eq.1).or.(CB(1).eq.4) )then
+  if ( (flagxi0.eq.1).or.(flagxiN.eq.1).or.(flageta0.eq.1).or.(flagetaN.eq.1) )then
       call stability_celerities_boundary(q1T)
   end if
 

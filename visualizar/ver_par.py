@@ -1,6 +1,5 @@
 import pypar
-from pylab import loadtxt,reshape,\
-  pcolormesh,plot,show,colorbar,title,arange,savefig,close
+from pylab import *
 from string import split
 l=pypar.size()
 r=pypar.rank()
@@ -31,7 +30,7 @@ neta=line[1:]
 neta=[int(neta[i]) for i in range(ngrids)]
 
 #set the range of frames to plot
-t=loadtxt('../results/time.dat')
+t=loadtxt('../results/timeP%03d.dat'%nproc)
 frames=range(0,len(t)*dit,dit)
 rango=arange(0,len(frames),l)+r
 
@@ -69,17 +68,22 @@ for i in rango:
 	#coord1=int(split(line)[0]);line=f.readline()
 	#coord2=int(split(line)[0]);line=f.readline()
 	f.close()
-	fname='../results/frame%08d.%03d_%03d.dat'%(it,i,j)
+	fname='../results/P%03dframe%08d.%03d_%03d.dat'%(nproc,it,i,j)
 	s=loadtxt(fname)
 	h=reshape(s[:,0],(nbx,nby))
 	pcolormesh(x[si:ei,sj:ej],y[si:ei,sj:ej],h,vmin=0.,vmax=10.)#x[si:ei,sj:ej],y[si:ei,sj:ej],
 	ei=ei-2
 	ej=ej-2
 	#colorbar()
-	#plot([x[si,sj],x[si,ej],x[ei,ej],x[ei,sj],x[si,sj]],\
-	  #[y[si,sj],y[si,ej],y[ei,ej],y[ei,sj],y[si,sj]],color='k')
+	if j<dims[1]-1:
+	  ej=ej+1
+	if i<dims[0]-1:
+	  ei=ei+1
+	plot([x[si,sj],x[si,ej],x[ei,ej],x[ei,sj],x[si,sj]],\
+	  [y[si,sj],y[si,ej],y[ei,ej],y[ei,sj],y[si,sj]],color='k')
 
 	    #linewidth=3,color='k')
-	title('t=%.3fs'%(t[it/dit]))      
+  title('t=%.3fs'%(t[it/dit]))
+  axis('equal')
   savefig('frame%08d.png'%it)
   close()

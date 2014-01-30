@@ -11,20 +11,21 @@ subroutine outputmat_par
   logical::dir_exists,t_exists
   if (myrank==master) then
 !     filenameT='results/time.dat'
-
-    write(filenameT,'("results/timeP",I3.3,".dat")')nproc
-    inquire(file=filenameT,exist=t_exists)
-    if (.not. t_exists) then
-      open(1,file=filenameT,status='new',action='write')
-    else
-      if (treal==tinit) then
-	open(1,file=filenameT,status='replace',action='write')
+    if (mod(it,dit)==0) then
+      write(filenameT,'("results/timeP",I3.3,".dat")')nproc
+      inquire(file=filenameT,exist=t_exists)
+      if (.not. t_exists) then
+	open(1,file=filenameT,status='new',action='write')
       else
-	open(1,file=filenameT,status='old',action='write',position='append')
+	if (treal==tinit) then
+	  open(1,file=filenameT,status='replace',action='write')
+	else
+	  open(1,file=filenameT,status='old',action='write',position='append')
+	end if
       end if
+      write(unit=1,fmt='(E20.10)') treal
+      close(1)  
     end if
-    write(unit=1,fmt='(E20.10)') treal
-    close(1)    
   end if
   
   !allocate at first time step

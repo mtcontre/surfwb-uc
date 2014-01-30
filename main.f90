@@ -16,7 +16,7 @@ program main
     end if
    
     time_start=mpi_wtime()
-    do while(t<=tfinal)
+    do while(treal<=tfinal)
       !set a stable delta t
       call setdt      
       
@@ -34,8 +34,9 @@ program main
 	  call solverf2 !Solver RK2, 	con fricción
 	end if
       end if	
+      
       t=t+dt
-      treal=t+dtreal
+      treal=treal+dtreal
       it=it+1	
       
       !print screen information for this iteration
@@ -50,6 +51,10 @@ program main
       
       !Actualization of the global variables (adimensionalized)
       qold_global=qnew_global
+!       if (it>20) then
+! 	treal=tfinal+1.0d0
+!       end if
+
     end do
     
     !print the last iteration

@@ -6,7 +6,7 @@ SUBROUTINE solverf4
 USE global_variables
 USE geometries
 USE senales
-use custombc
+use couplingbc
 implicit none
 
 !Local variables definition

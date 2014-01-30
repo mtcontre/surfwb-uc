@@ -48,15 +48,11 @@ MODULE multigrid_surf
   character(len=255),dimension(:,:),allocatable::batiname,initqname
   
   type gridarray
-      real(kind=8),dimension(:,:),allocatable :: X
-      real(kind=8),dimension(:,:),allocatable :: Y
-      real(kind=8),dimension(:,:),allocatable :: Z
+      real(kind=8),dimension(:,:),allocatable :: X,Y,Z
   endtype gridarray
   
   type initqarray
-    real(kind=8),dimension(:,:),allocatable ::H
-    real(kind=8),dimension(:,:),allocatable ::U
-    real(kind=8),dimension(:,:),allocatable ::V
+    real(kind=8),dimension(:,:),allocatable ::H,U,V
   endtype initqarray
   
   type bMcoef!for buffering the Mcoef
@@ -66,15 +62,17 @@ MODULE multigrid_surf
   !send/recv buffers
   type(gridarray), dimension(:),allocatable ::geom
   type(initqarray),dimension(:),allocatable ::initq
-  type(bmcoef),dimension(:),allocatable ::buffMcoef !buff for 
+  type(bmcoef),dimension(:),allocatable ::buffMcoef 
   
-  !mpi buffers datatype...to bcast structures....
-!   type(mpi_datatype)::type_geo
-!   type(mpi_datatype)::type_initq
-!   type(mpi_datatype)::
+  !to group boundaries
+  integer,dimension(:),allocatable::inclxi0,inclxiN,incleta0,incletaN
+  integer ::allgroup,groupxi0,groupxiN,groupeta0,groupetaN
+  integer ::commxi0,commxiN,commeta0,commetaN
   
-  
-  
+  !buffers for scattering input boundaries  
+
+  real(kind=8),dimension(:,:,:),allocatable::bufqxi0g1,bufqxi0g2,&
+    bufqxiNg1,bufqxiNg2, bufqeta0g1,bufqeta0g2, bufqetaNg1,bufqetaNg2
 END MODULE
 
 MODULE couplingbc
@@ -85,8 +83,9 @@ MODULE couplingbc
   integer:: optxi0g1,optxi0g2,optxiNg1,optxiNg2,opteta0g1,opteta0g2,optetaNg1,optetaNg2    !if 1 then use piecewise constant, if 2 use linear interpolation
   real (kind=8) :: dt_xi0g1, dt_xi0g2,dt_xiNg1, dt_xiNg2, dt_eta0g1,dt_eta0g2,dt_etaNg1,dt_etaNg2
   real (kind=8), dimension(:,:,:), allocatable :: qxi0g1,qxi0g2,qxiNg1,qxiNg2,qeta0g1,qeta0g2,qetaNg1,qetaNg2
-  integer:: flagxi0,flagxiN,flageta0,flagetaN !revisar init.f90 la parte del cfl inicial
+  integer:: flagxi0=0,flagxiN=0,flageta0=0,flagetaN=0 !revisar init.f90 la parte del cfl inicial
   real (kind=8), dimension(:,:), allocatable ::Sxi0,SxiN,Seta0,SetaN
+  character(len=255),dimension(2) ::fnamexi0,fnamexiN,fnameeta0,fnameetaN
   !real (kind=8), dimension(:,:), allocatable S2xi0,S2xiN,S2eta0,S2etaN
 END MODULE
 

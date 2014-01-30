@@ -5,11 +5,12 @@
 SUBROUTINE VFROENCV(i,j,FR2,qR,qL,epR,epL,hmin,qs)
 !qR=qmas
 !qL=qmenos
+use mpi
 real (kind=8), dimension(3)	:: qL,qR,qs, WL,WR,WS,WRL,Fs,WM,L,LR,LL
 real (kind=8)	:: FR2, epx,epy,UL,UR,UM, hmin, alpha, beta, betaL, betaR, kappa, epxM, epyM, C
-integer	::i,j, caso
+integer	::i,j, caso,ierror
 real (kind=8), dimension(2)	:: epR, epL
-
+! implicit none
 kappa=10e-7
 !L es menos
 !R es mas
@@ -210,6 +211,7 @@ print*, i,j
 	print*, 'qL=', qL
 	print*, 'qR=', qR
 	print*,'caso=',caso
+! 	call mpi_abort(mpi_comm_world,1000,ierror)
 !		WS(1)=0
 !		WS(2)=0
 !		WS(3)=0

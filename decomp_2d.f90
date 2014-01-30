@@ -79,7 +79,8 @@ subroutine decomp_2d
   call bcast_initq_grids
   
   !properly assign boundary conditions...
-  call set_bcs
+  !in a separate file (a lot of lines)
+  call bcast_bcs
 end subroutine decomp_2d
 
 subroutine bcast_input_control
@@ -208,47 +209,6 @@ subroutine bcast_initq_grids
   deallocate(geom,initq)
 end subroutine bcast_initq_grids
 
-subroutine set_bcs
-  !set CB vector and scatter input time series if neccesary
-  use global_variables
-  use mpi_surf
-  use multigrid_surf
-  use mpi
-  
-  CB(1)=-1
-  CB(2)=-1
-  CB(3)=-1
-  CB(4)=-1  
-  
-  if (myback==mpi_proc_null) then 
-    CB(1)=CB_real(1)
-  end if
-  
-  if (myfront==mpi_proc_null) then
-    CB(2)=CB_real(2)
-  end if
-  
-  if (myleft==mpi_proc_null) then
-    CB(3)=CB_real(3)
-  end if
-  
-  if (myright==mpi_proc_null) then
-    CB(4)=CB_real(4)
-  end if
-  
-  !catch periodic boundaries
-  if (CB(1)==2) then
-    CB(1)=-1
-    CB(2)=-1
-  end if
-  
-  if (CB(3)==2) then
-    CB(3)=-1
-    CB(4)=-1    
-  end if
-  
-  
-end subroutine
 subroutine decomp1d(n,p,rank,s,e) !based in the book of Gropp,1999
   !recibe el numero total n y el numero de bloques p
   !rank es el indice del que queremos saber
@@ -274,4 +234,4 @@ subroutine decomp1d(n,p,rank,s,e) !based in the book of Gropp,1999
   if (e>n .or. rank==p-1) then
     e=n
   end if   
-end subroutine
+end subroutine decomp1d

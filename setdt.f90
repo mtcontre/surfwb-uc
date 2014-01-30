@@ -9,7 +9,7 @@ subroutine setdt
   use mpi
   use mpi_surf
   use multigrid_surf
-  use custombc
+  use couplingbc
   use global_variables
   
   real (kind=8) ::minxieta,maxS1,maxS2,maxUC
@@ -35,37 +35,40 @@ subroutine setdt
   if (flagetaN.eq.1) then
     maxUC=maxval((/maxUC,maxval(SetaN)/))
   end if
+  
   !CFL condition
   dt=CFL*minxieta/maxUC		!This dt is adimensional
   dtreal=dt*L/U
-  
+ 
   ! now fix dtreal so it satisfies t+dtreal<=nt*dtboundary
   if (flagxi0.eq.1) then
-    nt1=int(t/dt_xi0g1)+1!satisfies nt1=min{n : n*dt_xi0g1>t}
-    nt2=int(t/dt_xi0g2)+1
+    nt1=int(treal/dt_xi0g1)+1!satisfies nt1=min{n : n*dt_xi0g1>t}
+    nt2=int(treal/dt_xi0g2)+1
     dtreal=minval((/dtreal,nt1*dt_xi0g1-treal,nt2*dt_xi0g2-treal/))
   end if
   if (flagxiN.eq.1) then
-    nt1=int(t/dt_xiNg1)+1!satisfies nt1=min{n : n*dt_xi0g1>t}
-    nt2=int(t/dt_xiNg2)+1
+    nt1=int(treal/dt_xiNg1)+1!satisfies nt1=min{n : n*dt_xi0g1>t}
+    nt2=int(treal/dt_xiNg2)+1
     dtreal=minval((/dtreal,nt1*dt_xiNg1-treal,nt2*dt_xiNg2-treal/))
   end if
   if (flageta0.eq.1) then
-    nt1=int(t/dt_eta0g1)+1!satisfies nt1=min{n : n*dt_xi0g1>t}
-    nt2=int(t/dt_eta0g2)+1
+    nt1=int(treal/dt_eta0g1)+1!satisfies nt1=min{n : n*dt_xi0g1>t}
+    nt2=int(treal/dt_eta0g2)+1
     dtreal=minval((/dtreal,nt1*dt_eta0g1-treal,nt2*dt_eta0g2-treal/))
   end if
   if (flagetaN.eq.1) then
-    nt1=int(t/dt_etaNg1)+1!satisfies nt1=min{n : n*dt_xi0g1>t}
-    nt2=int(t/dt_etaNg2)+1
+    nt1=int(treal/dt_etaNg1+1e-6)+1!satisfies nt1=min{n : n*dt_xi0g1>t}
+    nt2=int(treal/dt_etaNg2+1e-6)+1    
     dtreal=minval((/dtreal,nt1*dt_etaNg1-treal,nt2*dt_etaNg2-treal/))
   end if
   
-  dt=dtreal*U/L
   
   !now everyone gets the smallest dt
   call mpi_allreduce(dtreal,dtreal,1,mpi_double_precision,mpi_min,comm2d,ierror)
-  call mpi_allreduce(dt,dt,1,mpi_double_precision,mpi_min,comm2d,ierror)
+  
+  dt=dtreal*U/L
+  
+!   call mpi_allreduce(dt,dt,1,mpi_double_precision,mpi_min,comm2d,ierror)
 !   CALL MPI Allreduce( &
 ! send buffer, recv buffer, count, MPI DOUBLE PRECISION, &
 ! oper, MPI COMM WORLD, ierror)
