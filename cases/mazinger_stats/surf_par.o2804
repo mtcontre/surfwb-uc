@@ -1,0 +1,727 @@
+Tue Apr 15 11:59:17 CLST 2014
+Caso:                    999
+T_init (s)                  0.00
+T_final (s):               80.00
+CFL:                     0.90
+Nbx:                       600
+Nby:                       600
+Escalas (L, H, U):       1.00 1.00 1.00
+Condiciones de Borde:    1 1 1 3
+Usando limitador MINMOD, mmop 1 
+ Fr2=   0.10191602119853242     
+ Init Time Series
+ Simulacion Incializada
+ dt=   3.03365990505767846E-002
+Iteracion=          1
+ Time=   3.03365990505767846E-002
+%Volumen= 100.000%
+Time Elapsed =        4.2 seconds.
+Time Estimated =    11010.9 seconds.
+ ------------------------------
+ dt=   2.80140043540889547E-002
+Iteracion=          2
+ Time=   5.83506034046657393E-002
+%Volumen= 100.000%
+Time Elapsed =        7.7 seconds.
+Time Estimated =    10556.9 seconds.
+ ------------------------------
+ dt=   2.68511584303702394E-002
+Iteracion=          3
+ Time=   8.52017618350359718E-002
+%Volumen= 100.000%
+Time Elapsed =       11.5 seconds.
+Time Estimated =    10825.8 seconds.
+ ------------------------------
+ dt=   2.59567210660300134E-002
+Iteracion=          4
+ Time=   0.11115848290106599     
+%Volumen= 100.000%
+Time Elapsed =       15.3 seconds.
+Time Estimated =    10994.5 seconds.
+ ------------------------------
+ dt=   2.55044852490605815E-002
+Iteracion=          5
+ Time=   0.13666296815012657     
+%Volumen= 100.000%
+Time Elapsed =       19.4 seconds.
+Time Estimated =    11328.9 seconds.
+ ------------------------------
+ dt=   2.51699422719125210E-002
+Iteracion=          6
+ Time=   0.16183291042203909     
+%Volumen= 100.000%
+Time Elapsed =       22.8 seconds.
+Time Estimated =    11295.6 seconds.
+ ------------------------------
+ dt=   2.49448560789652836E-002
+Iteracion=          7
+ Time=   0.18677776650100439     
+%Volumen= 100.000%
+Time Elapsed =       26.3 seconds.
+Time Estimated =    11250.7 seconds.
+ ------------------------------
+ dt=   2.47339136046472279E-002
+Iteracion=          8
+ Time=   0.21151168010565161     
+%Volumen= 100.000%
+Time Elapsed =       30.3 seconds.
+Time Estimated =    11469.7 seconds.
+ ------------------------------
+ dt=   2.45401426271603974E-002
+Iteracion=          9
+ Time=   0.23605182273281200     
+%Volumen= 100.000%
+Time Elapsed =       34.7 seconds.
+Time Estimated =    11754.9 seconds.
+ ------------------------------
+ dt=   2.43746307374116018E-002
+Iteracion=         10
+ Time=   0.26042645347022358     
+%Volumen= 100.000%
+Time Elapsed =       38.4 seconds.
+Time Estimated =    11785.3 seconds.
+ ------------------------------
+ dt=   2.42009265825895818E-002
+Iteracion=         11
+ Time=   0.28462738005281318     
+%Volumen= 100.000%
+Time Elapsed =       42.8 seconds.
+Time Estimated =    12021.8 seconds.
+ ------------------------------
+ dt=   2.40152515265556095E-002
+Iteracion=         12
+ Time=   0.30864263157936878     
+%Volumen= 100.000%
+Time Elapsed =       47.2 seconds.
+Time Estimated =    12243.8 seconds.
+ ------------------------------
+ dt=   2.38540420561241771E-002
+Iteracion=         13
+ Time=   0.33249667363549296     
+%Volumen= 100.000%
+Time Elapsed =       51.7 seconds.
+Time Estimated =    12438.3 seconds.
+ ------------------------------
+ dt=   2.37095261772887582E-002
+Iteracion=         14
+ Time=   0.35620619981278173     
+%Volumen= 100.000%
+Time Elapsed =       55.6 seconds.
+Time Estimated =    12481.6 seconds.
+ ------------------------------
+ dt=   2.35797513121128420E-002
+Iteracion=         15
+ Time=   0.37978595112489455     
+%Volumen= 100.000%
+Time Elapsed =       59.8 seconds.
+Time Estimated =    12599.2 seconds.
+ ------------------------------
+ dt=   2.34606123727464227E-002
+Iteracion=         16
+ Time=   0.40324656349764099     
+%Volumen= 100.000%
+Time Elapsed =       64.2 seconds.
+Time Estimated =    12739.5 seconds.
+ ------------------------------
+ dt=   2.33520310509816829E-002
+Iteracion=         17
+ Time=   0.42659859454862264     
+%Volumen= 100.000%
+Time Elapsed =       68.5 seconds.
+Time Estimated =    12850.9 seconds.
+ ------------------------------
+ dt=   2.32545556177156318E-002
+Iteracion=         18
+ Time=   0.44985315016633826     
+%Volumen= 100.000%
+Time Elapsed =       73.1 seconds.
+Time Estimated =    13003.3 seconds.
+ ------------------------------
+ dt=   2.31231532042966079E-002
+Iteracion=         19
+ Time=   0.47297630337063484     
+%Volumen= 100.000%
+Time Elapsed =       77.6 seconds.
+Time Estimated =    13129.4 seconds.
+ ------------------------------
+ dt=   2.29806903380109784E-002
+Iteracion=         20
+ Time=   0.49595699370864582     
+%Volumen= 100.000%
+Time Elapsed =       82.2 seconds.
+Time Estimated =    13262.1 seconds.
+ ------------------------------
+ dt=   2.28556169596470411E-002
+Iteracion=         21
+ Time=   0.51881261066829287     
+%Volumen= 100.000%
+Time Elapsed =       90.5 seconds.
+Time Estimated =    13962.4 seconds.
+ ------------------------------
+ dt=   2.27450026019003319E-002
+Iteracion=         22
+ Time=   0.54155761327019325     
+%Volumen= 100.000%
+Time Elapsed =       95.8 seconds.
+Time Estimated =    14149.6 seconds.
+ ------------------------------
+ dt=   2.26442192193227927E-002
+Iteracion=         23
+ Time=   0.56420183248951605     
+%Volumen= 100.000%
+Time Elapsed =      101.0 seconds.
+Time Estimated =    14324.9 seconds.
+ ------------------------------
+ dt=   2.25508155033425674E-002
+Iteracion=         24
+ Time=   0.58675264799285864     
+%Volumen= 100.000%
+Time Elapsed =      106.3 seconds.
+Time Estimated =    14497.3 seconds.
+ ------------------------------
+ dt=   2.24662944732162764E-002
+Iteracion=         25
+ Time=   0.60921894246607489     
+%Volumen= 100.000%
+Time Elapsed =      111.6 seconds.
+Time Estimated =    14659.8 seconds.
+ ------------------------------
+ dt=   2.23924681243097383E-002
+Iteracion=         26
+ Time=   0.63161141059038461     
+%Volumen= 100.000%
+Time Elapsed =      116.9 seconds.
+Time Estimated =    14801.2 seconds.
+ ------------------------------
+ dt=   2.23280378799372813E-002
+Iteracion=         27
+ Time=   0.65393944847032193     
+%Volumen= 100.000%
+Time Elapsed =      123.5 seconds.
+Time Estimated =    15112.8 seconds.
+ ------------------------------
+ dt=   2.22695165396223464E-002
+Iteracion=         28
+ Time=   0.67620896500994432     
+%Volumen= 100.000%
+Time Elapsed =      130.2 seconds.
+Time Estimated =    15402.2 seconds.
+ ------------------------------
+ dt=   2.22151592613635956E-002
+Iteracion=         29
+ Time=   0.69842412427130796     
+%Volumen= 100.000%
+Time Elapsed =      136.3 seconds.
+Time Estimated =    15608.9 seconds.
+ ------------------------------
+ dt=   2.21741403085625143E-002
+Iteracion=         30
+ Time=   0.72059826457987042     
+%Volumen= 100.000%
+Time Elapsed =      141.9 seconds.
+Time Estimated =    15750.3 seconds.
+ ------------------------------
+ dt=   2.21379901959013956E-002
+Iteracion=         31
+ Time=   0.74273625477577176     
+%Volumen= 100.000%
+Time Elapsed =      147.4 seconds.
+Time Estimated =    15872.6 seconds.
+ ------------------------------
+ dt=   2.21011343178316756E-002
+Iteracion=         32
+ Time=   0.76483738909360344     
+%Volumen= 100.000%
+Time Elapsed =      153.0 seconds.
+Time Estimated =    16001.9 seconds.
+ ------------------------------
+ dt=   2.20623135637392914E-002
+Iteracion=         33
+ Time=   0.78689970265734277     
+%Volumen= 100.000%
+Time Elapsed =      157.3 seconds.
+Time Estimated =    15995.8 seconds.
+ ------------------------------
+ dt=   2.19952987908627433E-002
+Iteracion=         34
+ Time=   0.80889500144820548     
+%Volumen= 100.000%
+Time Elapsed =      161.6 seconds.
+Time Estimated =    15977.6 seconds.
+ ------------------------------
+ dt=   2.18998925872858179E-002
+Iteracion=         35
+ Time=   0.83079489403549134     
+%Volumen= 100.000%
+Time Elapsed =      165.5 seconds.
+Time Estimated =    15934.8 seconds.
+ ------------------------------
+ dt=   2.18080627986167348E-002
+Iteracion=         36
+ Time=   0.85260295683410803     
+%Volumen= 100.000%
+Time Elapsed =      169.6 seconds.
+Time Estimated =    15915.5 seconds.
+ ------------------------------
+ dt=   2.17055902227315696E-002
+Iteracion=         37
+ Time=   0.87430854705683958     
+%Volumen= 100.000%
+Time Elapsed =      173.6 seconds.
+Time Estimated =    15883.0 seconds.
+ ------------------------------
+ dt=   2.15916099002668276E-002
+Iteracion=         38
+ Time=   0.89590015695710645     
+%Volumen= 100.000%
+Time Elapsed =      177.6 seconds.
+Time Estimated =    15854.5 seconds.
+ ------------------------------
+ dt=   2.15090291372964024E-002
+Iteracion=         39
+ Time=   0.91740918609440281     
+%Volumen= 100.000%
+Time Elapsed =      181.4 seconds.
+Time Estimated =    15822.1 seconds.
+ ------------------------------
+ dt=   2.14284619964187906E-002
+Iteracion=         40
+ Time=   0.93883764809082160     
+%Volumen= 100.000%
+Time Elapsed =      184.8 seconds.
+Time Estimated =    15747.5 seconds.
+ ------------------------------
+ dt=   2.13226284962024400E-002
+Iteracion=         41
+ Time=   0.96016027658702408     
+%Volumen= 100.000%
+Time Elapsed =      191.1 seconds.
+Time Estimated =    15921.9 seconds.
+ ------------------------------
+ dt=   2.12177078088992416E-002
+Iteracion=         42
+ Time=   0.98137798439592328     
+%Volumen= 100.000%
+Time Elapsed =      195.1 seconds.
+Time Estimated =    15901.9 seconds.
+ ------------------------------
+ dt=   2.11158564521520577E-002
+Iteracion=         43
+ Time=    1.0024938408480752     
+%Volumen= 100.000%
+Time Elapsed =      198.8 seconds.
+Time Estimated =    15862.0 seconds.
+ ------------------------------
+ dt=   2.10170551022146809E-002
+Iteracion=         44
+ Time=    1.0235108959502899     
+%Volumen= 100.000%
+Time Elapsed =      202.2 seconds.
+Time Estimated =    15803.9 seconds.
+ ------------------------------
+ dt=   2.09201110767187060E-002
+Iteracion=         45
+ Time=    1.0444310070270086     
+%Volumen= 100.000%
+Time Elapsed =      205.5 seconds.
+Time Estimated =    15741.3 seconds.
+ ------------------------------
+ dt=   2.08284506105770525E-002
+Iteracion=         46
+ Time=    1.0652594576375858     
+%Volumen= 100.000%
+Time Elapsed =      209.3 seconds.
+Time Estimated =    15721.1 seconds.
+ ------------------------------
+ dt=   2.07304939502921913E-002
+Iteracion=         47
+ Time=    1.0859899515878779     
+%Volumen= 100.000%
+Time Elapsed =      213.1 seconds.
+Time Estimated =    15696.7 seconds.
+ ------------------------------
+ dt=   2.06088268331691658E-002
+Iteracion=         48
+ Time=    1.1065987784210471     
+%Volumen= 100.000%
+Time Elapsed =      216.9 seconds.
+Time Estimated =    15677.8 seconds.
+ ------------------------------
+ dt=   2.05519237299059063E-002
+Iteracion=         49
+ Time=    1.1271507021509530     
+%Volumen= 100.000%
+Time Elapsed =      220.2 seconds.
+Time Estimated =    15630.6 seconds.
+ ------------------------------
+ dt=   2.05284240996429154E-002
+Iteracion=         50
+ Time=    1.1476791262505959     
+%Volumen= 100.000%
+Time Elapsed =      223.9 seconds.
+Time Estimated =    15603.7 seconds.
+ ------------------------------
+ dt=   2.05183333164196055E-002
+Iteracion=         51
+ Time=    1.1681974595670155     
+%Volumen= 100.000%
+Time Elapsed =      227.2 seconds.
+Time Estimated =    15560.1 seconds.
+ ------------------------------
+ dt=   2.05111936306897717E-002
+Iteracion=         52
+ Time=    1.1887086531977054     
+%Volumen= 100.000%
+Time Elapsed =      231.2 seconds.
+Time Estimated =    15558.4 seconds.
+ ------------------------------
+ dt=   2.05020470760518617E-002
+Iteracion=         53
+ Time=    1.2092107002737573     
+%Volumen= 100.000%
+Time Elapsed =      234.7 seconds.
+Time Estimated =    15526.4 seconds.
+ ------------------------------
+ dt=   2.04902330155447392E-002
+Iteracion=         54
+ Time=    1.2297009332893021     
+%Volumen= 100.000%
+Time Elapsed =      238.3 seconds.
+Time Estimated =    15505.8 seconds.
+ ------------------------------
+ dt=   2.04781147973623796E-002
+Iteracion=         55
+ Time=    1.2501790480866644     
+%Volumen= 100.000%
+Time Elapsed =      242.0 seconds.
+Time Estimated =    15485.7 seconds.
+ ------------------------------
+ dt=   2.04690649229707332E-002
+Iteracion=         56
+ Time=    1.2706481130096350     
+%Volumen= 100.000%
+Time Elapsed =      245.5 seconds.
+Time Estimated =    15456.1 seconds.
+ ------------------------------
+ dt=   2.04734242923871532E-002
+Iteracion=         57
+ Time=    1.2911215373020222     
+%Volumen= 100.000%
+Time Elapsed =      249.2 seconds.
+Time Estimated =    15443.3 seconds.
+ ------------------------------
+ dt=   2.04996928650397689E-002
+Iteracion=         58
+ Time=    1.3116212301670620     
+%Volumen= 100.000%
+Time Elapsed =      253.8 seconds.
+Time Estimated =    15477.6 seconds.
+ ------------------------------
+ dt=   2.05365033336706651E-002
+Iteracion=         59
+ Time=    1.3321577335007326     
+%Volumen= 100.000%
+Time Elapsed =      257.9 seconds.
+Time Estimated =    15484.7 seconds.
+ ------------------------------
+ dt=   2.05753888485275503E-002
+Iteracion=         60
+ Time=    1.3527331223492602     
+%Volumen= 100.000%
+Time Elapsed =      261.1 seconds.
+Time Estimated =    15440.4 seconds.
+ ------------------------------
+ dt=   2.06162254528412837E-002
+Iteracion=         61
+ Time=    1.3733493478021015     
+%Volumen= 100.000%
+Time Elapsed =      267.8 seconds.
+Time Estimated =    15599.4 seconds.
+ ------------------------------
+ dt=   2.06604204883319743E-002
+Iteracion=         62
+ Time=    1.3940097682904335     
+%Volumen= 100.000%
+Time Elapsed =      271.2 seconds.
+Time Estimated =    15565.5 seconds.
+ ------------------------------
+ dt=   2.07119509845267967E-002
+Iteracion=         63
+ Time=    1.4147217192749604     
+%Volumen= 100.000%
+Time Elapsed =      275.4 seconds.
+Time Estimated =    15575.0 seconds.
+ ------------------------------
+ dt=   2.07689448359404116E-002
+Iteracion=         64
+ Time=    1.4354906641109009     
+%Volumen= 100.000%
+Time Elapsed =      279.3 seconds.
+Time Estimated =    15568.2 seconds.
+ ------------------------------
+ dt=   2.08189680099222715E-002
+Iteracion=         65
+ Time=    1.4563096321208231     
+%Volumen= 100.000%
+Time Elapsed =      283.5 seconds.
+Time Estimated =    15571.2 seconds.
+ ------------------------------
+ dt=   2.07844710743255306E-002
+Iteracion=         66
+ Time=    1.4770941031951486     
+%Volumen= 100.000%
+Time Elapsed =      287.3 seconds.
+Time Estimated =    15561.7 seconds.
+ ------------------------------
+ dt=   2.07572747221374670E-002
+Iteracion=         67
+ Time=    1.4978513779172860     
+%Volumen= 100.000%
+Time Elapsed =      291.5 seconds.
+Time Estimated =    15570.7 seconds.
+ ------------------------------
+ dt=   2.07389603670298760E-002
+Iteracion=         68
+ Time=    1.5185903382843158     
+%Volumen= 100.000%
+Time Elapsed =      295.4 seconds.
+Time Estimated =    15559.2 seconds.
+ ------------------------------
+ dt=   2.07031658685510669E-002
+Iteracion=         69
+ Time=    1.5392935041528668     
+%Volumen= 100.000%
+Time Elapsed =      299.5 seconds.
+Time Estimated =    15564.1 seconds.
+ ------------------------------
+ dt=   2.06607260774426919E-002
+Iteracion=         70
+ Time=    1.5599542302303095     
+%Volumen= 100.000%
+Time Elapsed =      303.3 seconds.
+Time Estimated =    15556.5 seconds.
+ ------------------------------
+ dt=   2.06220171213324609E-002
+Iteracion=         71
+ Time=    1.5805762473516420     
+%Volumen= 100.000%
+Time Elapsed =      307.5 seconds.
+Time Estimated =    15564.8 seconds.
+ ------------------------------
+ dt=   2.05855853288562027E-002
+Iteracion=         72
+ Time=    1.6011618326804982     
+%Volumen= 100.000%
+Time Elapsed =      311.4 seconds.
+Time Estimated =    15559.3 seconds.
+ ------------------------------
+ dt=   2.05504299048014580E-002
+Iteracion=         73
+ Time=    1.6217122625852995     
+%Volumen= 100.000%
+Time Elapsed =      315.8 seconds.
+Time Estimated =    15579.6 seconds.
+ ------------------------------
+ dt=   2.05189402234699954E-002
+Iteracion=         74
+ Time=    1.6422312028087696     
+%Volumen= 100.000%
+Time Elapsed =      320.4 seconds.
+Time Estimated =    15608.2 seconds.
+ ------------------------------
+ dt=   2.04950635340043000E-002
+Iteracion=         75
+ Time=    1.6627262663427738     
+%Volumen= 100.000%
+Time Elapsed =      325.1 seconds.
+Time Estimated =    15642.4 seconds.
+ ------------------------------
+ dt=   2.04766811326400240E-002
+Iteracion=         76
+ Time=    1.6832029474754138     
+%Volumen= 100.000%
+Time Elapsed =      330.2 seconds.
+Time Estimated =    15692.6 seconds.
+ ------------------------------
+ dt=   2.04725189851291123E-002
+Iteracion=         77
+ Time=    1.7036754664605429     
+%Volumen= 100.000%
+Time Elapsed =      334.8 seconds.
+Time Estimated =    15722.5 seconds.
+ ------------------------------
+ dt=   2.04615506778279589E-002
+Iteracion=         78
+ Time=    1.7241370171383710     
+%Volumen= 100.000%
+Time Elapsed =      339.2 seconds.
+Time Estimated =    15738.3 seconds.
+ ------------------------------
+ dt=   2.04584964937519972E-002
+Iteracion=         79
+ Time=    1.7445955136321230     
+%Volumen= 100.000%
+Time Elapsed =      344.0 seconds.
+Time Estimated =    15775.8 seconds.
+ ------------------------------
+ dt=   2.04628454635568426E-002
+Iteracion=         80
+ Time=    1.7650583590956799     
+%Volumen= 100.000%
+Time Elapsed =      348.0 seconds.
+Time Estimated =    15774.6 seconds.
+ ------------------------------
+ dt=   2.04464346447269484E-002
+Iteracion=         81
+ Time=    1.7855047937404067     
+%Volumen= 100.000%
+Time Elapsed =      356.1 seconds.
+Time Estimated =    15954.2 seconds.
+ ------------------------------
+ dt=   2.04253487424667368E-002
+Iteracion=         82
+ Time=    1.8059301424828735     
+%Volumen= 100.000%
+Time Elapsed =      360.9 seconds.
+Time Estimated =    15987.8 seconds.
+ ------------------------------
+ dt=   2.04112734361927874E-002
+Iteracion=         83
+ Time=    1.8263414159190663     
+%Volumen= 100.000%
+Time Elapsed =      364.2 seconds.
+Time Estimated =    15952.5 seconds.
+ ------------------------------
+ dt=   2.04033631819558227E-002
+Iteracion=         84
+ Time=    1.8467447791010221     
+%Volumen= 100.000%
+Time Elapsed =      367.6 seconds.
+Time Estimated =    15922.5 seconds.
+ ------------------------------
+ dt=   2.04055951048823132E-002
+Iteracion=         85
+ Time=    1.8671503742059044     
+%Volumen= 100.000%
+Time Elapsed =      370.9 seconds.
+Time Estimated =    15889.8 seconds.
+ ------------------------------
+ dt=   2.04154800308019475E-002
+Iteracion=         86
+ Time=    1.8875658542367062     
+%Volumen= 100.000%
+Time Elapsed =      374.2 seconds.
+Time Estimated =    15861.6 seconds.
+ ------------------------------
+ dt=   2.04172229575355219E-002
+Iteracion=         87
+ Time=    1.9079830771942417     
+%Volumen= 100.000%
+Time Elapsed =      377.6 seconds.
+Time Estimated =    15833.5 seconds.
+ ------------------------------
+ dt=   2.04209013451208711E-002
+Iteracion=         88
+ Time=    1.9284039785393625     
+%Volumen= 100.000%
+Time Elapsed =      380.9 seconds.
+Time Estimated =    15803.6 seconds.
+ ------------------------------
+ dt=   2.04223677333694176E-002
+Iteracion=         89
+ Time=    1.9488263462727320     
+%Volumen= 100.000%
+Time Elapsed =      384.3 seconds.
+Time Estimated =    15774.7 seconds.
+ ------------------------------
+ dt=   2.04312547262732458E-002
+Iteracion=         90
+ Time=    1.9692576009990053     
+%Volumen= 100.000%
+Time Elapsed =      387.5 seconds.
+Time Estimated =    15740.6 seconds.
+ ------------------------------
+ dt=   2.04311645014575299E-002
+Iteracion=         91
+ Time=    1.9896887655004627     
+%Volumen= 100.000%
+Time Elapsed =      390.7 seconds.
+Time Estimated =    15707.4 seconds.
+ ------------------------------
+ dt=   2.04215027179506584E-002
+Iteracion=         92
+ Time=    2.0101102682184133     
+%Volumen= 100.000%
+Time Elapsed =      394.0 seconds.
+Time Estimated =    15679.8 seconds.
+ ------------------------------
+ dt=   2.04095065257133383E-002
+Iteracion=         93
+ Time=    2.0305197747441266     
+%Volumen= 100.000%
+Time Elapsed =      397.3 seconds.
+Time Estimated =    15653.2 seconds.
+ ------------------------------
+ dt=   2.03941796763529790E-002
+Iteracion=         94
+ Time=    2.0509139544204795     
+%Volumen= 100.000%
+Time Elapsed =      400.4 seconds.
+Time Estimated =    15618.8 seconds.
+ ------------------------------
+ dt=   2.03772494858063986E-002
+Iteracion=         95
+ Time=    2.0712912039062861     
+%Volumen= 100.000%
+Time Elapsed =      403.8 seconds.
+Time Estimated =    15597.2 seconds.
+ ------------------------------
+ dt=   2.03634124092221050E-002
+Iteracion=         96
+ Time=    2.0916546163155081     
+%Volumen= 100.000%
+Time Elapsed =      407.1 seconds.
+Time Estimated =    15570.8 seconds.
+ ------------------------------
+ dt=   2.03540993162634395E-002
+Iteracion=         97
+ Time=    2.1120087156317715     
+%Volumen= 100.000%
+Time Elapsed =      409.6 seconds.
+Time Estimated =    15514.2 seconds.
+ ------------------------------
+ dt=   2.03508208115042548E-002
+Iteracion=         98
+ Time=    2.1323595364432757     
+%Volumen= 100.000%
+Time Elapsed =      412.0 seconds.
+Time Estimated =    15458.5 seconds.
+ ------------------------------
+ dt=   2.03533934898416195E-002
+Iteracion=         99
+ Time=    2.1527129299331174     
+%Volumen= 100.000%
+Time Elapsed =      414.5 seconds.
+Time Estimated =    15405.4 seconds.
+ ------------------------------
+ dt=   2.03555650446249556E-002
+Iteracion=        100
+ Time=    2.1730684949777421     
+%Volumen= 100.000%
+Time Elapsed =      417.3 seconds.
+Time Estimated =    15362.5 seconds.
+ ------------------------------
+ dt=   2.03636300476762039E-002
+Iteracion=        101
+ Time=    2.1934321250254185     
+%Volumen= 100.000%
+Time Elapsed =      422.8 seconds.
+Time Estimated =    15420.2 seconds.
+ ------------------------------
+ Simulation Ended
+ Final Time of Computation=    2.1934321250254185     
+ tfinal   80.000000000000000     
+ treal+dtreal   2.2137957550730949     
+ Iteraciones         101
+ Time Elapsed =    422.78875112533569       seconds.
+Tue Apr 15 12:06:24 CLST 2014
