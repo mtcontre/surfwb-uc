@@ -1,0 +1,15 @@
+010  Nbx
+020  Nby
+031  si
+040  ei
+061  sj
+080  ej
+003  coord(1)
+003  coord(2)
+008  dims(1)
+004  dims(2)
+015  rank2d
+ 014  left
+-002  right
+ 011  back
+ 019  front

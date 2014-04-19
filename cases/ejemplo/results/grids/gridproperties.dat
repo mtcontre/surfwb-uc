@@ -1,0 +1,7 @@
+dit 00020
+nproc 001
+dims 001 001
+ngrids 001
+nxi  0060
+neta 0060
+ data/gridX.dat data/gridY.dat data/gridZ.dat
