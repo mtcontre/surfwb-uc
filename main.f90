@@ -19,7 +19,6 @@ program main
     do while(treal<=tfinal)
       !set a stable delta t
       call setdt      
-      
       !pick one solver from input_control params
       if (fopt==0) then
 	if (rk==1) then
@@ -51,10 +50,6 @@ program main
       
       !Actualization of the global variables (adimensionalized)
       qold_global=qnew_global
-!       if (it>20) then
-! 	treal=tfinal+1.0d0
-!       end if
-
     end do
     
     !print the last iteration

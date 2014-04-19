@@ -1,6 +1,7 @@
 from pylab import *
 from colormaps import *
 import pypar
+from datetime import timedelta
 l=pypar.size()
 r=pypar.rank()#cuidado que no sean muy pocas iteraciones
 print 'this is rank %i'%r
@@ -64,7 +65,7 @@ for j in rango:
   f.tight_layout() 
   #axis('equal')
   f.tight_layout()
-  title('T=%.4fs '%(t[i/dit]))#,t[-1]))
+  title('T=%s '%(str(timedelta(seconds=t[i/dit]))))#,t[-1]))
   #show()
   #if i==0 : colorbar()
   #pause(0.01)

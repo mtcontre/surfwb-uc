@@ -46,7 +46,7 @@ subroutine decomp_2d
   end if
 
   
-  !mpi knows how to split comm_world better into a topo
+  !mpi knows how to split comm_world better into a cart topo
   call mpi_dims_create(nproc,ndim,dims,ierror)
   call mpi_cart_create(mpi_comm_world,ndim,dims,isperiodic,&
     reorder,comm2d,ierror)
@@ -61,9 +61,7 @@ subroutine decomp_2d
   !	0,0	0,1   , left(1,1)=1,0;  back(1,1)=0,1
   call mpi_cart_shift(comm2d,0,shift,myback,myfront,ierror) 
   call mpi_cart_shift(comm2d,1,shift,myleft,myright,ierror) 
-  
-  
-  
+    
   !now, broadcast  everything...or almost..
   !(still think sendrcv would be better, at least in terms of memory
   !but i checked experimentally, and it was worse, i may have done it wrong)

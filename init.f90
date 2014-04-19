@@ -37,13 +37,14 @@ SUBROUTINE init
     call input_ic	
     
     !initialize output time series (?deprecated)
-    call init_TS	
-    !this should be standarized to catch every boundary condition
-    !that may require external information          
+    call init_TS	     
+    
+    !read friction matrix if neccesary
+    call input_friction  
+
   end if
+ 
   
-  !read friction matrix if neccesary
-  call input_friction  
   !decompose the domain, distribute parameters to everyone
 
   call decomp_2d

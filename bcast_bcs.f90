@@ -69,7 +69,7 @@ subroutine bcast_bcs
 	call mpi_bcast(optetaNg1,1,mpi_integer,master,commetaN,ierror)
 	call mpi_bcast(nt_etaNg2,1,mpi_integer,master,commetaN,ierror)
 	call mpi_bcast(dt_etaNg2,1,mpi_double_precision,master,commetaN,ierror)
-	call mpi_bcast(dt_etaNg2,1,mpi_integer,master,commetaN,ierror) 
+	call mpi_bcast(optetaNg2,1,mpi_integer,master,commetaN,ierror) 
 	call mpi_bcast(flagetaN,1,mpi_integer,master,commetaN,ierror) 
 	
 	!allocate buffer
@@ -79,6 +79,7 @@ subroutine bcast_bcs
 	!allocate a piece of bc
 	allocate(qetaNg1(4,Nbx,nt_etaNg1),qetaNg2(4,Nbx,nt_etaNg2))
 	call mpi_comm_rank(commetaN,myrank_temp,ierror)
+	
 	!bcast buffer
 	call mpi_bcast(bufqetaNg1,4*nxi(1)*(nt_etaNg1+1),mpi_double_precision,master,commetaN,ierror)
 	call mpi_bcast(bufqetaNg2,4*nxi(1)*(nt_etaNg2+1),mpi_double_precision,master,commetaN,ierror)  

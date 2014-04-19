@@ -194,8 +194,9 @@ END IF
 !Vuelta a variables originales
 
 IF (WS(1)<0.0D0) THEN 
-print*, 'ERROR, C is negative'
-print*, i,j
+print*, '**********************ERROR, C is negative***********************'
+print*,it, i,j
+
 	
 	print*,'2C= ', WS(1)
 	print*,'u= ', WS(2)
@@ -211,12 +212,12 @@ print*, i,j
 	print*, 'qL=', qL
 	print*, 'qR=', qR
 	print*,'caso=',caso
-! 	call mpi_abort(mpi_comm_world,1000,ierror)
+	call mpi_abort(mpi_comm_world,1000,ierror)
 !		WS(1)=0
 !		WS(2)=0
 !		WS(3)=0
 !pause
-!!stop
+stop
 
 ELSE
   IF ((0.5D0*WS(1)).le.kappa) then

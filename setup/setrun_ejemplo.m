@@ -6,8 +6,8 @@ input{1}=num2str(caso);
 %----------------------------------------------------
 %---Parámetros de Discretización y adimensionalizacion
 %-----------------------------------------------------
-nxi=300;
-neta=150;
+nxi=600;
+neta=600;
 tinit=0.0;
 tfinal=80.0;
 cfl=0.9;
@@ -106,11 +106,11 @@ fclose(fout);
 %------------------------BATI------------------------
 %_---------------------------------------------------
 %------------------rompimiento de presa-------------
-[x,y]=meshgrid(linspace(-50,50,neta),linspace(-100,100,nxi));
+[x,y]=meshgrid(linspace(-100,100,neta),linspace(-100,100,nxi));
 z=zeros(size(x));
 dx=max(diff(x(1,:)));
-%  z(abs(x)<dx & y<-50-dx)=20;%-5
-%  z(abs(x)<dx & y>50+dx)=20;%-30
+z(abs(x)<dx & y<-5-dx)=20;%-5
+z(abs(x)<dx & y>70+dx)=20;%-30
 figure()
 pcolor(x,y,z)
 
@@ -133,6 +133,7 @@ u=zeros(size(y));
 v=zeros(size(z));
 %  h(x*cos(pi/12)+y*sin(pi/12)<=100 & z==0)=10;
 %  h(x*cos(pi/12)+y*sin(pi/12)>100)=5;
+h(z>10)=0;
 h(x<-dx)=10;
 %  h(abs(x)<dx & y<-50-dx)=0;
 %  h(abs(x)<dx & y>50+dx)=00;
