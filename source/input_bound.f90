@@ -1,192 +1,3 @@
-subroutine couplingbc_xi0
-  !load coupling boundary conditions for xi=0
-  !...for now only reads using 
-  use global_variables
-  use couplingbc
-  use multigrid_surf
-
-  implicit none
-  character(len=3) :: sep
-  integer:: nvar,ivar,ix,indt !nvar={1:z,2:h,3:u,4:v}
-  nvar=4!number of variables to read: (z,h,u,v)
-  print*,'Reading coupling BC for xi_0'
-  !1: first group (row,column,whatever) of ghost cells
-  open(unit=99,file=fnamexi0(1))
-  if (optxi0g1==0) then
-    print*,'xi0g1 boundary interpolation: piecewise constant'
-  else
-    print*,'xi0g1 boundary interpolation: linear'
-  end if 
-  allocate(bufqxi0g1(nvar,neta(1),nt_xi0g1+1))  !(nvars,ny,nt+1)
-  do ivar=1,nvar
-    read(99,*)((bufqxi0g1(ivar,ix,indt),indt=1,nt_xi0g1+1),ix=1,neta(1))
-    if (ivar<=nvar-1) then
-      read(99,*) !this line is just to separate groups of variables
-      !actually usefull when reviewing data 'by eye'
-    end if
-  end do
-  close(unit=99)
-  !2: second group of ghost cells
-  open(unit=100,file=fnamexi0(2))
-  if (optxi0g2==0) then
-    print*,'xi0g2 boundary interpolation: piecewise constant'
-  else
-    print*,'xi0g2 boundary interpolation: linear'
-  end if
-  allocate(bufqxi0g2(nvar,neta(1),nt_xi0g2+1))  !(nvars,ny,nt+1)
-  do ivar=1,nvar
-    read(100,*)((bufqxi0g2(ivar,ix,indt),indt=1,nt_xi0g2+1),ix=1,neta(1))
-    if (ivar<=nvar-1) then
-      read(100,*) !this line is just to separate groups of variables
-      !actually usefull when reviewing data 'by eye'
-    end if
-  end do
-  close(unit=100)
-end subroutine couplingbc_xi0
-
-subroutine couplingbc_xiN
-  !load coupling boundary conditions for xi=0
-  !2 
-  use global_variables
-  use couplingbc
-  use multigrid_surf
-  implicit none
-  character(len=3) :: sep
-  integer:: nvar,ivar,ix,indt !nvar={1:z,2:h,3:u,4:v}
-  nvar=4!number of variables to read: (z,h,u,v)
-  print*,'Reading coupling BC for xi_N'
-  !1: first group (row,column,whatever) of ghost cells
-  open(unit=99,file=fnamexiN(1))
-
-  if (optxiNg1==0) then
-    print*,'xiNg1 boundary interpolation: piecewise constant'
-  else
-    print*,'xiNg1 boundary interpolation: linear'
-  end if  
-  allocate(bufqxiNg1(nvar,neta(1),nt_xiNg1+1))  !(nvars,ny,nt+1)
-  do ivar=1,nvar
-    read(99,*)((bufqxiNg1(ivar,ix,indt),indt=1,nt_xiNg1+1),ix=1,neta(1))
-    if (ivar<=nvar-1) then
-      read(99,*) !this line is just to separate groups of variables
-      !actually usefull when reviewing data 'by eye'
-    end if
-  end do
-  close(unit=99)
-  !2: second group of ghost cells
-  open(unit=100,file=fnamexiN(2))
-
-  if (optxiNg2==0) then
-    print*,'xiNg2 boundary interpolation: piecewise constant'
-  else
-    print*,'xiNg2 boundary interpolation: linear'
-  end if
-  allocate(bufqxiNg2(nvar,neta(1),nt_xiNg2+1))  !(nvars,ny,nt+1)
-  do ivar=1,nvar
-    read(100,*)((bufqxiNg2(ivar,ix,indt),indt=1,nt_xiNg2+1),ix=1,neta(1))
-    if (ivar<=nvar-1) then
-      read(100,*) !this line is just to separate groups of variables
-      !actually usefull when reviewing data 'by eye'
-    end if
-  end do
-  close(unit=100)
-end subroutine couplingbc_xiN
-
-subroutine couplingbc_eta0
-  !load coupling boundary conditions for xi=0
-  !2 
-  use global_variables
-  use couplingbc
-  use multigrid_surf
-  implicit none
-  character(len=3) :: sep
-  integer:: nvar,ivar,ix,indt !nvar={1:z,2:h,3:u,4:v}
-  nvar=4!number of variables to read: (z,h,u,v)
-  print*,'Reading coupling BC for eta0'
-  !1: first group (row,column,whatever) of ghost cells
-  open(unit=99,file=fnameeta0(1))
-  if (opteta0g1==1) then
-    print*,'eta0g1 boundary interpolation: piecewise constant'
-  else
-    print*,'eta0g1 boundary interpolation: linear'
-  end if
-  allocate(bufqeta0g1(nvar,nxi(1),nt_eta0g1+1))  !(nvars,ny,nt+1)
-  do ivar=1,nvar
-    read(99,*)((bufqeta0g1(ivar,ix,indt),indt=1,nt_eta0g1+1),ix=1,nxi(1))
-    if (ivar<=nvar-1) then
-      read(99,*) !this line is just to separate groups of variables
-      !actually usefull when reviewing data 'by eye'
-    end if
-  end do
-  close(unit=99)
-  !2: second group of ghost cells
-  open(unit=100,file=fnameeta0(2))
-  if (opteta0g2==0) then
-    print*,'eta0g2 boundary interpolation: piecewise constant'
-  else
-    print*,'eta0g2 boundary interpolation: linear'
-  end if
-  allocate(bufqeta0g2(nvar,nxi(1),nt_eta0g2+1))  !(nvars,ny,nt+1)
-  do ivar=1,nvar
-    read(100,*)((bufqeta0g2(ivar,ix,indt),indt=1,nt_eta0g2+1),ix=1,nxi(1))
-    if (ivar<=nvar-1) then
-      read(100,*) !this line is just to separate groups of variables
-      !actually usefull when reviewing data 'by eye'
-    end if
-  end do
-  close(unit=100)  
-end subroutine couplingbc_eta0
-
-subroutine couplingbc_etaN
-  !load coupling boundary conditions for xi=0
-  !2 
-  use global_variables
-  use couplingbc
-  use multigrid_surf
-    use mpi_surf
-  implicit none
-  character(len=3) :: sep
-  integer:: nvar,ivar,ix,indt !nvar={1:z,2:h,3:u,4:v}
-  nvar=4!number of variables to read: (z,h,u,v)
-  print*,'Reading coupling BC for etaN'  
-  !1: first group (row,column,whatever) of ghost cells
-  open(unit=99,file=fnameetaN(1))
-
-  if (optetaNg1==0) then
-    print*,'etaNg1 boundary interpolation: piecewise constant'
-  else
-    print*,'etaNg1 boundary interpolation: linear'
-  end if
-  allocate(bufqetaNg1(nvar,nxi(1),nt_etaNg1+1))  !(nvars,ny,nt+1)
-  do ivar=1,nvar
-    read(99,*)((bufqetaNg1(ivar,ix,indt),indt=1,nt_etaNg1+1),ix=1,nxi(1))
-    if (ivar<=nvar-1) then
-      read(99,*) !this line is just to separate groups of variables
-      !actually usefull when reviewing data 'by eye'
-    end if
-  end do
-  close(unit=99)
-  
-  !2: second group of ghost cells
-  open(unit=100,file=fnameetaN(2))
-
-  if (optetaNg2==0) then
-    print*,'etaNg2 boundary interpolation: piecewise constant'
-  else
-    print*,'etaNg2 boundary interpolation: linear'
-  end if
-  allocate(bufqetaNg2(nvar,nxi(1),nt_etaNg2+1))  !(nvars,ny,nt+1)
-  do ivar=1,nvar
-    read(100,*)((bufqetaNg2(ivar,ix,indt),indt=1,nt_etaNg2+1),ix=1,nxi(1))
-    if (ivar<=nvar-1) then
-      read(100,*) !this line is just to separate groups of variables
-      !actually usefull when reviewing data 'by eye'
-    end if
-  end do
-  close(unit=100)
-  
-  
-end subroutine couplingbc_etaN
-
 ! CONDICION DE BORDE PARA EL PRIMER GRUPO (COLUMNA O FILA) DE CELDAS FANTASMA
 ! Codigo por Jose Galaz Mora (jdgalaz@uc.cl),2013
 ! para el Depto. de Ing. Hidr. y Ambiental de la Esc. de Ing. de la Pontificia Universidad Catolica 
@@ -237,3 +48,205 @@ end subroutine couplingbc_etaN
 !!!!!!!!!!!bcxi01 y bcxi02 son para las celdas -2 y -1
 !!!!!!!!!! bcxiN1 y bcxiN2 son para las celdas Nby+1 y Nby+2
 !!!!!!!!!!es decir, 'siguen el orden en que se leen'
+
+subroutine custombc_xi0
+  !load customized boundary conditions for xi=0
+  !2 
+  use global_variables
+  use custombc
+  implicit none
+  character(len=3) :: sep
+  integer:: nvar,ivar,ix,indt !nvar={1:z,2:h,3:u,4:v}
+  nvar=4!number of variables to read: (z,h,u,v)
+  print*,'Reading customized BC for xi_0'
+  !1: first group (row,column,whatever) of ghost cells
+  open(unit=99,file='data/bcxi0g1.dat')
+  read(99,*) nt_xi0g1
+  read(99,*) dt_xi0g1
+  read(99,*) optxi0g1
+  if (optxi0g1.eq.1) then
+    print*,'xi0g1 boundary interpolation: piecewise constant'
+  else
+    print*,'xi0g1 boundary interpolation: linear'
+  end if 
+  allocate(qxi0g1(nvar,Nby,nt_xi0g1+1))  !(nvars,ny,nt+1)
+  do ivar=1,nvar
+    read(99,*)((qxi0g1(ivar,ix,indt),indt=1,nt_xi0g1+1),ix=1,Nby)
+    if (ivar.le.nvar-1) then
+      read(99,*) !this line is just to separate groups of variables
+      !actually usefull when reviewing data 'by eye'
+    end if
+  end do
+  close(unit=99)
+  !2: second group of ghost cells
+  open(unit=100,file='data/bcxi0g2.dat')
+  read(100,*) nt_xi0g2
+  read(100,*) dt_xi0g2
+  read(100,*) optxi0g2
+  if (optxi0g2.eq.1) then
+    print*,'xi0g2 boundary interpolation: piecewise constant'
+  else
+    print*,'xi0g2 boundary interpolation: linear'
+  end if
+  allocate(qxi0g2(nvar,Nby,nt_xi0g2+1))  !(nvars,ny,nt+1)
+  do ivar=1,nvar
+    read(100,*)((qxi0g2(ivar,ix,indt),indt=1,nt_xi0g2+1),ix=1,Nby)
+    if (ivar.le.nvar-1) then
+      read(100,*) !this line is just to separate groups of variables
+      !actually usefull when reviewing data 'by eye'
+    end if
+  end do
+  close(unit=100)
+end subroutine custombc_xi0
+
+subroutine custombc_xiN
+  !load customized boundary conditions for xi=0
+  !2 
+  use global_variables
+  use custombc
+  implicit none
+  character(len=3) :: sep
+  integer:: nvar,ivar,ix,indt !nvar={1:z,2:h,3:u,4:v}
+  nvar=4!number of variables to read: (z,h,u,v)
+  print*,'Reading customized BC for xi_N'
+  !1: first group (row,column,whatever) of ghost cells
+  open(unit=99,file='data/bcxiNg1.dat')
+  read(99,*) nt_xiNg1
+  read(99,*) dt_xiNg1
+  read(99,*) optxiNg1
+  if (optxiNg1.eq.1) then
+    print*,'xiNg1 boundary interpolation: piecewise constant'
+  else
+    print*,'xiNg1 boundary interpolation: linear'
+  end if  
+  allocate(qxiNg1(nvar,Nby,nt_xiNg1+1))  !(nvars,ny,nt+1)
+  do ivar=1,nvar
+    read(99,*)((qxiNg1(ivar,ix,indt),indt=1,nt_xiNg1+1),ix=1,Nby)
+    if (ivar.le.nvar-1) then
+      read(99,*) !this line is just to separate groups of variables
+      !actually usefull when reviewing data 'by eye'
+    end if
+  end do
+  close(unit=99)
+  !2: second group of ghost cells
+  open(unit=100,file='data/bcxiNg2.dat')
+  read(100,*) nt_xiNg2
+  read(100,*) dt_xiNg2
+  read(100,*) optxiNg2
+  if (optxiNg2.eq.1) then
+    print*,'xiNg2 boundary interpolation: piecewise constant'
+  else
+    print*,'xiNg2 boundary interpolation: linear'
+  end if
+  allocate(qxiNg2(nvar,Nby,nt_xiNg2+1))  !(nvars,ny,nt+1)
+  do ivar=1,nvar
+    read(100,*)((qxiNg2(ivar,ix,indt),indt=1,nt_xiNg2+1),ix=1,Nby)
+    if (ivar.le.nvar-1) then
+      read(100,*) !this line is just to separate groups of variables
+      !actually usefull when reviewing data 'by eye'
+    end if
+  end do
+  close(unit=100)
+end subroutine custombc_xiN
+
+subroutine custombc_eta0
+  !load customized boundary conditions for xi=0
+  !2 
+  use global_variables
+  use custombc
+  implicit none
+  character(len=3) :: sep
+  integer:: nvar,ivar,ix,indt !nvar={1:z,2:h,3:u,4:v}
+  nvar=4!number of variables to read: (z,h,u,v)
+  print*,'Reading customized BC for eta0'
+  !1: first group (row,column,whatever) of ghost cells
+  open(unit=99,file='data/bceta0g1.dat')
+  read(99,*) nt_eta0g1
+  read(99,*) dt_eta0g1
+  read(99,*) opteta0g1
+  if (opteta0g1.eq.1) then
+    print*,'eta0g1 boundary interpolation: piecewise constant'
+  else
+    print*,'eta0g1 boundary interpolation: linear'
+  end if
+  allocate(qeta0g1(nvar,Nbx,nt_eta0g1+1))  !(nvars,ny,nt+1)
+  do ivar=1,nvar
+    read(99,*)((qeta0g1(ivar,ix,indt),indt=1,nt_eta0g1+1),ix=1,Nbx)
+    if (ivar.le.nvar-1) then
+      read(99,*) !this line is just to separate groups of variables
+      !actually usefull when reviewing data 'by eye'
+    end if
+  end do
+  close(unit=99)
+  !2: second group of ghost cells
+  open(unit=100,file='data/bceta0g2.dat')
+  read(100,*) nt_eta0g2
+  read(100,*) dt_eta0g2
+  read(100,*) opteta0g2
+  if (opteta0g2.eq.1) then
+    print*,'eta0g2 boundary interpolation: piecewise constant'
+  else
+    print*,'eta0g2 boundary interpolation: linear'
+  end if
+  allocate(qeta0g2(nvar,Nbx,nt_eta0g2+1))  !(nvars,ny,nt+1)
+  do ivar=1,nvar
+    read(100,*)((qeta0g2(ivar,ix,indt),indt=1,nt_eta0g2+1),ix=1,Nbx)
+    if (ivar.le.nvar-1) then
+      read(100,*) !this line is just to separate groups of variables
+      !actually usefull when reviewing data 'by eye'
+    end if
+  end do
+  close(unit=100)  
+end subroutine custombc_eta0
+
+subroutine custombc_etaN
+  !load customized boundary conditions for xi=0
+  !2 
+  use global_variables
+  use custombc
+  implicit none
+  character(len=3) :: sep
+  integer:: nvar,ivar,ix,indt !nvar={1:z,2:h,3:u,4:v}
+  nvar=4!number of variables to read: (z,h,u,v)
+  print*,'Reading customized BC for etaN'
+  
+  !1: first group (row,column,whatever) of ghost cells
+  open(unit=99,file='data/bcetaNg1.dat')
+  read(99,*) nt_etaNg1
+  read(99,*) dt_etaNg1
+  read(99,*) optetaNg1
+  if (optetaNg1.eq.1) then
+    print*,'etaNg1 boundary interpolation: piecewise constant'
+  else
+    print*,'etaNg1 boundary interpolation: linear'
+  end if
+  allocate(qetaNg1(nvar,Nbx,nt_etaNg1+1))  !(nvars,ny,nt+1)
+  do ivar=1,nvar
+    read(99,*)((qetaNg1(ivar,ix,indt),indt=1,nt_etaNg1+1),ix=1,Nbx)
+    if (ivar.le.nvar-1) then
+      read(99,*) !this line is just to separate groups of variables
+      !actually usefull when reviewing data 'by eye'
+    end if
+  end do
+  close(unit=99)
+  
+  !2: second group of ghost cells
+  open(unit=100,file='data/bcetaNg2.dat')
+  read(100,*) nt_etaNg2
+  read(100,*) dt_etaNg2
+  read(100,*) optetaNg2
+  if (optetaNg2.eq.1) then
+    print*,'etaNg2 boundary interpolation: piecewise constant'
+  else
+    print*,'etaNg2 boundary interpolation: linear'
+  end if
+  allocate(qetaNg2(nvar,Nbx,nt_etaNg2+1))  !(nvars,ny,nt+1)
+  do ivar=1,nvar
+    read(100,*)((qetaNg2(ivar,ix,indt),indt=1,nt_etaNg2+1),ix=1,Nbx)
+    if (ivar.le.nvar-1) then
+      read(100,*) !this line is just to separate groups of variables
+      !actually usefull when reviewing data 'by eye'
+    end if
+  end do
+  close(unit=100)
+end subroutine custombc_etaN

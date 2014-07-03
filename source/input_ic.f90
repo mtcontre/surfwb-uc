@@ -1,91 +1,91 @@
 SUBROUTINE input_ic
-  use global_variables
-  use multigrid_surf
-  use mpi_surf
-  implicit none
+!Condiciones Iniciales: Diferentes para cada caso
+!Se podrian bajar de archivos, pero por mientras mejor hacerlas aqui
 
-  integer :: i,j,level
-  real (kind=8), dimension(:), allocatable :: hin, uin, vin
-  allocate(initq(ngrids))
-  
+USE global_variables
+USE geometries
+USE senales
+USE time0
+implicit none
 
-  do level=1,ngrids
-    allocate(initq(level)%H(nxi(level),neta(level)), &
-	initq(level)%U(nxi(level),neta(level)),&
-	initq(level)%V(nxi(level),neta(level)))
-    SELECT CASE (int(initqopt(level)))
-      CASE(0)
-	open(unit=2,file=initqname(level, 1),form='unformatted')
-	read(2) ((initq(level)%H(i,j),j=1,neta(level)), i=1,nxi(level))
-	close(unit=2)
-	
-	open(unit=2,file=initqname(level,2),form='unformatted')
-	read(2) ((initq(level)%U(i,j), j=1,neta(level)), i=1,nxi(level))
-	close(unit=2)
-	
-	open(unit=2,file=initqname(level,3),form='unformatted')
-	read(2) ((initq(level)%V(i,j),j=1,neta(level)),i=1,nxi(level))
-	close(unit=2)
-      CASE(1)
-	open(unit=2,file=initqname(level,1))
-	read(2,*) ((initq(level)%H(i,j),j=1,neta(level)),i=1,nxi(level))
-	close(unit=2)
-	
-	open(unit=2,file=initqname(level,2))
-	read(2,*) ((initq(level)%U(i,j),j=1,neta(level)),i=1,nxi(level))
-	close(unit=2)
-	
-	open(unit=2,file=initqname(level,3))
-	read(2,*) ((initq(level)%V(i,j),j=1,neta(level)),i=1,nxi(level))
-	close(unit=2)
-      CASE (2)
-	allocate(hin(nxi(level)*neta(level)),&
-	  uin(nxi(level)*neta(level)), vin(nxi(level)*neta(level)))
-	open(unit=99,file=initqname(level,1))
-	Do i=1,nxi(level)*neta(level)
-	  read(99,*) hin(i), uin(i), vin(i)
-	End Do
-	close(unit=99)
-	do i=1,nxi(level),1; do j=1,neta(level),1
-	  initq(level)%H(i,j)=hin(j+(i-1)*neta(level))
-	  initq(level)%U(i,j)=uin(j+(i-1)*neta(level))
-	  initq(level)%V(i,j)=vin(j+(i-1)*neta(level))
-	end do; end do
-	deallocate(hin,uin,vin)  
-      CASE (3)
-	allocate(hin(nxi(level)*neta(level)),&
-	  uin(nxi(level)*neta(level)), vin(nxi(level)*neta(level)))
-	open(unit=99,file=initqname(level,1))
-	Do i=1,nxi(level)*neta(level)
-	  read(99,*) hin(i), uin(i), vin(i)
-	End Do
-	close(unit=99)
-	do i=1,neta(level),1; do j=1,nxi(level),1
-	  initq(level)%H(i,j)=hin(i+(j-1)*nxi(level))
-	  initq(level)%U(i,j)=uin(i+(j-1)*nxi(level))
-	  initq(level)%V(i,j)=vin(i+(j-1)*nxi(level))
-	end do; end do
-	deallocate(hin,uin,vin)
+integer :: mitad, i, j, error, Ntot
+real (kind=8), dimension(:), allocatable :: hin, uin, vin
+real (kind=8)::	zaux, hz, xmed, xo, yo, hc, hs,r,d, Haux, sigma, hmean, hestanque, &
+		p3, c3, yaux, Am, a, ro, ho, eta0, omega,tau,p,S, B, uo, Dsyn, gama, x1, m, z85
+real (kind=8) :: D1, D2, D3, D4, D5, D6
+integer :: io
 
-    END SELECT
-  end do
-  !for debugging..show first 3row/columns
-!   level=1
-!   print*,'h------------'
-!   do i =1,3
-!     print*,initq(level)%H(i,1),initq(level)%H(i,2),initq(level)%H(i,3)
-!   end do
-! !   pause
-!   
-!   print*,'u------------'
-!   do i =1,3
-!     print*,initq(level)%U(i,1),initq(level)%U(i,2),initq(level)%U(i,3)
-!   end do
-! !   pause
-!   
-!   print*,'v------------'
-!   do i =1,3
-!     print*,initq(level)%V(i,1),initq(level)%V(i,2),initq(level)%V(i,3)
-!   end do
+allocate (qnew_global(3,Nbx,Nby), qold_global(3,Nbx,Nby), &
+	  qreal_global(3,Nbx,Nby),q0_global(3,Nbx,Nby), V_global(Nbx,Nby), C_global(Nbx,Nby), &
+	  VC(Nbx,Nby),S1_global(Nbx,Nby),S2_global(Nbx,Nby), STAT = error)
+!GA
+allocate(qA1(3,Nby),qA2(3,Nby),qA3(3,Nbx),qA4(3,Nbx),zA1(Nby),zA2(Nby),zA3(Nbx),zA4(Nbx))
+
+
+SELECT CASE (int(initqopt))
+  CASE(0)
+    open(unit=2,file=initqname(1),form='unformatted')
+    read(2) ((qold_global(1,i,j),j=1,Nby),i=1,Nbx)
+    close(unit=2)
+    
+    open(unit=2,file=initqname(2),form='unformatted')
+    read(2) ((qold_global(2,i,j),j=1,Nby),i=1,Nbx)
+    close(unit=2)
+    
+    open(unit=2,file=initqname(3),form='unformatted')
+    read(2) ((qold_global(3,i,j),j=1,Nby),i=1,Nbx)
+    close(unit=2)
+  CASE(1)
+    open(unit=2,file=initqname(1))
+    read(2,*) ((qold_global(1,i,j),j=1,Nby),i=1,Nbx)
+    close(unit=2)
+    
+    open(unit=2,file=initqname(2))
+    read(2,*) ((qold_global(2,i,j),j=1,Nby),i=1,Nbx)
+    close(unit=2)
+    
+    open(unit=2,file=initqname(3))
+    read(2,*) ((qold_global(3,i,j),j=1,Nby),i=1,Nbx)
+    close(unit=2)
+  CASE (2)
+    allocate(hin(Nbx*Nby),uin(Nbx*Nby), vin(Nbx*Nby))
+    open(unit=99,file=initqname(1))
+    Do i=1,Nbx*Nby
+      read(99,*) hin(i), uin(i), vin(i)
+    End Do
+    close(unit=99)
+    do i=1,Nbx,1; do j=1,Nby,1
+      qold_global(1,i,j)=hin(j+(i-1)*Nby)
+      qold_global(2,i,j)=uin(j+(i-1)*Nby)
+      qold_global(3,i,j)=vin(j+(i-1)*Nby)
+    end do; end do
+    deallocate(hin,uin,vin)  
+  CASE (3)
+    allocate(hin(Nbx*Nby),uin(Nbx*Nby), vin(Nbx*Nby))
+    open(unit=99,file=initqname(1))
+    Do i=1,Nbx*Nby
+      read(99,*) hin(i), uin(i), vin(i)
+    End Do
+    close(unit=99)
+    do i=1,Nby,1; do j=1,Nbx,1
+      qold_global(1,i,j)=hin(i+(j-1)*Nbx)
+      qold_global(2,i,j)=uin(i+(j-1)*Nbx)
+      qold_global(3,i,j)=vin(i+(j-1)*Nbx)
+    end do; end do
+    deallocate(hin,uin,vin)
+  CASE (4)
+    allocate(hin(Nbx*Nby),uin(Nbx*Nby), vin(Nbx*Nby))
+    open(unit=99,file=initqname(1))
+    Do i=1,Nbx*Nby
+      read(99,*) hin(i),hin(i),hin(i),hin(i), uin(i), vin(i)!lee
+    End Do
+    close(unit=99)
+    do i=1,Nby,1; do j=1,Nbx,1
+      qold_global(1,i,j)=hin(i+(j-1)*Nbx)
+      qold_global(2,i,j)=uin(i+(j-1)*Nbx)
+      qold_global(3,i,j)=vin(i+(j-1)*Nbx)
+    end do; end do
+    deallocate(hin,uin,vin)
+END SELECT
 
 END SUBROUTINE input_ic

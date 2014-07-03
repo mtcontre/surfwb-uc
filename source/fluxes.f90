@@ -461,15 +461,15 @@ U1=Qstari(2,i,j)*xi(1,i,j)+Qstari(3,i,j)*xi(2,i,j)
 
 Fs(1)=Qstari(1,i,j)*U1*1.0D0/Jac_global_xi(i,j)
 Fs(2)=Qstari(1,i,j)*Qstari(2,i,j)*U1*1.0D0/Jac_global_xi(i,j)+&
-  0.5D0*(1.0D0/FR2)*(Qstari(1,i,j)**2.0D0)*xi(1,i,j)*1.0D0/Jac_global_xi(i,j)
+0.5D0*(1.0D0/FR2)*(Qstari(1,i,j)**2.0D0)*xi(1,i,j)*1.0D0/Jac_global_xi(i,j)
 Fs(3)=Qstari(1,i,j)*Qstari(3,i,j)*U1*1.0D0/Jac_global_xi(i,j)+&
-  0.5D0*(1.0D0/FR2)*(Qstari(1,i,j)**2.0D0)*xi(2,i,j)*1.0D0/Jac_global_xi(i,j)
+0.5D0*(1.0D0/FR2)*(Qstari(1,i,j)**2.0D0)*xi(2,i,j)*1.0D0/Jac_global_xi(i,j)
 
 Fb(1)=0.0D0
-Fb(2)=1.0D0/(2.0D0*FR2)*(QiL(1,i,j)**2.0D0*xi(1,i+1,j)/Jac_global(i,j)-&
-  hmasi(i,j)**2.0D0*xi(1,i,j)*1.0D0/Jac_global_xi(i,j))
-Fb(3)=1.0D0/(2.0D0*FR2)*(QiL(1,i,j)**2.0D0*xi(2,i+1,j)/Jac_global(i,j)-&
-  hmasi(i,j)**2.0D0*xi(2,i,j)*1.0D0/Jac_global_xi(i,j))
+Fb(2)=1.0D0/(2.0D0*FR2)*(QiL(1,i,j)**2.0D0*xi(1,i+1,j)/&
+Jac_global(i,j)-hmasi(i,j)**2.0D0*xi(1,i,j)*1.0D0/Jac_global_xi(i,j))
+Fb(3)=1.0D0/(2.0D0*FR2)*(QiL(1,i,j)**2.0D0*xi(2,i+1,j)/&
+Jac_global(i,j)-hmasi(i,j)**2.0D0*xi(2,i,j)*1.0D0/Jac_global_xi(i,j))
 
 
 Fmas(:,i,j)=Fs+Fb
@@ -484,15 +484,15 @@ U1=Qstari(2,i+1,j)*xi(1,i+1,j)+Qstari(3,i+1,j)*xi(2,i+1,j)
 
 Fs(1)=Qstari(1,i+1,j)*U1*1.0D0/Jac_global_xi(i+1,j)
 Fs(2)=Qstari(1,i+1,j)*Qstari(2,i+1,j)*U1*1.0D0/Jac_global_xi(i+1,j)+&
-  0.5D0*(1.0D0/FR2)*(Qstari(1,i+1,j)**2.0D0)*xi(1,i+1,j)*1.0D0/Jac_global_xi(i+1,j)
+0.5D0*(1.0D0/FR2)*(Qstari(1,i+1,j)**2.0D0)*xi(1,i+1,j)*1.0D0/Jac_global_xi(i+1,j)
 Fs(3)=Qstari(1,i+1,j)*Qstari(3,i+1,j)*U1*1.0D0/Jac_global_xi(i+1,j)+&
-  0.5D0*(1.0D0/FR2)*(Qstari(1,i+1,j)**2.0D0)*xi(2,i+1,j)*1.0D0/Jac_global_xi(i+1,j)
+0.5D0*(1.0D0/FR2)*(Qstari(1,i+1,j)**2.0D0)*xi(2,i+1,j)*1.0D0/Jac_global_xi(i+1,j)
 
 Fb(1)=0.0D0
-Fb(2)=1.0D0/(2.0D0*FR2)*(QiR(1,i+1,j)**2.0D0*xi(1,i+1,j)/Jac_global(i,j)-&
-  hmenosi(i+1,j)**2.0D0*xi(1,i+1,j)/Jac_global_xi(i+1,j))
-Fb(3)=1.0D0/(2.0D0*FR2)*(QiR(1,i+1,j)**2.0D0*xi(2,i+1,j)/Jac_global(i,j)-&
-  hmenosi(i+1,j)**2.0D0*xi(2,i+1,j)/Jac_global_xi(i+1,j))
+Fb(2)=1.0D0/(2.0D0*FR2)*(QiR(1,i+1,j)**2.0D0*xi(1,i+1,j)/&
+Jac_global(i,j)-hmenosi(i+1,j)**2.0D0*xi(1,i+1,j)/Jac_global_xi(i+1,j))
+Fb(3)=1.0D0/(2.0D0*FR2)*(QiR(1,i+1,j)**2.0D0*xi(2,i+1,j)/&
+Jac_global(i,j)-hmenosi(i+1,j)**2.0D0*xi(2,i+1,j)/Jac_global_xi(i+1,j))
 
 
 Fmenos(:,i,j)=Fs+Fb
@@ -506,13 +506,15 @@ U2=Qstarj(2,i,j)*eta(1,i,j)+Qstarj(3,i,j)*eta(2,i,j)
 
 Gs(1)=Qstarj(1,i,j)*U2*1.0D0/Jac_global_eta(i,j)
 Gs(2)=Qstarj(1,i,j)*Qstarj(2,i,j)*U2*1.0D0/Jac_global_eta(i,j)+&
-  0.5D0*(1.0D0/FR2)*(Qstarj(1,i,j)**2.0D0)*eta(1,i,j)*1.0D0/Jac_global_eta(i,j)
+0.5D0*(1.0D0/FR2)*(Qstarj(1,i,j)**2.0D0)*eta(1,i,j)*1.0D0/Jac_global_eta(i,j)
 Gs(3)=Qstarj(1,i,j)*Qstarj(3,i,j)*U2*1.0D0/Jac_global_eta(i,j)+&
-  0.5D0*(1.0D0/FR2)*(Qstarj(1,i,j)**2.0D0)*eta(2,i,j)*1.0D0/Jac_global_eta(i,j)
+0.5D0*(1.0D0/FR2)*(Qstarj(1,i,j)**2.0D0)*eta(2,i,j)*1.0D0/Jac_global_eta(i,j)
 
 Gb(1)=0.0D0
-Gb(2)=1.0D0/(2.0D0*FR2)*(QjL(1,i,j)**2.0D0*eta(1,i,j+1)/Jac_global(i,j)-hmasj(i,j)**2.0D0*eta(1,i,j)/Jac_global_eta(i,j))
-Gb(3)=1.0D0/(2.0D0*FR2)*(QjL(1,i,j)**2.0D0*eta(2,i,j+1)/Jac_global(i,j)-hmasj(i,j)**2.0D0*eta(2,i,j)/Jac_global_eta(i,j))
+Gb(2)=1.0D0/(2.0D0*FR2)*(QjL(1,i,j)**2.0D0*eta(1,i,j+1)/&
+Jac_global(i,j)-hmasj(i,j)**2.0D0*eta(1,i,j)/Jac_global_eta(i,j))
+Gb(3)=1.0D0/(2.0D0*FR2)*(QjL(1,i,j)**2.0D0*eta(2,i,j+1)/&
+Jac_global(i,j)-hmasj(i,j)**2.0D0*eta(2,i,j)/Jac_global_eta(i,j))
 
 Gmas(:,i,j)=Gs+Gb
 
@@ -528,10 +530,8 @@ Gs(3)=Qstarj(1,i,j+1)*Qstarj(3,i,j+1)*U2*1.0D0/Jac_global_eta(i,j+1)+&
   1.0D0/(2.0D0*FR2)*(Qstarj(1,i,j+1)**2.0D0)*eta(2,i,j+1)*1.0D0/Jac_global_eta(i,j+1)
 
 Gb(1)=0.0D0
-Gb(2)=1.0D0/(2.0D0*FR2)*(QjR(1,i,j+1)**2.0D0*eta(1,i,j+1)/Jac_global(i,j)-&
-  hmenosj(i,j+1)**2.0D0*eta(1,i,j+1)/Jac_global_eta(i,j+1))
-Gb(3)=1.0D0/(2.0D0*FR2)*(QjR(1,i,j+1)**2.0D0*eta(2,i,j+1)/Jac_global(i,j)-&
-  hmenosj(i,j+1)**2.0D0*eta(2,i,j+1)/Jac_global_eta(i,j+1))
+Gb(2)=1.0D0/(2.0D0*FR2)*(QjR(1,i,j+1)**2.0D0*eta(1,i,j+1)/Jac_global(i,j)-hmenosj(i,j+1)**2.0D0*eta(1,i,j+1)/Jac_global_eta(i,j+1))
+Gb(3)=1.0D0/(2.0D0*FR2)*(QjR(1,i,j+1)**2.0D0*eta(2,i,j+1)/Jac_global(i,j)-hmenosj(i,j+1)**2.0D0*eta(2,i,j+1)/Jac_global_eta(i,j+1))
 
 Gmenos(:,i,j)=Gs+Gb
 

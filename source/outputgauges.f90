@@ -25,25 +25,13 @@ logical	:: lexist_H, lexist_U, lexist_V
  character(len=1100):: filename_H, filename_U, filename_V
  real (kind=8) :: h_g,u_g,v_g,z_g
 
-!! Coordenadas Puntos
-! x_1,x_2,y_1,y_2,,f11,f12,fs21,f22
-!Dimensionalization of the variables
-do i=1,Nbx; do j=1,Nby
-		qreal_global(1,i,j)=qnew_global(1,i,j)*H
-		qreal_global(2,i,j)=qnew_global(2,i,j)*U
-		qreal_global(3,i,j)=qnew_global(3,i,j)*U
-end do; end do
-if (time==0.0D0) then
-qnew_global=qold_global
-
-end if
 write(ncaso,*) caso
 ncaso=adjustl(ncaso)
 numbercaso=ncaso  
-path='results/'
+path=outdir
 write(ncaso,*) caso
 ncaso=(adjustl(ncaso))
-fgauges=trim(path)//'timeseries/gauges.' // trim(ncaso)// '.dat'
+fgauges=trim(path)//'/timeseries/gauges.' // trim(ncaso)// '.dat'
 
 
 do i=1,Nts
@@ -60,44 +48,7 @@ do i=1,Nts
 		call interpxy(m1,x_global,y_global,qreal_global(2,:,:),x0(i),y0(i),u_g,0)
 		call interpxy(m1,x_global,y_global,qreal_global(3,:,:),x0(i),y0(i),v_g,0)
 		call interpxy(m1,x_global,y_global,z_global(:,:),x0(i),y0(i),z_g,0)
-! 		pause
-! 
-! 		!------------------u-------------------------------
-! 		!Obtener la f de las coordenadas de los vertices
-! 		f11=qreal_global(2,m1(1)-1,m1(2)-1)
-! 		f12=qreal_global(2,m1(1)-1,m1(2))
-! 		f21=qreal_global(2,m1(1)	 ,m1(2)-1)
-! 		f22=qreal_global(2,m1(1)	 ,m1(2)	)
-! 		!Interpolante bilineal
-! 		u_g=( f11*(x_2-x0(i))*(y_2-y0(i))+ &
-! 		      f21*(x0(i)-x_1)*(y_2-y0(i))+ &
-! 		      f12*(x_2-x0(i))*(y0(i)-y_1) + &
-! 		      f22*(x0(i)-x_1)*(y0(i)-y_1) )/((x_2-x_1)*(y_2-y_1)) 
-! 
-! 		!------------------v-------------------------------
-! 		!Obtener la f de las coordenadas de los vertices
-! 		f11=qreal_global(3,m1(1)-1,m1(2)-1)
-! 		f12=qreal_global(3,m1(1)-1,m1(2))
-! 		f21=qreal_global(3,m1(1)	 ,m1(2)-1)
-! 		f22=qreal_global(3,m1(1)	 ,m1(2)	)
-! 		!Interpolante bilineal
-! 		v_g=( f11*(x_2-x0(i))*(y_2-y0(i))+ &
-! 		      f21*(x0(i)-x_1)*(y_2-y0(i))+ &
-! 		      f12*(x_2-x0(i))*(y0(i)-y_1) + &
-! 		      f11*(x0(i)-x_1)*(y0(i)-y_1) )/((x_2-x_1)*(y_2-y_1)) 
-! 		     
-! 		!------------------z-------------------------------
-! 		!Obtener la f de las coordenadas de los vertices
-! 		f11=z_global(m1(1)-1,m1(2)-1)
-! 		f12=z_global(m1(1)-1,m1(2))
-! 		f21=z_global(m1(1)	 ,m1(2)-1)
-! 		f22=z_global(m1(1)	 ,m1(2)	)
-! 		!Interpolante bilineal
-! 		z_g=( f11*(x_2-x0(i))*(y_2-y0(i))+ &
-! 		      f21*(x0(i)-x_1)*(y_2-y0(i))+ &
-! 		      f12*(x_2-x0(i))*(y0(i)-y_1) + &
-! 		      f11*(x0(i)-x_1)*(y0(i)-y_1) )/((x_2-x_1)*(y_2-y_1)) 
-! 		
+
 		!5.- Guardar en archivo
 		inquire(FILE=fgauges, EXIST=lexist)
 		if (.NOT. lexist) then
@@ -105,7 +56,6 @@ do i=1,Nts
 ! 		  pause
 		else    
 		  if (it==0.0D0 .and. i==1) then
-		   print*,it,i
 		    open(20,file=fgauges,status='replace',action='write')
 		  else
 		    open(20,file=fgauges,status='old',action='write', position='append')
@@ -114,7 +64,7 @@ do i=1,Nts
 		!se podria guardar id,x,y, en otro archivo aparte
 		
 		write(20,21) id0(i),treal,x0(i),y0(i),z_g,h_g+z_g,u_g,v_g 
-		21 format(I3.3	, TR1, F15.5, TR1,	F15.5, TR1, F15.5, TR1, F15.5, TR1, F15.5, TR1, F15.5, TR1, F15.5 / )
+		21 format(I3.3,TR1,F15.5, TR1,F15.5, TR1, F15.5, TR1, F15.5, TR1, F15.5, TR1, F15.5, TR1, F15.5 / )
 		close(20)
 		
 end do

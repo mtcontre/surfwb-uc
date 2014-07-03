@@ -10,10 +10,11 @@ USE coords
 USE time0
 !Fija una altura afuera del dominio en el borde 0, flujo unidireccional v=0.0
 implicit none
-real (kind=8):: C,t,dt,Fr2,epA, hR, uR,vR, epR, epxR,epyR, RR,dep, zepR, &
-  epxA,epyA,epxA2,epyA2,zepA,tauR,Rmenos,hA,zmin,uA,vA, Rmas,RmenosU,U1, &	
-  alfa,a1,a2,a3,a4,K,qp,U1u,uU,vU,hU, JacA, cero, us, vs, hs
-real (kind=8)::etaL,uL,vL,hL,RL, epL,epxL,epyL, zepL,C0, h0, tauL, qpar,uRper,vRpar,beta, pi,UparR,Upar, UparL, Uper 
+real (kind=8):: C,t,dt,Fr2,epA, hR, uR,vR, epR, epxR,epyR, RR,dep,&
+zepR, epxA,epyA,epxA2,epyA2,zepA,tauR,Rmenos,hA,zmin,uA,vA, Rmas,&
+RmenosU,U1, alfa,a1,a2,a3,a4,K,qp,U1u,uU,vU,hU, JacA, cero, us, vs, hs
+real (kind=8)::etaL,uL,vL,hL,RL, epL,epxL,epyL, zepL,C0, h0, tauL,&
+qpar,uRper,vRpar,beta, pi,UparR,Upar, UparL, Uper 
 
 integer:: Nx,Ny,j,i, Ns, fopt, tipo, borde, pasoRK
 real (kind=8), dimension(3,Nx,Ny)::q
@@ -156,7 +157,8 @@ else
     if(hR/=0.0D0) then
     C=MC(j,1)
     call  tauU(tipo,C,Fr2,hR,uR,vR,tauR)
-    Rmenos=RR-0.5D0*dt/Fr2*(zepR*(epxR**2.0D0+epyR**2.0D0)+zepA*(epxA**2.0D0+epyA**2.0D0))-tauR/hR*dt*(epxR+epyR)
+    Rmenos=RR-0.5D0*dt/Fr2*(zepR*(epxR**2.0D0+epyR**2.0D0)+&
+    zepA*(epxA**2.0D0+epyA**2.0D0))-tauR/hR*dt*(epxR+epyR)
     else
     tauR=0.0D0
     Rmenos=RR-0.5D0*dt/Fr2*(zepR*(epxR**2.0D0+epyR**2.0D0)+zepA*(epxA**2.0D0+epyA**2.0D0))
@@ -332,8 +334,8 @@ Upar=UparR
 end if
 
 ! if (qp<=0.0D0) then
-uA=Upar*epyA/JacA+Uper*-epyA2/JacA !U1*eta_y/J-U2*xi_y/J * Uper=U2, Upar=U1
-vA=Upar*-epxA/JacA+Uper*epxA2/JacA !U1*-eta_x/J+U2*xi_x/J
+uA=Upar*epyA/JacA+Uper*(-epyA2)/JacA !U1*eta_y/J-U2*xi_y/J * Uper=U2, Upar=U1
+vA=Upar*(-epxA)/JacA+Uper*epxA2/JacA !U1*-eta_x/J+U2*xi_x/J
 
 
 
@@ -391,9 +393,9 @@ USE coords
 USE time0
 !Fija una altura afuera del dominio en el borde 0, flujo unidireccional v=0.0
 implicit none
-real (kind=8):: C,t,dt,Fr2,epA, hL, uL,vL, epL, epxL,epyL, RL,dep, zepL, &
-  epxA,epyA,epxA2,epyA2,zepA,tauL,Rmenos, qb,hA,zmin,uA,vA, Rmas,RmasU,U1,&
-    alfa, AT,QT,uT,a1,a2,a3,a4,K,qp,U1u,uU,vU,hU, Upar,UparL, UparR, JacA, cero
+real (kind=8):: C,t,dt,Fr2,epA, hL, uL,vL, epL, epxL,epyL, RL,dep, zepL,&
+epxA,epyA,epxA2,epyA2,zepA,tauL,Rmenos, qb,hA,zmin,uA,vA, Rmas,RmasU,U1, &
+alfa, AT,QT,uT,a1,a2,a3,a4,K,qp,U1u,uU,vU,hU, Upar,UparL, UparR, JacA, cero
 
 real (kind=8)::etaR,uR,vR,hR,RR, epR,epxR,epyR, zepR,C0, h0, tauR, beta, pi,qpar,uLper,vLpar, Uper
 
@@ -703,8 +705,8 @@ end if
 ! print*, 'Upar=', Upar
 
 !if (qp>=0.0D0) then 
-uA=Upar*epyA/JacA+Uper*-epyA2/JacA !-U1*epyA2/JacA+Upar*epyA/JacA
-vA=Upar*-epxA/JacA+Uper*epxA2/JacA
+uA=Upar*epyA/JacA+Uper*(-epyA2)/JacA !-U1*epyA2/JacA+Upar*epyA/JacA
+vA=Upar*(-epxA)/JacA+Uper*epxA2/JacA
 
 
 !else

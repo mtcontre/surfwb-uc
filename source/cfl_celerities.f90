@@ -22,8 +22,8 @@ DO i=1,Nbx; DO j=1,Nby
 	S2_global(i,j)=abs(U2)+C_global(i,j)*sqrt(eta_global(1,i,j)**2+eta_global(2,i,j)**2)
 	
 END DO; END do
-      END SUBROUTINE VyC
 
+END SUBROUTINE VyC
 
 
 ! subroutine VyC!stability_celerities_in
@@ -33,7 +33,7 @@ END DO; END do
 !   use global_variables
 !   use geometries
 !   use coords
-!   use couplingbc
+!   use custombc
 !   integer ::i,j
 !   real (kind=8) :: U1, U2,Cg
 !   !Velocidades Contravariantes para CFL
@@ -57,11 +57,9 @@ subroutine stability_celerities_boundary_init!creo 2 para no tener conflicto con
   use global_variables
   use geometries
   use coords
-  use couplingbc
-  use mpi_surf
+  use custombc
   integer ::i,j
   real (kind=8) :: U1, U2,Cg
-  
 
   if (flagxi0.eq.1) then !if xi0 bound ==custom    
     allocate(Sxi0(Nby,4))
@@ -99,8 +97,7 @@ subroutine stability_celerities_boundary_init!creo 2 para no tener conflicto con
 	   (/xi_global(1,i,1),xi_global(2,i,1),eta_global(1,i,1),eta_global(2,i,1)/))
     end do
   end if
-!   print*,myrank,flagxi0,flagxiN,flageta0,flagetaN
-  
+
   if (flagetaN.eq.1) then
     allocate(SetaN(Nbx,4))
     do i=1,Nbx
@@ -122,7 +119,7 @@ subroutine stability_celerities_boundary(qt) !este es para instantes distintos a
   use global_variables
   use geometries
   use coords
-  use couplingbc
+  use custombc
   integer ::i,j
   real (kind=8) :: U1, U2,Cg
   real (kind=8), dimension(3,Nbx+4,Nby+4)	::qt

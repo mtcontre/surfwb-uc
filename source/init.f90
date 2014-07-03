@@ -1,70 +1,64 @@
 !Rutina que inicia las variables,lee datos de entrada, lee batimetria, condiciones iniciales, condiciones de borde y asigna estos datos a variables
 !Llama a tranformacion de coordenadas
 SUBROUTINE init
-  use mpi
-  use mpi_surf
-  use global_variables
-  
-  use couplingbc
-  use global_variables
-  use geometries
-  use coords
+
+  USE global_variables
+  USE geometries
+  USE senales
+  USE coords
+  use custombc
   implicit none
 
   integer :: i,j 
   real (kind=8)::U1,U2
+  
 
-  !some relevant parameters
-  g=9.812D0
-  hmin=1.0E-7
-  it=0
-  dt=0.0D0
-  t=0.0D0!0.0D0
-  treal=0.0D0!960.0D0 !0.0D0  
-  
-  call mpi_comm_rank(mpi_comm_world,myrank,ierror)
-  call mpi_comm_size(mpi_comm_world,nproc,ierror)
-  
-  !master reads input and decomposes the domain  
-  if (myrank==master) then
-    !read input parameters
-    call input_control 
-    
-    !read geometries
-    call input_geom
-    
-    !intial condition
-    call input_ic	
-    
-    !initialize output time series (?deprecated)
-    call init_TS	     
-    
-    !read friction matrix if neccesary
-    call input_friction  
+  !Leer informacion de la simulacion
+  call input_control
 
-  end if
- 
-  
-  !decompose the domain, distribute parameters to everyone
+  FR2=U**2.0D0/(g*H)
+  print*, 'Fr2= ', FR2
+  call input_geom		!Leer batimetria
+  call input_ic		!Leer condición inicial, reemplace el init_flowfield por este
+  call init_TS		! Time Series
+  print*,'InitFlowfieldOK'
+  !Coeficiente de friccion: debe venir adimensionalizado
+  allocate(MCoef(Nbx,Nby))
 
-  call decomp_2d
+  IF (fopt==1) THEN
+    
+    IF (fM==1) THEN !Completa matriz de friccion con el valor ingresado en input.dat
+      DO i=1,Nbx 
+      DO j=1,Nby
+      MCoef(i,j)=Coef
+      END DO
+      END DO
+      print*, 'friccionOK'
+    ELSE !Lee matriz de friccion de un archivo binario
+      !open	(unit=99, file ='friccion.dat', form='unformatted')
+      open	(unit=99, file ='data/friction_run31.dat')
+      read(99,*) ((MCoef(i,j),i=1,Nbx),j=1,Nby)
+      !read	(unit=99) ((MCoef(i,j),i=1,Nbx),j=1,Nby)
+      close(unit=99)
+      print*, 'friccionOK'
+    END IF
+  ELSE
+    Cf=0
+    DO i=1,Nbx 
+    DO j=1,Nby
+    MCoef(i,j)=0.0D0
+    END DO
+    END DO
   
-  call print_params
+  END IF
   
-  !up to this point
-  !everyone should have their one 'global variables'(x,y,z,h,u,v,nbx,nby,etc)
-  !so everyone processes their metrics and adimensionalize independently
-  !communication has to be made through file BCS.f90, defining a new bc in the vector CB
-  !master then decides timestep..
-  
-!--------------------------------------
-  !adimension q and bathy
+  !Adimensionalizar CI y Bathy
   call adimension
 
   !Calcular las metricas
   call metrics
-  
   !Crea Coordenadas Xi,Eta
+
   allocate(coordxi(Nbx),coordeta(Nby))
   coordxi(1)=dxi/2.0D0
   coordeta(1)=deta/2.0D0
@@ -78,111 +72,87 @@ SUBROUTINE init
   !Angulo normales a los bordes con respecto a un eje
 
   call angulo
-!   call VyC(qold_global(3,Nbx,Nby))
-  allocate(S1_global(Nbx,Nby),S2_global(Nbx,Nby))
-  do i=1,Nbx; do j=1,Nby	
-    C_global(i,j)=sqrt(qold_global(1,i,j)/FR2)
-    U1=qold_global(2,i,j)*xi_global(1,i,j)+qold_global(3,i,j)*xi_global(2,i,j)
-    U2=qold_global(2,i,j)*eta_global(1,i,j)+qold_global(3,i,j)*eta_global(2,i,j)
-    S1_global(i,j)=abs(U1)+C_global(i,j)*sqrt(xi_global(1,i,j)**2+xi_global(2,i,j)**2)
-    S2_global(i,j)=abs(U2)+C_global(i,j)*sqrt(eta_global(1,i,j)**2+eta_global(2,i,j)**2)
+!   call VyC
+  do i=1,Nbx; do j=1,Nby
+	  U1=qold_global(2,i,j)*xi_global(1,i,j)+qold_global(3,i,j)*xi_global(2,i,j)
+	  U2=qold_global(2,i,j)*eta_global(1,i,j)+qold_global(3,i,j)*eta_global(2,i,j)
+	  S1_global(i,j)=abs(U1)+C_global(i,j)*sqrt(xi_global(1,i,j)**2+xi_global(2,i,j)**2)
+	  S2_global(i,j)=abs(U2)+C_global(i,j)*sqrt(eta_global(1,i,j)**2+eta_global(2,i,j)**2)
   end do; end do
-  
   if ( (flagxi0.eq.1).or.(flagxiN.eq.1).or.(flageta0.eq.1).or.(flagetaN.eq.1) )then
     call stability_celerities_boundary_init
   end if
 
   print*, 'Simulacion Incializada'
-  
 
 END SUBROUTINE init
 
-SUBROUTINE ADIMENSION
-  !Function that aplies the adimensionalization to the initial conditions
-  !Funcion que aplica la adimensionalizacion a las condiciones inciales y a todo
-  USE global_variables
-  USE geometries
-  implicit none
-  integer :: i,j
-  allocate(V_global(Nbx,Nby),C_global(Nbx,Nby),VC(Nbx,Nby))
-  ! real (kind=8)::U1,U2
-  
-  do i=1,Nbx; do j=1,Nby
-    x_global(i,j)=x_global(i,j)/L
-    y_global(i,j)=y_global(i,j)/L
-    z_global(i,j)=z_global(i,j)/H
-    qold_global(1,i,j)=qold_global(1,i,j)/H
-    qold_global(2,i,j)=qold_global(2,i,j)/U
-    qold_global(3,i,j)=qold_global(3,i,j)/U
-    V_global(i,j)=sqrt((qold_global(2,i,j))**2.0D0+(qold_global(3,i,j))**2.0D0)    
-    VC(i,j)=V_global(i,j)+C_global(i,j)			
-  end do; end do
 
-  
-END SUBROUTINE ADIMENSION
-
-subroutine print_params
-  !prints everything and q0 to files
+SUBROUTINE init_flowfield
   use global_variables
   use geometries
-  use mpi
-  use mpi_surf
-  use multigrid_surf
+  use senales
+  use time0
   implicit none
-  integer::i,j
-  character(len=255) ::filename,ofmt
-  logical::dir_e
-  if (myrank==master) then
-    inquire(file='results/grids/.',exist=dir_e)    
-    if( .not. dir_e) then
-      call system('mkdir results/grids')
-    end if 
 
-    open(unit=50,file='results/grids/gridproperties.dat')
-    write(unit=50,fmt='("dit ",I5.5)') dit
-    write(unit=50,fmt='("nproc ",I3.3)') nproc  
-    write(unit=50,fmt='("dims ",I3.3,X,I3.3)') dims(1),dims(2)
-    write(unit=50,fmt='("ngrids ",I3.3)') ngrids
-    write(ofmt,'("(",I3,"(A5,I4.4,X))")') ngrids!seria muy raro tener una matriz de 10000x10000
-    write(unit=50,fmt=ofmt)'nxi  ',nxi
-    write(unit=50,fmt=ofmt)'neta ',neta    
-    
-    
-    do i=1,ngrids
-      if( (batiopt(i)==0).or.(batiopt(i)==1) )then
-	call system('cp '//batiname(i,1)//' results/.')
-	call system('cp '//batiname(i,2)//' results/.')
-	call system('cp '//batiname(i,3)//' results/.')
-	write(unit=50,fmt=*) trim(batiname(i,1)),' ',trim(batiname(i,2)),' ',trim(batiname(i,3))
-      else if( (batiopt(i)==2).or.(batiopt(i)==3) )then
-	call system('cp '//batiname(i,1)//' results/.')
-	write(unit=50,fmt=*) trim(batiname(i,1))
-      end if
-    end do
-    close(unit=50)       
-  end if
-  
-  write(filename,'("results/grids/grid",I3.3,"_",I3.3,".dat")') coords(1),coords(2)
-  open(unit=myrank+100,file=filename)
-  write(unit=myrank+100,fmt='( I3.3, "  Nbx" )') Nbx
-  write(unit=myrank+100,fmt='( I3.3, "  Nby" )') Nby  
-  write(unit=myrank+100,fmt='( I3.3, "  si" )') si
-  write(unit=myrank+100,fmt='( I3.3, "  ei" )') ei
-  write(unit=myrank+100,fmt='( I3.3, "  sj" )') sj
-  write(unit=myrank+100,fmt='( I3.3, "  ej" )') ej
-  write(unit=myrank+100,fmt='( I3.3, "  coord(1)" )') coords(1)
-  write(unit=myrank+100,fmt='( I3.3, "  coord(2)" )') coords(2)
-  write(unit=myrank+100,fmt='( I3.3, "  dims(1)" )') dims(1)
-  write(unit=myrank+100,fmt='( I3.3, "  dims(2)" )') dims(2)  
-  write(unit=myrank+100,fmt='( I3.3, "  rank2d" )') myrank2d
-  write(unit=myrank+100,fmt='( I4.3, "  left" )') myleft
-  write(unit=myrank+100,fmt='( I4.3, "  right" )') myright
-  write(unit=myrank+100,fmt='( I4.3, "  back" )') myback
-  write(unit=myrank+100,fmt='( I4.3, "  front" )') myfront
-  close(unit=myrank+100)
-  !copy gridX,gridY and gridZ and savenames
+  integer :: mitad, i, j, error, Ntot
+  real (kind=8), dimension(:), allocatable :: hin, uin, vin
+  real (kind=8)::	zaux, hz, xmed, xo, yo, hc, hs,r,d, Haux, sigma, hmean, hestanque, &
+		  p3, c3, yaux, Am, a, ro, ho, eta0, omega,tau,p,S, B, uo, Dsyn, gama, x1, m, z85
+  real (kind=8) :: D1, D2, D3, D4, D5, D6
+  integer :: io
+  real (kind=8), dimension(7)::param
 
-  
-end subroutine print_params
+  allocate (qnew_global(3,Nbx,Nby), qold_global(3,Nbx,Nby), &
+	    qreal_global(3,Nbx,Nby),q0_global(3,Nbx,Nby), V_global(Nbx,Nby), C_global(Nbx,Nby), &
+	    VC(Nbx,Nby),S1_global(Nbx,Nby),S2_global(Nbx,Nby), STAT = error)
+  !GA
+  allocate(qA1(3,Nby),qA2(3,Nby),qA3(3,Nbx),qA4(3,Nbx),zA1(Nby),zA2(Nby),zA3(Nbx),zA4(Nbx))
+
+  SELECT CASE (caso)
+	  CASE(999)
+  !  	  allocate (qold_global(Nbx,Nby), y_global(Nbx,Nby),z_global(Nbx,Nby))
+	    allocate(hin(Nbx*Nby),uin(Nbx*Nby), vin(Nbx*Nby))
+	    Ntot=Nbx*Nby
+	    print*,'Reading initq.dat . . .'
+	    !Lee batimetria Leandro
+	    open(unit=99,file='data/initq.dat')
+	    
+	    Do i=1,Ntot
+	      read(99,*) hin(i), uin(i), vin(i)
+	    End Do
+	    close(unit=99)
+	    do i=1,Nbx,1; do j=1,Nby,1
+	    qold_global(1,i,j)=hin(j+(i-1)*Nby)+0.0D0
+	    qold_global(2,i,j)=uin(j+(i-1)*Nby)+0.0D0
+	    qold_global(3,i,j)=vin(j+(i-1)*Nby)+0.0D0
+	    end do; end do
+	    print *, 'Cond Inicial'
+	    
+  END SELECT
+  !q0_global=qold_global
+END SUBROUTINE init_flowfield
 
 
+SUBROUTINE ADIMENSION
+!Function that aplies the adimensionalization to the initial conditions
+!Funcion que aplica la adimensionalizacion a las condiciones inciales y a todo
+
+USE global_variables
+USE geometries
+implicit none
+integer :: i,j
+real (kind=8)::U1,U2
+	do i=1,Nbx; do j=1,Nby
+			x_global(i,j)=x_global(i,j)/L
+			y_global(i,j)=y_global(i,j)/L
+			z_global(i,j)=z_global(i,j)/H
+			qold_global(1,i,j)=qold_global(1,i,j)/H
+			qold_global(2,i,j)=qold_global(2,i,j)/U
+			qold_global(3,i,j)=qold_global(3,i,j)/U			
+			V_global(i,j)=sqrt((qold_global(2,i,j))**2.0D0+(qold_global(3,i,j))**2.0D0)			
+			C_global(i,j)=sqrt(qold_global(1,i,j)/FR2)
+			VC(i,j)=V_global(i,j)+C_global(i,j)			
+	end do; end do
+
+END SUBROUTINE ADIMENSION

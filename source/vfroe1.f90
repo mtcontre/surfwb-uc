@@ -3,14 +3,14 @@
 !SUBROUTINE VFROENCV(FR2,qR,qL,epx,epy,hmin,qs)
 ! Este es el que se está usando!!!!
 SUBROUTINE VFROENCV(i,j,FR2,qR,qL,epR,epL,hmin,qs)
+use global_variables, only:goout
 !qR=qmas
 !qL=qmenos
-use mpi
 real (kind=8), dimension(3)	:: qL,qR,qs, WL,WR,WS,WRL,Fs,WM,L,LR,LL
 real (kind=8)	:: FR2, epx,epy,UL,UR,UM, hmin, alpha, beta, betaL, betaR, kappa, epxM, epyM, C
-integer	::i,j, caso,ierror
+integer	::i,j, caso
 real (kind=8), dimension(2)	:: epR, epL
-! implicit none
+
 kappa=10e-7
 !L es menos
 !R es mas
@@ -194,9 +194,8 @@ END IF
 !Vuelta a variables originales
 
 IF (WS(1)<0.0D0) THEN 
-print*, '**********************ERROR, C is negative***********************'
-print*,it, i,j
-
+print*, 'ERROR, C is negative'
+print*, i,j
 	
 	print*,'2C= ', WS(1)
 	print*,'u= ', WS(2)
@@ -212,12 +211,11 @@ print*,it, i,j
 	print*, 'qL=', qL
 	print*, 'qR=', qR
 	print*,'caso=',caso
-	call mpi_abort(mpi_comm_world,1000,ierror)
 !		WS(1)=0
 !		WS(2)=0
 !		WS(3)=0
 !pause
-stop
+! stop
 
 ELSE
   IF ((0.5D0*WS(1)).le.kappa) then

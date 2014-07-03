@@ -3,9 +3,7 @@ SUBROUTINE massbalance
 
 USE global_variables
 USE geometries
-use mpi_surf
-use mpi
-! use multi
+
 implicit none
 
 integer	:: i,j
@@ -25,12 +23,9 @@ do i=1,Nbx; do j=1,Nby
 		masaT=masaT+masa(i,j)
 end do; end do
 
-call mpi_allreduce(volT,volT,1,mpi_double_precision,mpi_sum,comm2d,ierror)
-if (treal==tinit) then  
-  vol0=volT 
+if (it==0.0D0) then
+vol0=volT
 end if
-
-
 
 !Porcentaje de volumen con respecto a la condicion inicial
 
