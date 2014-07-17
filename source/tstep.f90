@@ -63,6 +63,15 @@ subroutine tstep(dtreal)
 !     print*,'------etaNdtreal=',dtreal
   end if
   
+  if (dit==-1) then
+    if (treal+dtreal>=(nitout+1)*dtout+tinit) then
+      dtreal = (nitout+1)*dtout+tinit-treal
+      print_out = .True.    
+      nitout=nitout+1
+    else
+      print_out = .False.
+    end if
+  end if
  
   dt=dtreal*U/L
 end subroutine

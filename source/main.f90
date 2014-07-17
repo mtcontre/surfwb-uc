@@ -114,7 +114,7 @@ PROGRAM MAIN !Ponerle un nombre decente
       if (it==528) then
 	goout=.true.
       end if
-      if (mod(it,1)==0) then
+      if (print_out) then
 	!Print iteration information on the screen
 
 	print*, 'dt= ', dt

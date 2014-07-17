@@ -18,6 +18,9 @@ real (kind=8),dimension(:,:),save,allocatable	::xc,yc,xe,ye, aj_global,MCoef
 real (kind=8)	::CFL,tfinal,tinit,L,H,U, t, iteration, dt, FR2, g,dxi, &
 deta, hmin, kappa, Pvol, vol0, treal, Coef, batiopt,initqopt
 integer :: it,dit
+integer :: nitout=0
+real (kind=8) :: dtout
+logical :: print_out = .False.
 integer,dimension(4) :: CB
 integer	::caso,Nbx, Nby, mmopt, rk, outopt, fopt, fM, Cf
 character (len=120),dimension(3) :: batiname,initqname
@@ -36,7 +39,7 @@ real (kind=8), dimension(:,:,:), allocatable :: qxi0g1,qxi0g2,qxiNg1,qxiNg2,qeta
 integer:: flagxi0,flagxiN,flageta0,flagetaN !revisar init.f90 la parte del cfl inicial
 real (kind=8), dimension(:,:), allocatable ::Sxi0,SxiN,Seta0,SetaN
 ! real (kind=8), dimension(:,:), allocatable S2xi0,S2xiN,S2eta0,S2etaN
-end
+end module
 MODULE coords
 !Coordenadas Curvilíneas
 real (kind=8),dimension(:), save, allocatable :: coordxi, coordeta

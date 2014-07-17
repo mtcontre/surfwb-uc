@@ -10,9 +10,13 @@ subroutine outputmat
   logical::dir_exists,t_exists,param_exist
   logical::to_out=.false.
   character(len=8)::charit
-  
-  to_out=mod(it,dit)==0
-  
+  if (dit==-1) then
+    to_out = print_out
+    print_out=.False.
+  else
+    to_out=mod(it,dit)==0  
+    nitout = it
+  end if
   if (to_out.or.treal==tinit) then
     filenameT=trim(outdir)//'/time.dat'
     inquire(file=filenameT,exist=t_exists)
@@ -41,7 +45,7 @@ subroutine outputmat
   
   !write results to file
   if (to_out.or.treal==tinit) then    
-    write(charit,'(I8.8)') it
+    write(charit,'(I8.8)') nitout
       filename=trim(outdir)//'/SOL2D.'//trim(charit)//'.dat'
 !     filename='results/SOL2D.'//trim(charit)//'.dat'
 !     filename=trim(filename)//'.dat'
@@ -64,7 +68,7 @@ subroutine outputmat
       open(25,file=fout_param, status='new', action='write')
     end if
     
-    write(25,'(6(I5,2x))') caso, Nbx, Nby, Nts,it, dit
+    write(25,'(6(I5,2x))') caso, Nbx, Nby, Nts,nitout, dit
     close(25)
     
     call system('gzip -f '//filename)

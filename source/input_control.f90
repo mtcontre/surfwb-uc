@@ -128,6 +128,9 @@ read(1,*) CB(1)	!Boundary Condition for xi_0,j
   END IF
 
 read(1,*) dit	!dit to print results, write files every pdt iterations
+if (dit == -1) then
+  read(1,*) dtout
+end if
 read(1,*) kappa !To consider a 0.0 value
 read(1,*) rk !Runge Kutta method 1=Rk4, 2=Rk2
 read(1,*) mmopt !1=Minmod, 2=Superbee Limiters
@@ -145,6 +148,7 @@ read(1,*) Cf !Tipo Fricción: Manning ==1, Chezy ==2, Sampson==3, 0=ninguno
 END IF
 read(1,*) outopt !1=Matlab, 2=Tecplot files
 read(1,*) outdir
+print*,'-------------',outdir
 close(1)
 
 write(*,100) caso
