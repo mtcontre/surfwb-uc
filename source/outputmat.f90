@@ -10,6 +10,8 @@ subroutine outputmat
   logical::dir_exists,t_exists,param_exist
   logical::to_out=.false.
   character(len=8)::charit
+  
+  !check if need to print
   if (dit==-1) then
     to_out = print_out
     print_out=.False.
@@ -17,6 +19,8 @@ subroutine outputmat
     to_out=mod(it,dit)==0  
     nitout = it
   end if
+  
+  !print time position
   if (to_out.or.treal==tinit) then
     filenameT=trim(outdir)//'/time.dat'
     inquire(file=filenameT,exist=t_exists)
@@ -43,18 +47,16 @@ subroutine outputmat
   qreal_global(2,:,:)=qnew_global(2,:,:)*U
   qreal_global(3,:,:)=qnew_global(3,:,:)*U  
   
-  !write results to file
+  !write solution at current timestep
   if (to_out.or.treal==tinit) then    
     write(charit,'(I8.8)') nitout
       filename=trim(outdir)//'/SOL2D.'//trim(charit)//'.dat'
-!     filename='results/SOL2D.'//trim(charit)//'.dat'
-!     filename=trim(filename)//'.dat'
     open(unit=100,file=filename)
     do j=1,Nby
       do i=1,Nbx
 	write(unit=100,fmt='(6(E20.10,2X))') &
-	    x_global(i,j),y_global(i,j),z_global(i,j),qold_global(1,i,j), &
-	    qold_global(2,i,j),qold_global(3,i,j)
+	    x_global(i,j),y_global(i,j),z_global(i,j),qreal_global(1,i,j), &
+	    qreal_global(2,i,j),qreal_global(3,i,j)
       end do
     end do
     close(unit=100)
