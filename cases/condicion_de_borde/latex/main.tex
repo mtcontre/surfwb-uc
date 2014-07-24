@@ -1,0 +1,44 @@
+\documentclass{article}
+\usepackage{amsmath,amsfonts}
+\usepackage{geometry}
+\geometry{left=2.5cm, right=2.5cm, top=2cm, bottom=3cm}
+\begin{document}
+  Como primer paso, estudio el problema de Riemann unidimensional para un borde con normal en la direcci\'on $\nabla \xi$. Las ecuaciones que definen el problema de Riemann homog\'eneo en este borde, en coordenadas curvil\'ineas y siguiendo la notaci\'on de la tesis de Maricarmen son \footnote{tambi\'en se puede escribir la deducci\'on de este sistema a partir de las SWE originales}
+  
+  \begin{align}
+      \frac{\partial}{\partial t}(2C) + U \frac{\partial}{\partial \xi}(2C) + C \xi_x \frac{\partial u}{\partial \xi} + C \xi_x \frac{\partial v}{\partial \xi } &= 0      \label{eq1}\\
+      \frac{\partial}{\partial t}(u) + C \xi_x \frac{\partial}{\partial \xi}(2C) + U \frac{\partial u}{\partial \xi} + 0  &= 0      \label{eq2}\\
+      \frac{\partial}{\partial t}(v) + C \xi_y \frac{\partial}{\partial \xi}(2C) + 0 + U \frac{\partial v}{\partial \xi } &= 0      \label{eq3}
+  \end{align}
+  
+  Sumando $||\nabla \xi || \times \eqref{eq1}+\xi_x \times \eqref{eq2} + \xi_y \times \eqref{eq3}$, y usando que $U=u\xi_x+v\xi_y$, y $||.||$ la norma euclidiana de $\mathbb{R}^2$
+  
+  $$
+    \frac{\partial}{\partial t}( U + 2C ||\nabla  \xi || )+ ( U ||\nabla \xi || + C \xi_x^2 + C \xi_y^2 )\frac{\partial}{\partial \xi}(2C) + (C\xi_x||\nabla \xi||+U\xi_x)\frac{\partial u}{\partial \xi} + (C \xi_y ||\nabla \xi|| +  U \xi_y) \frac{\partial v}{\partial \xi}  = 0
+  $$
+  $$
+    \frac{\partial}{\partial t}(U+2C||\nabla \xi||) + (U+C ||\nabla \xi|| ) \frac{\partial}{\partial \xi}(||\nabla \xi||2C + u\xi_x+v\xi_y) =0 
+  $$
+  \begin{equation}
+    \frac{\partial}{\partial t}(U+2C ||\nabla \xi||) + (U+C||\nabla \xi||)\frac{\partial}{\partial \xi}(U+2C||\nabla \xi||) = 0
+  \end{equation}
+  
+  An\'alogamente, sumando $-||\nabla \xi || \times \eqref{eq1}+\xi_x \times \eqref{eq2} + \xi_y \times \eqref{eq3}$ 
+  
+  \begin{equation}
+    \frac{\partial}{\partial t}(U-2C ||\nabla \xi||) + (U-C||\nabla \xi||)\frac{\partial}{\partial \xi}(U-2C||\nabla \xi||) = 0
+  \end{equation}
+  
+  Y sumando $\xi_y \times \eqref{eq2} - \xi_x\eqref{eq3}$ se deduce que
+  
+  \begin{equation}
+    \frac{\partial}{\partial t}(u\xi_y-v\xi_x) + U \frac{\partial}{\partial \xi}( u \xi_y - v\xi_x) = 0
+  \end{equation}
+  
+  Notar que el vector $U$ es la proyecci\'on de $(u,v)$ en la direcci\'on $\nabla \xi$ amplificada por $||\nabla \xi||$, y que si definimos $U_{||} = u \xi_y - v \xi_x$ entonces se puede ver que el vector $(\xi_y,-\xi_x)$ es un vector ortogonal a $\nabla \xi$ y que $U_{||}$ es entonces la proyecci\'on tangencial de $(u,v)$ sobre $\nabla \xi$, y por lo tanto es la componente tangencial al borde, cuya normal es justamente $\nabla \xi$ \footnote{esto habr\'ia que hacerlo expl\'icito tambi\'en, de que $\nabla \xi$ es el vector normal al borde, no?}.
+  
+  Los invariantes de Riemann son entonces  $$R^0 = u\xi_y -v\xi_x$$ $$R^+ = U+2C||\nabla \xi||$$  $$R^- =U -2C ||\nabla \xi ||$$ y las trayectorias caracter\'isticas asociadas $$\gamma^0 = \{ \xi : \frac{d}{dt}\xi = U\}$$ $$\gamma ^+ = \{\xi: \frac{d}{dt}\xi = U+C||\nabla \xi||\}$$ $$ \gamma ^- = \{\xi: \frac{d}{dt}\xi = U-C||\nabla \xi||\}$$
+  
+  
+\end{document}
+
