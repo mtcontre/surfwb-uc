@@ -1,5 +1,5 @@
-GFORTRAN module version '9' created from ../source/MODULES.f90
-MD5:1dba362b48999c7b4a21ad0348f0a13a -- If you edit this, you'll get what you deserve.
+GFORTRAN module version '10' created from ..//source//module_mpisurf.f90
+MD5:b2783ef9888d73660cc41d14b9f0d81a -- If you edit this, you'll get what you deserve.
 
 (() () () () () () () () () () () () () () () () () () () () () () () ()
 () () ())
@@ -14,73 +14,92 @@ MD5:1dba362b48999c7b4a21ad0348f0a13a -- If you edit this, you'll get what you de
 
 ()
 
-(2 'comm2d' 'mpi_surf' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
+(2 'cb_real' 'mpi_surf' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
+UNKNOWN IMPLICIT-SAVE 0 0 DIMENSION) (INTEGER 4 0 0 0 INTEGER ()) 0 0 ()
+(1 0 EXPLICIT (CONSTANT (INTEGER 4 0 0 0 INTEGER ()) 0 '1') (CONSTANT (
+INTEGER 4 0 0 0 INTEGER ()) 0 '4')) 0 () () () 0 0)
+3 'comm2d' 'mpi_surf' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
 UNKNOWN IMPLICIT-SAVE 0 0) (INTEGER 4 0 0 0 INTEGER ()) 0 0 () () 0 () ()
 () 0 0)
-3 'coords' 'mpi_surf' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
+4 'coords' 'mpi_surf' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
 UNKNOWN IMPLICIT-SAVE 0 0 DIMENSION) (INTEGER 4 0 0 0 INTEGER ()) 0 0 ()
 (1 0 EXPLICIT (CONSTANT (INTEGER 4 0 0 0 INTEGER ()) 0 '1') (CONSTANT (
 INTEGER 4 0 0 0 INTEGER ()) 0 '2')) 0 () () () 0 0)
-4 'dims' 'mpi_surf' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC UNKNOWN
+5 'dims' 'mpi_surf' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC UNKNOWN
 IMPLICIT-SAVE 0 0 DIMENSION) (INTEGER 4 0 0 0 INTEGER ()) 0 0 () (1 0
 EXPLICIT (CONSTANT (INTEGER 4 0 0 0 INTEGER ()) 0 '1') (CONSTANT (
 INTEGER 4 0 0 0 INTEGER ()) 0 '2')) 0 () () () 0 0)
-5 'ierror' 'mpi_surf' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
+6 'ei' 'mpi_surf' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC UNKNOWN
+IMPLICIT-SAVE 0 0) (INTEGER 4 0 0 0 INTEGER ()) 0 0 () () 0 () () () 0 0)
+7 'ej' 'mpi_surf' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC UNKNOWN
+IMPLICIT-SAVE 0 0) (INTEGER 4 0 0 0 INTEGER ()) 0 0 () () 0 () () () 0 0)
+8 'fric_buff' 'mpi_surf' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
+UNKNOWN IMPLICIT-SAVE 0 0 ALLOCATABLE DIMENSION) (REAL 8 0 0 0 REAL ())
+0 0 () (2 0 DEFERRED () () () ()) 0 () () () 0 0)
+9 'ierror' 'mpi_surf' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
 UNKNOWN IMPLICIT-SAVE 0 0) (INTEGER 4 0 0 0 INTEGER ()) 0 0 () () 0 () ()
 () 0 0)
-6 'isperiodic' 'mpi_surf' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
+10 'isperiodic' 'mpi_surf' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
 UNKNOWN IMPLICIT-SAVE 0 0 DIMENSION) (LOGICAL 4 0 0 0 LOGICAL ()) 0 0 ()
 (1 0 EXPLICIT (CONSTANT (INTEGER 4 0 0 0 INTEGER ()) 0 '1') (CONSTANT (
 INTEGER 4 0 0 0 INTEGER ()) 0 '2')) 0 () () () 0 0)
-7 'master' 'mpi_surf' '' 1 ((PARAMETER UNKNOWN-INTENT UNKNOWN-PROC
+11 'master' 'mpi_surf' '' 1 ((PARAMETER UNKNOWN-INTENT UNKNOWN-PROC
 UNKNOWN IMPLICIT-SAVE 0 0) (INTEGER 4 0 0 0 INTEGER ()) 0 0 () (
 CONSTANT (INTEGER 4 0 0 0 INTEGER ()) 0 '0') () 0 () () () 0 0)
-8 'mpi_surf' 'mpi_surf' '' 1 ((MODULE UNKNOWN-INTENT UNKNOWN-PROC
+12 'mpi_surf' 'mpi_surf' '' 1 ((MODULE UNKNOWN-INTENT UNKNOWN-PROC
 UNKNOWN UNKNOWN 0 0) (UNKNOWN 0 0 0 0 UNKNOWN ()) 0 0 () () 0 () () () 0
 0)
-9 'myback' 'mpi_surf' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
+13 'myback' 'mpi_surf' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
 UNKNOWN IMPLICIT-SAVE 0 0) (INTEGER 4 0 0 0 INTEGER ()) 0 0 () () 0 () ()
 () 0 0)
-10 'myfront' 'mpi_surf' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
+14 'myfront' 'mpi_surf' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
 UNKNOWN IMPLICIT-SAVE 0 0) (INTEGER 4 0 0 0 INTEGER ()) 0 0 () () 0 () ()
 () 0 0)
-11 'myleft' 'mpi_surf' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
+15 'myleft' 'mpi_surf' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
 UNKNOWN IMPLICIT-SAVE 0 0) (INTEGER 4 0 0 0 INTEGER ()) 0 0 () () 0 () ()
 () 0 0)
-12 'myrank' 'mpi_surf' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
+16 'myrank' 'mpi_surf' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
 UNKNOWN IMPLICIT-SAVE 0 0) (INTEGER 4 0 0 0 INTEGER ()) 0 0 () () 0 () ()
 () 0 0)
-13 'myrank2d' 'mpi_surf' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
+17 'myrank2d' 'mpi_surf' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
 UNKNOWN IMPLICIT-SAVE 0 0) (INTEGER 4 0 0 0 INTEGER ()) 0 0 () () 0 () ()
 () 0 0)
-14 'myright' 'mpi_surf' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
+18 'myright' 'mpi_surf' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
 UNKNOWN IMPLICIT-SAVE 0 0) (INTEGER 4 0 0 0 INTEGER ()) 0 0 () () 0 () ()
 () 0 0)
-15 'ndim' 'mpi_surf' '' 1 ((PARAMETER UNKNOWN-INTENT UNKNOWN-PROC
+19 'ndim' 'mpi_surf' '' 1 ((PARAMETER UNKNOWN-INTENT UNKNOWN-PROC
 UNKNOWN IMPLICIT-SAVE 0 0) (INTEGER 4 0 0 0 INTEGER ()) 0 0 () (
 CONSTANT (INTEGER 4 0 0 0 INTEGER ()) 0 '2') () 0 () () () 0 0)
-16 'nproc' 'mpi_surf' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
+20 'nproc' 'mpi_surf' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
 UNKNOWN IMPLICIT-SAVE 0 0) (INTEGER 4 0 0 0 INTEGER ()) 0 0 () () 0 () ()
 () 0 0)
-17 'reorder' 'mpi_surf' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
+21 'q_buff' 'mpi_surf' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
+UNKNOWN IMPLICIT-SAVE 0 0 ALLOCATABLE DIMENSION) (REAL 8 0 0 0 REAL ())
+0 0 () (3 0 DEFERRED () () () () () ()) 0 () () () 0 0)
+22 'reorder' 'mpi_surf' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
 UNKNOWN IMPLICIT-SAVE 0 0) (LOGICAL 4 0 0 0 LOGICAL ()) 0 0 () () 0 () ()
 () 0 0)
-18 'shift' 'mpi_surf' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
-UNKNOWN IMPLICIT-SAVE 0 0) (INTEGER 4 0 0 0 INTEGER ()) 0 0 () () 0 () ()
-() 0 0)
-19 'time_estim' 'mpi_surf' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
-UNKNOWN IMPLICIT-SAVE 0 0) (REAL 8 0 0 0 REAL ()) 0 0 () () 0 () () () 0
-0)
-20 'time_finish' 'mpi_surf' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
-UNKNOWN IMPLICIT-SAVE 0 0) (REAL 8 0 0 0 REAL ()) 0 0 () () 0 () () () 0
-0)
-21 'time_start' 'mpi_surf' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
-UNKNOWN IMPLICIT-SAVE 0 0) (REAL 8 0 0 0 REAL ()) 0 0 () () 0 () () () 0
-0)
+23 'shift' 'mpi_surf' '' 1 ((PARAMETER UNKNOWN-INTENT UNKNOWN-PROC
+UNKNOWN IMPLICIT-SAVE 0 0) (INTEGER 4 0 0 0 INTEGER ()) 0 0 () (
+CONSTANT (INTEGER 4 0 0 0 INTEGER ()) 0 '1') () 0 () () () 0 0)
+24 'si' 'mpi_surf' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC UNKNOWN
+IMPLICIT-SAVE 0 0) (INTEGER 4 0 0 0 INTEGER ()) 0 0 () () 0 () () () 0 0)
+25 'sj' 'mpi_surf' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC UNKNOWN
+IMPLICIT-SAVE 0 0) (INTEGER 4 0 0 0 INTEGER ()) 0 0 () () 0 () () () 0 0)
+26 'x_buff' 'mpi_surf' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
+UNKNOWN IMPLICIT-SAVE 0 0 ALLOCATABLE DIMENSION) (REAL 8 0 0 0 REAL ())
+0 0 () (2 0 DEFERRED () () () ()) 0 () () () 0 0)
+27 'y_buff' 'mpi_surf' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
+UNKNOWN IMPLICIT-SAVE 0 0 ALLOCATABLE DIMENSION) (REAL 8 0 0 0 REAL ())
+0 0 () (2 0 DEFERRED () () () ()) 0 () () () 0 0)
+28 'z_buff' 'mpi_surf' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
+UNKNOWN IMPLICIT-SAVE 0 0 ALLOCATABLE DIMENSION) (REAL 8 0 0 0 REAL ())
+0 0 () (2 0 DEFERRED () () () ()) 0 () () () 0 0)
 )
 
-('comm2d' 0 2 'coords' 0 3 'dims' 0 4 'ierror' 0 5 'isperiodic' 0 6
-'master' 0 7 'mpi_surf' 0 8 'myback' 0 9 'myfront' 0 10 'myleft' 0 11
-'myrank' 0 12 'myrank2d' 0 13 'myright' 0 14 'ndim' 0 15 'nproc' 0 16
-'reorder' 0 17 'shift' 0 18 'time_estim' 0 19 'time_finish' 0 20
-'time_start' 0 21)
+('cb_real' 0 2 'comm2d' 0 3 'coords' 0 4 'dims' 0 5 'ei' 0 6 'ej' 0 7
+'fric_buff' 0 8 'ierror' 0 9 'isperiodic' 0 10 'master' 0 11 'mpi_surf'
+0 12 'myback' 0 13 'myfront' 0 14 'myleft' 0 15 'myrank' 0 16 'myrank2d'
+0 17 'myright' 0 18 'ndim' 0 19 'nproc' 0 20 'q_buff' 0 21 'reorder' 0
+22 'shift' 0 23 'si' 0 24 'sj' 0 25 'x_buff' 0 26 'y_buff' 0 27 'z_buff'
+0 28)

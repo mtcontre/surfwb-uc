@@ -1,31 +1,24 @@
 subroutine input_friction
+  use mpi
   use mpi_surf
-  use multigrid_surf
   use global_variables
-  implicit none  
-  integer::i,j,level
   
-  allocate(buffMcoef(ngrids))
-  do level=1,ngrids
-    allocate(buffMcoef(level)%bMcoef(nxi(level),neta(level)))
-    if (fopt==0) then
-      do i=1,nxi(level)
-	do j=1,neta(level)
-	  buffMcoef(level)%bMcoef(i,j)=0.0D0
-	end do
-      end do
-    else
-      if (fM==1) then!single value
-	do i=1,nxi(level)
-	  do j=1,neta(level)
-	    buffMcoef(level)%bMcoef(i,j)=Coef
-	  end do
-	end do
-      else if (fM==2) then!matrix
-	open	(unit=99, file ='data/friction_run31.dat')
-	read(99,*) ((buffMCoef(level)%bMcoef(i,j),i=1,nxi(level)),j=1,neta(level))
-	close(unit=99)
-      end if
-    end if
-  end do  
-end subroutine input_friction
+  integer ::i,j
+  
+  allocate(fric_buff(nxi,neta))
+  if (fopt==0) then !no friction
+    Cf = 0
+    Coef =0.0D0
+    fric_buff = Coef
+  elseif (fopt==1) then
+    if (fM==1) then
+      fric_buff = Coef
+    elseif (fM==2) then
+      open(unit=99, file='data/fricmat.dat')
+      read(99,*) ((fric_buff(i,j),j=1,neta),i=1,nxi)
+      close(unit=99)
+    end if    
+  end if
+
+
+end subroutine

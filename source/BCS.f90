@@ -6,9 +6,10 @@ SUBROUTINE bcs(fopt,Cf,Coef,pasoRK,t,dt,Fr2,caso,qn,z,Nx,Ny,CB,xi,eta,Jac,dxi,de
 
 ! USE global_variables
 !USE geometries
-use custombc
-USE senales
-USE coords
+! USE senales
+! USE coords
+use mpi
+use mpi_surf
 implicit none
 integer :: Nx,Ny, caso,nt1,nt2
 real (kind=8), dimension(3,Nx,Ny)	::qn
@@ -77,49 +78,9 @@ DO j=3,Ny+2
   zt(2,j)=zt(3,j)
 END DO
 
-
+call exchange_2d(qt,xit,etat,zt)
+! call mpi_barrier(mpi_comm_world,ierror)
 SELECT CASE (CB(1))
-  case(0) !Fixed User-defined boundary condition
-    !1 Interpolate
-    nt1=min(int(t/dt_xi0g1),nt_xi0g1-1)!busca el menor entre el penultimo y int(t/dt)
-    nt2=min(int(t/dt_xi0g2),nt_xi0g2-1)!la idea es encontrar el punto que esté más atrás e interpolar
-    !two methods:
-    ! piecewise constant:  f(x)=f([x])
-    ! linear interpolated: f(x)=1/dx*(f(x_k)*(x-x_k)+f(x_{k+1})(x_{k+1}-x),k=0,..,nt-1
-    !como indice de q (que va de 1 a nt+1), hay que sumarle uno!! (por eso qxi01(1,j-2,NT1+2))
-    !nt1 va de 0 hasta nt1-1
-    
-    if (optxi0g1.eq.1) then
-      do j=3,Ny+2
-	zt(  1,j)=qxi0g1(1,j-2,nt1+1)!z
-	qt(1,1,j)=qxi0g1(2,j-2,nt1+1)!h
-	qt(2,1,j)=qxi0g1(3,j-2,nt1+1)!u
-	qt(3,1,j)=qxi0g1(4,j-2,nt1+1)!v
-      end do
-    else 
-       do j=3,Ny+2
-	call interpj(nt1*dt_xi0g1,qxi0g1(1,j-2,nt1+1),(nt1+1)*dt_xi0g1,qxi0g1(1,j-2,nt1+2),t,zt(1,j) )
-	call interpj(nt1*dt_xi0g1,qxi0g1(2,j-2,nt1+1),(nt1+1)*dt_xi0g1,qxi0g1(2,j-2,nt1+2),t,qt(1,1,j))
-	call interpj(nt1*dt_xi0g1,qxi0g1(3,j-2,nt1+1),(nt1+1)*dt_xi0g1,qxi0g1(3,j-2,nt1+2),t,qt(2,1,j))
-	call interpj(nt1*dt_xi0g1,qxi0g1(4,j-2,nt1+1),(nt1+1)*dt_xi0g1,qxi0g1(4,j-2,nt1+2),t,qt(3,1,j))
-       end do
-    end if	
-    if (optxi0g2.eq.1) then
-      do j=3,Ny+2
-	zt(  2,j)=qxi0g2(1,j-2,nt2+1)
-	qt(1,2,j)=qxi0g2(2,j-2,nt2+1)
-	qt(2,2,j)=qxi0g2(3,j-2,nt2+1)
-	qt(3,2,j)=qxi0g2(4,j-2,nt2+1)
-      end do
-    else
-      do j=3,Ny+2    
-	call interpj(nt2*dt_xi0g2,qxi0g2(1,j-2,nt2+1),(nt2+1)*dt_xi0g2,qxi0g2(1,j-2,nt2+2),t,zt(2,j) )
-	call interpj(nt2*dt_xi0g2,qxi0g2(2,j-2,nt2+1),(nt2+1)*dt_xi0g2,qxi0g2(2,j-2,nt2+2),t,qt(1,2,j))
-	call interpj(nt2*dt_xi0g2,qxi0g2(3,j-2,nt2+1),(nt2+1)*dt_xi0g2,qxi0g2(3,j-2,nt2+2),t,qt(2,2,j))
-	call interpj(nt2*dt_xi0g2,qxi0g2(4,j-2,nt2+1),(nt2+1)*dt_xi0g2,qxi0g2(4,j-2,nt2+2),t,qt(3,2,j))
-      end do	 
-    end if
-
   case(1) !Solid Wall !Ojo que son las velocidades contravariantes las que se usan, pero si las metricas se asumen iguales entonces queda lo mismo que en cartesianas.
 	
 	DO j=3,Ny+2
@@ -180,94 +141,6 @@ SELECT CASE (CB(1))
 	qt(3,2,j)=qn(3,1,j-2)		!v0=-v1
 	
 	END DO	
-
-	
-  CASE(4)
-		IF (pasoRK==1.OR.pasoRK==3) then
-
-			IF (GA1==1) THEN
-			  call genabs0xi_1_1(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,etaL1,Nsenal1,h01,t,dt,qn,zt,xi,qA1,zA1)
-			ELSE IF (GA1==2) THEN
-			  call genabs0xi_2_1(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,qs1,hs1,h01,Nsenal1,t,dt,qn,zt,xi,qA1,zA1)
-			
-			ELSE IF (GA1==3) THEN
-			  call genabs0xi_3_1(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,us1,hs1,h01,Nsenal1,t,dt,qn,zt,xi,qA1,zA1)
-			
-! 			ELSE IF (GA1==4) THEN
-! 			call genabs0xi_4_1(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,hs1,h01,Nsenal1,t,dt,qn,zt,xi,qA1,zA1)
- 			
-			! GENABS Con diferentes señales en cada nodo
-			ELSE IF (GA1==9) THEN
-			    call genabs0xi_9_1(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,etaL9,timeS9,Nsenal1,h01,t,dt,qn,zt,xi,qA1,zA1)
-		
-			END IF
-			
-		END IF	
- 		qA10=qA1
-
-		
-		IF (pasoRK==2.OR.pasoRK==4) then
-
-			IF (GA1==1) THEN
-			call genabs0xi_1_2(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,etaL1,Nsenal1,h01,t,dt,qn,zt,xi,qA10,qA1,zA1)
-			
-			ELSE IF (GA1==2) THEN
-			call genabs0xi_2_2(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,qs1,hs1,h01,Nsenal1,t,dt,qn,zt,xi,qA10,qA1,zA1)
-			
-			ELSE IF (GA1==3) THEN
-			call genabs0xi_3_2(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,us1,hs1,h01,Nsenal1,t,dt,qn,zt,xi,qA10,qA1,zA1)
-			
-! 			ELSE IF (GA1==4) THEN
-! 			call genabs0xi_4_2(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,hs1,h01,Nsenal1,t,dt,qn,zt,xi,qA10,qA1,zA1)
-			ELSE IF (GA1==9) THEN
-			    call genabs0xi_9_2(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,etaL9,timeS9,Nsenal1,h01,t,dt,qn,zt,xi,qA10,qA1,zA1)
-! call genabs0xi_9_2(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,etaL9,timeS9,Nsenal1,h01,t,dt,qn,zt,xi,qA1,zA1)
-			END IF
-		
-		END IF
-
-
-! 		  DO j=3,Ny+2
-! 		    qt(1,1,j)=qA1(1,j-2)		!h-1=h2
-! 		    qt(1,2,j)=qA1(1,j-2)		!h0=h1
-! 		    
-! 		    qt(2,1,j)=qA1(2,j-2)		!u-1=-u2
-! 		    qt(2,2,j)=qA1(2,j-2)		!u0=-u1
-! 		    
-! 		    qt(3,1,j)=qA1(3,j-2)		!v-1=-v2
-! 		    qt(3,2,j)=qA1(3,j-2)		!v0=-v1
-! 		  END DO	
-
-		
-
-
-	 CASE(5) 
-	 		
-		if (IO1==2) then !Outflow, !Cota fija aguas afuera 
-		 !OUTFLOW0_xi(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,hs1,Nsenal1,t,dt,qn,zt,xi,qA1,zA1)
-		!OUTFLOW0_xi(pasoRK,fopt,tipo,MC,Nx,Ny,Fr2,dep,etas1,timeS,Ns,t,dt,q,zt,ep_x,ep2_x,qA,zA)
-		call OUTFLOW0_xi(pasoRK,fopt,Cf,Coef,Nx,Ny,Fr2,dxi,etas1,timeS1,Nsenal1,t,dt,qn,zt,xi,eta,qA1,zA1)
-		else
-		call INFLOW0_xi(pasoRK,fopt,Cf,Coef,Nx,Ny,Fr2,dxi,qsx1,qsy1,etas1,timeS1,Nsenal1,t,dt,qn,zt,xi,eta,qA1,zA1)
-		end if
-		
-		
-		DO j=3,Ny+2
-		
-		qt(1,1,j)=qA1(1,j-2)		!h-1=h2
-		qt(1,2,j)=qA1(1,j-2)		!h0=h1
-		
-		qt(2,1,j)=qA1(2,j-2)		!u-1=-u2
-		qt(2,2,j)=qA1(2,j-2)		!u0=-u1
-		
-		qt(3,1,j)=qA1(3,j-2)		!v-1=-v2
-		qt(3,2,j)=qA1(3,j-2)		!v0=-v1
-	
-		END DO
-	CASE(6) !custom boundary
-	
-	
-	
 END SELECT
 !---------------------------------------------------------------------------
 !Xi=Nx, CB(2)
@@ -285,42 +158,6 @@ END SELECT
 	END DO
 	
 SELECT CASE (CB(2))
-	case(0) !Customized boundary condition
-	  !1 Interpolate
-	  nt1=min(int(t/dt_xiNg1),nt_xiNg1-1)
-	  nt2=min(int(t/dt_xiNg2),nt_xiNg2-1)
-	  if (optxiNg1.eq.1) then
-	    do j=3,Ny+2
-	      zt(Nx+3  ,j)=qxiNg1(1,j-2,nt1+1)
-	      qt(1,Nx+3,j)=qxiNg1(2,j-2,nt1+1)
-	      qt(2,Nx+3,j)=qxiNg1(3,j-2,nt1+1)  
-	      qt(3,Nx+3,j)=qxiNg1(4,j-2,nt1+1)
-	    end do
-	  else
-	    do j=3,Ny+2
-	      call interpj(nt1*dt_xiNg1,qxiNg1(1,j-2,nt1+1),(nt1+1)*dt_xiNg1,qxiNg1(1,j-2,nt1+2),t,zt(Nx+3,j) )
-	      call interpj(nt1*dt_xing1,qxiNg1(2,j-2,nt1+1),(nt1+1)*dt_xiNg1,qxiNg1(2,j-2,nt1+2),t,qt(1,Nx+3,j))
-	      call interpj(nt1*dt_xiNg1,qxiNg1(3,j-2,nt1+1),(nt1+1)*dt_xiNg1,qxiNg1(3,j-2,nt1+2),t,qt(2,Nx+3,j))
-	      call interpj(nt1*dt_xiNg1,qxiNg1(4,j-2,nt1+1),(nt1+1)*dt_xiNg1,qxiNg1(4,j-2,nt1+2),t,qt(3,Nx+3,j))
-	    end do
-	  end if
-	  
-	  if (optxiNg2.eq.1) then
-	    do j=3,Ny+2
-	      zt(Nx+4,j)=qxiNg2(1,j-2,nt1+1)
-	      qt(1,Nx+4,j)=qxiNg2(2,j-2,nt1+1)
-	      qt(2,Nx+4,j)=qxiNg2(3,j-2,nt1+1)  
-	      qt(3,Nx+4,j)=qxiNg2(4,j-2,nt1+1)
-	    end do
-	  else
-	    do j=3,Ny+2
-	      call interpj(nt2*dt_xiNg2,qxiNg2(1,j-2,nt2+1),(nt2+1)*dt_xiNg2,qxiNg2(1,j-2,nt2+2),t,zt(Nx+4,j) )
-	      call interpj(nt2*dt_xiNg2,qxiNg2(2,j-2,nt2+1),(nt2+1)*dt_xiNg2,qxiNg2(2,j-2,nt2+2),t,qt(1,Nx+4,j))
-	      call interpj(nt2*dt_xiNg2,qxiNg2(3,j-2,nt2+1),(nt2+1)*dt_xiNg2,qxiNg2(3,j-2,nt2+2),t,qt(2,Nx+4,j))
-	      call interpj(nt2*dt_xiNg2,qxiNg2(4,j-2,nt2+1),(nt2+1)*dt_xiNg2,qxiNg2(4,j-2,nt2+2),t,qt(3,Nx+4,j))
-	    end do
-	  end if
-
 	CASE(1) !Solid Wall !Ojo que son las velocidades contravariantes las que se usan, pero si las metricas se asumen iguales entonces queda lo mismo que en cartesianas.
 	
 	DO j=3,Ny+2
@@ -387,81 +224,6 @@ SELECT CASE (CB(2))
 	qt(3,Nx+3,j)=qn(3,Nx,j-2)	!vNx+3=vNx
 	
 	END DO	
-	
-	
-	CASE(4) !HAY QUE REVISAR ESTAS FUNCIONES
-		IF (pasoRK==1.OR.pasoRK==3) then
-		    IF (GA2==1) THEN
-		    call genabsNxi_1_1(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,etaR2,Nsenal2,h02,t,dt,qn,zt,xi,qA2,zA2)
-		    
-		    ELSE IF (GA2==2) THEN
-		    call genabsNxi_2_1(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,qs2,hs2,h02,Nsenal2,t,dt,qn,zt,xi,qA2,zA2)
-		    
-		    ELSE IF (GA2==3) THEN
-		    call genabsNxi_3_1(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,us2,hs2,h02,Nsenal2,t,dt,qn,zt,xi,qA2,zA2)
-		    
-	    
-		    	    
-		    END IF
-		
-		qA20=qA2    
-		
-		ELSE IF (pasoRK==2.OR.pasoRK==4) then
-		    IF (GA2==1) THEN
-		    call genabsNxi_1_2(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,etaR2,Nsenal2,h02,t,dt,qn,zt,xi,qA20,qA2,zA2)
-		    ELSE IF (GA2==2) THEN
-		    call genabsNxi_2_2(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,qs2,hs2,h02,Nsenal2,t,dt,qn,zt,xi,qA20,qA2,zA2)
-		    
-		    ELSE IF (GA2==3) THEN
-		    call genabsNxi_3_2(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,us2,hs2,h02,Nsenal2,t,dt,qn,zt,xi,qA20,qA2,zA2)
-		        
-		    END IF		
-		
-		END IF
-
-
-		DO j=3,Ny+2
-		
-		qt(1,Nx+4,j)=qA2(1,j-2)		!h-1=h2
-		qt(1,Nx+3,j)=qA2(1,j-2)		!h0=h1
-		
-		qt(2,Nx+4,j)=qA2(2,j-2)		!u-1=-u2
-		qt(2,Nx+3,j)=qA2(2,j-2)		!u0=-u1
-		
-		qt(3,Nx+4,j)=qA2(3,j-2)		!v-1=-v2
-		qt(3,Nx+3,j)=qA2(3,j-2)		!v0=-v1
-	
-		END DO
-	 
-	 CASE(5) 
-	 		
-		if (IO2==2) then !Outflow, !Cota fija aguas afuera 
-		call OUTFLOWN_xi(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,hs2,Nsenal2,t,dt,qn,zt,xi,qA2,zA2)
-		
-		else if (IO2==1) then
-		call INFLOWN_xi(pasoRK,fopt,Cf,Coef,Nx,Ny,Fr2,dxi,qsx2,qsy2,etas2,timeS2,Nsenal2,t,dt,qn,zt,xi,eta,qA2,zA2)
-		
-		
-		else
-		
-		call OUTFLOWN_V(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,us2,Nsenal2,t,dt,qn,zt,xi,qA2,zA2)
-		
-		end if
-		
-		
-		
-		DO j=3,Ny+2
-
-		qt(1,Nx+4,j)=qA2(1,j-2)		!h-1=h2
-		qt(1,Nx+3,j)=qA2(1,j-2)		!h0=h1
-		
-		qt(2,Nx+4,j)=qA2(2,j-2)		!u-1=-u2
-		qt(2,Nx+3,j)=qA2(2,j-2)		!u0=-u1
-		
-		qt(3,Nx+4,j)=qA2(3,j-2)		!v-1=-v2
-		qt(3,Nx+3,j)=qA2(3,j-2)		!v0=-v1
-	
-		END DO	
 END SELECT
 !---------------------------------------------------------------------------
 !Eta=1, CB(3)
@@ -477,44 +239,6 @@ END SELECT
 	END DO
 	
 SELECT CASE (CB(3)) 
-	case(0) !Customized boundary condition
-	  !1 Interpolate
-	  nt1=min(int(t/dt_eta0g1),nt_eta0g1-1)
-	  nt2=min(int(t/dt_eta0g2),nt_eta0g2-1)
-! 	  print*t,dt_xiNg1*nt1,dt_xiNg2*nt2
-! 	  pause
-	  if (opteta0g1.eq.1) then
-	    do i=3,Nx+2
-	      zt(i,1)=qeta0g1(1,i-2,nt1+1)
-	      qt(1,i,1)=qeta0g1(2,i-2,nt1+1)
-	      qt(2,i,1)=qeta0g1(3,i-2,nt1+1)	    
-	      qt(3,i,1)=qeta0g1(4,i-2,nt1+1) 
-	    end do
-	  else
-	    do i=3,Nx+2
-	      call interpj(nt1*dt_eta0g1,qeta0g1(1,i-2,nt2+1),(nt1+1)*dt_eta0g1,qeta0g1(1,i-2,nt1+2),t,zt(i,1) )
-	      call interpj(nt1*dt_eta0g1,qeta0g1(2,i-2,nt2+1),(nt1+1)*dt_eta0g1,qeta0g1(2,i-2,nt1+2),t,qt(1,i,1))
-	      call interpj(nt1*dt_eta0g1,qeta0g1(3,i-2,nt2+1),(nt1+1)*dt_eta0g1,qeta0g1(3,i-2,nt1+2),t,qt(2,i,1))
-	      call interpj(nt1*dt_eta0g1,qeta0g1(4,i-2,nt2+1),(nt1+1)*dt_eta0g1,qeta0g1(4,i-2,nt1+2),t,qt(3,i,1))
-	    end do
-	  end if
-	  
-	  if (opteta0g2.eq.1) then
-	    do i=3,Nx+2
-	      zt(i,2)=qeta0g2(1,i-2,nt2+1)
-	      qt(1,i,2)=qeta0g2(2,i-2,nt2+1)
-	      qt(2,i,2)=qeta0g2(3,i-2,nt2+1)
-	      qt(3,i,2)=qeta0g2(4,i-2,nt2+1)	
-	    end do
-	  else
-	    do i=3,Nx+2
-	      call interpj(nt2*dt_eta0g2,qeta0g2(1,i-2,nt2+1),(nt2+1)*dt_eta0g2,qeta0g2(1,i-2,nt2+2),t,zt(i,2) )
-	      call interpj(nt2*dt_eta0g2,qeta0g2(2,i-2,nt2+1),(nt2+1)*dt_eta0g2,qeta0g2(2,i-2,nt2+2),t,qt(1,i,2))
-	      call interpj(nt2*dt_eta0g2,qeta0g2(3,i-2,nt2+1),(nt2+1)*dt_eta0g2,qeta0g2(3,i-2,nt2+2),t,qt(2,i,2))
-	      call interpj(nt2*dt_eta0g2,qeta0g2(4,i-2,nt2+1),(nt2+1)*dt_eta0g2,qeta0g2(4,i-2,nt2+2),t,qt(3,i,2))
-	    end do
-	  end if
-
 	CASE(1) !Solid Wall !Ojo que son las velocidades contravariantes las que se usan, pero si las metricas se asumen iguales entonces queda lo mismo que en cartesianas.
 	
 	DO i=3,Nx+2	
@@ -560,52 +284,6 @@ SELECT CASE (CB(3))
 	
 	END DO
 
-	CASE(4)
-! 		IF (GA3==1) THEN
-! 		call genabs0eta_1(Nx,Ny,Fr2,deta,etaL3,Nsenal3,h03,t,dt,qn,zt,eta,qA3,zA3)
-! 		ELSE IF (GA3==2) THEN
-! 		call genabs0eta_2(Nx,Ny,Fr2,deta,qs3,hs3,Nsenal3,t,dt,qn,zt,eta,qA3,zA3)
-! 		ELSE IF (GA3==3) THEN   
-! 		call genabs0eta_3(Nx,Ny,Fr2,deta,qs3,us3,Nsenal3,t,dt,qn,zt,eta,qA3,zA3)
-! 		END IF
-! 		DO i=3,Nx+2
-! 	
-! 		qt(1,i,1)=qA3(1,i-2)		!h-1=h2
-! 		qt(1,i,2)=qA3(1,i-2)		!h0=h1
-! 		
-! 		qt(2,i,1)=qA3(2,i-2)		!u-1=u2
-! 		qt(2,i,2)=qA3(2,i-2)		!u0=-u1
-! 		
-! 		qt(3,i,1)=qA3(3,i-2)		!v-1=v2
-! 		qt(3,i,2)=qA3(3,i-2)		!v0=-v1
-! 		
-! 		END DO
-	CASE(5) 
-	 		
-		if (IO3==2) then !Outflow, !Cota fija aguas afuera 
-		!call OUTFLOWN(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,hs2,Nsenal2,t,dt,qn,zt,xi,qA2,zA2)
-		!ERROR aun no está programada
-		
-		else
-		
-		  call INFLOW0_eta(pasoRK,fopt,Cf,Coef,Nx,Ny,Fr2,deta,qsx3,qsy3,etas3,timeS3,Nsenal3,t,dt,qn,zt,eta,xi,qA3,zA3)
-		
-		end if
-		
-	
-		DO i=3,Nx+2
-
-		qt(1,i,1)=qA3(1,i-2)		!h-1=h2
-		qt(1,i,2)=qA3(1,i-2)		!h0=h1
-		
-		qt(2,i,1)=qA3(2,i-2)		!u-1=-u2
-		qt(2,i,2)=qA3(2,i-2)		!u0=-u1
-		
-		qt(3,i,1)=qA3(3,i-2)		!v-1=-v2
-		qt(3,i,2)=qA3(3,i-2)		!v0=-v1
-	
-		END DO	
-
 END SELECT
 !----------------------------------------------------------------------------------
 !Eta=Ny, CB(4)
@@ -635,44 +313,6 @@ END SELECT
 	END DO
 
 SELECT CASE (CB(4))
-	case(0) !Customized boundary condition
-	  !1 Interpolate
-	  nt1=min(int(t/dt_etaNg1),nt_etaNg1-1)
-	  nt2=min(int(t/dt_etaNg2),nt_etaNg2-1)
-! 	  print*t,dt_xiNg1*nt1,dt_xiNg2*nt2
-! 	  pause
-	  if (optetaNg1.eq.1) then
-	    do i=3,Nx+2
-	      zt(i,Ny+3)=qetaNg1(1,i-2,nt1+1)
-	      qt(1,i,Ny+3)=qetaNg1(2,i-2,nt1+1)
-	      qt(2,i,Ny+3)=qetaNg1(3,i-2,nt1+1)	    
-	      qt(3,i,Ny+3)=qetaNg1(4,i-2,nt1+1) 
-	    end do
-	  else
-	    do i=3,Nx+2
-	      call interpj(nt1*dt_etaNg1,qetaNg1(1,i-2,nt1+1),(nt1+1)*dt_etaNg1,qetaNg1(1,i-2,nt1+2),t,zt(i,Ny+3) )
-	      call interpj(nt1*dt_etaNg1,qetaNg1(2,i-2,nt1+1),(nt1+1)*dt_etaNg1,qetaNg1(2,i-2,nt1+2),t,qt(1,i,Ny+3))
-	      call interpj(nt1*dt_etaNg1,qetaNg1(3,i-2,nt1+1),(nt1+1)*dt_etaNg1,qetaNg1(3,i-2,nt1+2),t,qt(2,i,Ny+3))
-	      call interpj(nt1*dt_etaNg1,qetaNg1(4,i-2,nt1+1),(nt1+1)*dt_etaNg1,qetaNg1(4,i-2,nt1+2),t,qt(3,i,Ny+3))
-	    end do
-	  end if
-	  
-	  if (optetaNg2.eq.1) then
-	    do i=3,Nx+2
-	      zt(i,Ny+4)=qetaNg2(1,i-2,nt2+1)
-	      qt(1,i,Ny+4)=qetaNg2(2,i-2,nt2+1)
-	      qt(2,i,Ny+4)=qetaNg2(3,i-2,nt2+1)
-	      qt(3,i,Ny+4)=qetaNg2(4,i-2,nt2+1)	  
-	    end do
-	  else
-	    do i=3,Nx+2  
-	      call interpj(nt2*dt_etaNg2,qetaNg2(1,i-2,nt2+1),(nt2+1)*dt_etaNg2,qetaNg2(1,i-2,nt2+2),t,zt(i,Ny+4) )
-	      call interpj(nt2*dt_etaNg2,qetaNg2(2,i-2,nt2+1),(nt2+1)*dt_etaNg2,qetaNg2(2,i-2,nt2+2),t,qt(1,i,Ny+4))
-	      call interpj(nt2*dt_etaNg2,qetaNg2(3,i-2,nt2+1),(nt2+1)*dt_etaNg2,qetaNg2(3,i-2,nt2+2),t,qt(2,i,Ny+4))
-	      call interpj(nt2*dt_etaNg2,qetaNg2(4,i-2,nt2+1),(nt2+1)*dt_etaNg2,qetaNg2(4,i-2,nt2+2),t,qt(3,i,Ny+4))
-	    end do
-	  end if
-
 	CASE(1)
 	
 	DO i=3,Nx+2
@@ -719,67 +359,7 @@ SELECT CASE (CB(4))
 	qt(3,i,Ny+3)=qn(3,i-2,Ny)	!vNy+3=-vNy
 
 	END DO
-	
-	
-	CASE(4) !No está programada aun
-! 		IF (GA4==1) THEN
-! 		call genabsNeta_1(Nx,Ny,Fr2,deta,etaL3,Nsenal3,h03,t,dt,qn,zt,eta,qA4,zA4)
-! 		ELSE IF (GA4==2) THEN
-! 		call genabsNeta_2(Nx,Ny,Fr2,deta,qs3,hs3,Nsenal3,t,dt,qn,zt,eta,qA4,zA4)
-! 		ELSE IF (GA4==3) THEN   
-! 		call genabsNeta_3(Nx,Ny,Fr2,deta,qs3,us3,Nsenal3,t,dt,qn,zt,eta,qA4,zA4)
-! 		END IF
-! 
-! 		DO i=3,Nx+2
-! 	
-! 		qt(1,i,Ny+4)=qA4(1,i-2)		!h-1=h2
-! 		qt(1,i,Ny+3)=qA4(1,i-2)		!h0=h1
-! 		
-! 		qt(2,i,Ny+4)=qA4(2,i-2)		!u-1=u2
-! 		qt(2,i,Ny+3)=qA4(2,i-2)		!u0=-u1
-! 		
-! 		qt(3,i,Ny+4)=qA4(3,i-2)		!v-1=v2
-! 		qt(3,i,Ny+3)=qA4(3,i-2)		!v0=-v1
-! 		
-! 		END DO
-	CASE(5) 
-	 		
-		if (IO3==2) then !Outflow, !Cota fija aguas afuera 
-		!call OUTFLOWN(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,hs2,Nsenal2,t,dt,qn,zt,xi,qA2,zA2)
-		!NO ESTA PROGRAMADA
-		
-		else
-		call INFLOWN_eta(pasoRK,fopt,Cf,Coef,Nx,Ny,Fr2,deta,qsx4,qsy4,etas4,timeS4,Nsenal4,t,dt,qn,zt,eta,xi,qA4,zA4)
-		end if
-		
-		
-		
-		DO i=3,Nx+2
-
-		qt(1,i,Ny+4)=qA4(1,i-2)		!h-1=h2
-		qt(1,i,Ny+3)=qA4(1,i-2)		!h0=h1
-		
-		qt(2,i,Ny+4)=qA4(2,i-2)		!u-1=-u2
-		qt(2,i,Ny+3)=qA4(2,i-2)		!u0=-u1
-		
-		qt(3,i,Ny+4)=qA4(3,i-2)		!v-1=-v2
-		qt(3,i,Ny+3)=qA4(3,i-2)		!v0=-v1
-	
-		END DO	
 END SELECT
 
 
 END SUBROUTINE bcs
-
-subroutine interpj(x1,y1,x2,y2,x,y)
-  !interpolates y(x) using the line (x1,y1)-(x2,y2) if x is between x1,x2
-  !extrapolates order 0 if x is outside [x1,x2]  
-  real (kind=8) ::x1,y1,x2,y2,x,y
-  if (x.lt.x1) then
-    y=y1
-  elseif (x2.lt.x) then
-    y=y2
-  else
-    y=y1*(x2-x)/(x2-x1)+y2*(x1-x)/(x1-x2)
-  end if
-end subroutine

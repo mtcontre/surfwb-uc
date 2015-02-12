@@ -2,7 +2,7 @@ SUBROUTINE FLUXES(CB,mmopt,hmin,qt,zt,xit,etat,dxi,deta,Nx,Ny,FR2,Fmas,Fmenos,Gm
 !Funcion que calcula los flujos numericos a traves de las interfaces de cada celda
 !OFICIAL!!! ESTE ES EL QUE SE USA
 
-use senales
+! use senales
 use Jacobianos
 implicit none
 
@@ -106,22 +106,22 @@ Do i=1,Nx+1; Do j=1,Ny
   
   !Reemplazo valores del borde si es que hay bordes gen/abs
   !Igual calcula antes un valor falso usando todas las celdas ficticias que tienen valores, -1=qA, 0=qA
-  IF (i==1.AND.(CB(1)==4.OR.CB(1)==5)) THEN
-  QiR(1,1,j)=qA1(1,j)
-  QiR(2,1,j)=qA1(2,j)
-  QiR(3,1,j)=qA1(3,j)
-  !print*,'QiR=',QiR(1,1,j), QiR(2,1,j), QiR(3,1,j), j
-  !print*,'qA1=',qA1(1,j), qA1(2,j), qA1(3,j), j
-  END IF
-
-  IF (i==Nx+1.AND.(CB(2)==4.OR.CB(2)==5)) THEN
-  !print*, 'holo'
-  QiL(1,Nx+1,j)=qA2(1,j)
-  QiL(2,Nx+1,j)=qA2(2,j)
-  QiL(3,Nx+1,j)=qA2(3,j)
-
-  END IF
-  
+!   IF (i==1.AND.(CB(1)==4.OR.CB(1)==5)) THEN
+!   QiR(1,1,j)=qA1(1,j)
+!   QiR(2,1,j)=qA1(2,j)
+!   QiR(3,1,j)=qA1(3,j)
+!   !print*,'QiR=',QiR(1,1,j), QiR(2,1,j), QiR(3,1,j), j
+!   !print*,'qA1=',qA1(1,j), qA1(2,j), qA1(3,j), j
+!   END IF
+! 
+!   IF (i==Nx+1.AND.(CB(2)==4.OR.CB(2)==5)) THEN
+!   !print*, 'holo'
+!   QiL(1,Nx+1,j)=qA2(1,j)
+!   QiL(2,Nx+1,j)=qA2(2,j)
+!   QiL(3,Nx+1,j)=qA2(3,j)
+! 
+!   END IF
+!   
  
 End Do; End Do
 
@@ -177,16 +177,16 @@ Do i=1,Nx; Do j=1,Ny+1
   
   !Reemplazo valores del borde si es que hay bordes gen/abs
   !Igual calcula antes un valor falso usando todas las celdas ficticias que tienen valores, -1=0, 0=qA
-  IF (j==1.AND.(CB(3)==4.OR.CB(3)==5)) THEN
-  QjR(1,i,1)=qA3(1,i)
-  QjR(2,i,1)=qA3(2,i)
-  QjR(3,i,1)=qA3(3,i)
-  END IF
-  IF (j==Ny+1.AND.(CB(4)==4.OR.CB(4)==5)) THEN
-  QjL(1,i,Ny+1)=qA4(1,i)
-  QjL(2,i,Ny+1)=qA4(2,i)
-  QjL(3,i,Ny+1)=qA4(3,i)
-  END IF
+!   IF (j==1.AND.(CB(3)==4.OR.CB(3)==5)) THEN
+!   QjR(1,i,1)=qA3(1,i)
+!   QjR(2,i,1)=qA3(2,i)
+!   QjR(3,i,1)=qA3(3,i)
+!   END IF
+!   IF (j==Ny+1.AND.(CB(4)==4.OR.CB(4)==5)) THEN
+!   QjL(1,i,Ny+1)=qA4(1,i)
+!   QjL(2,i,Ny+1)=qA4(2,i)
+!   QjL(3,i,Ny+1)=qA4(3,i)
+!   END IF
   
 End Do; End Do
 
@@ -248,12 +248,12 @@ Do i=1,Nx+1; Do j=1,Ny
 
   !Reemplazo valores del borde si es que hay bordes gen/abs
   !Igual calcula antes un valor falso usando todas las celdas ficticias que tienen valores, -1=0, 0=qA
-  IF (i==1.AND.(CB(1)==4.OR.CB(1)==5)) THEN
-  HziR(1,j)=qA1(1,j)+zA1(j)
-  END IF
-  IF (i==Nx+1.AND.(CB(2)==4.OR.CB(2)==5)) THEN
-  HziL(Nx+1,j)=qA2(1,j)+zA2(j)
-  END IF
+!   IF (i==1.AND.(CB(1)==4.OR.CB(1)==5)) THEN
+!   HziR(1,j)=qA1(1,j)+zA1(j)
+!   END IF
+!   IF (i==Nx+1.AND.(CB(2)==4.OR.CB(2)==5)) THEN
+!   HziL(Nx+1,j)=qA2(1,j)+zA2(j)
+!   END IF
   
   
 End Do; End Do
@@ -302,12 +302,12 @@ Do i=1,Nx; Do j=1,Ny+1
   
   HzjR(i,j)=hzt(i+2,j+1)+0.5D0*deta*mm1
   
-  IF (j==1.AND.(CB(3)==4.OR.CB(3)==5)) THEN
-  HzjR(i,1)=qA3(1,i)+zA3(i)
-  END IF
-  IF (j==Ny+1.AND.(CB(4)==4.OR.CB(4)==5)) THEN
-  HzjL(i,Ny+1)=qA4(1,i)+zA4(i)
-  END IF
+!   IF (j==1.AND.(CB(3)==4.OR.CB(3)==5)) THEN
+!   HzjR(i,1)=qA3(1,i)+zA3(i)
+!   END IF
+!   IF (j==Ny+1.AND.(CB(4)==4.OR.CB(4)==5)) THEN
+!   HzjL(i,Ny+1)=qA4(1,i)+zA4(i)
+!   END IF
   
 End Do; End Do
 
@@ -319,24 +319,24 @@ Do i=1,Nx+1; Do j=1,Ny
   ZiR(i,j)=HziR(i,j)-QiR(1,i,j) !De la celda 0 a la N
   
   
-  IF (i==1.AND.(CB(1)==4.OR.CB(1)==5)) THEN
-  ZiR(1,j)=zA1(j)
-  END IF
-  IF (i==Nx+1.AND.(CB(2)==4.OR.CB(2)==5)) THEN
-  ZiL(Nx+1,j)=zA2(j)
-  END IF
+!   IF (i==1.AND.(CB(1)==4.OR.CB(1)==5)) THEN
+!   ZiR(1,j)=zA1(j)
+!   END IF
+!   IF (i==Nx+1.AND.(CB(2)==4.OR.CB(2)==5)) THEN
+!   ZiL(Nx+1,j)=zA2(j)
+!   END IF
 End Do; End Do
 
 Do i=1,Nx; Do j=1,Ny+1
   ZjL(i,j)=HzjL(i,j)-QjL(1,i,j)
   ZjR(i,j)=HzjR(i,j)-QjR(1,i,j)
   
-  IF (j==1.AND.(CB(3)==4.OR.CB(3)==5)) THEN
-  ZjR(i,1)=zA3(i)
-  END IF
-  IF (j==Ny+1.AND.(CB(3)==4.OR.CB(4)==5)) THEN
-  ZjL(i,Ny+1)=zA4(i)
-  END IF
+!   IF (j==1.AND.(CB(3)==4.OR.CB(3)==5)) THEN
+!   ZjR(i,1)=zA3(i)
+!   END IF
+!   IF (j==Ny+1.AND.(CB(3)==4.OR.CB(4)==5)) THEN
+!   ZjL(i,Ny+1)=zA4(i)
+!   END IF
 End Do; End Do
 
 !4.Hydrostatic Reconstruction of the water heigh

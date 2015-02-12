@@ -4,6 +4,8 @@
 ! Este es el que se está usando!!!!
 SUBROUTINE VFROENCV(i,j,FR2,qR,qL,epR,epL,hmin,qs)
 use global_variables, only:goout
+use mpi
+use mpi_surf
 !qR=qmas
 !qL=qmenos
 real (kind=8), dimension(3)	:: qL,qR,qs, WL,WR,WS,WRL,Fs,WM,L,LR,LL
@@ -195,7 +197,7 @@ END IF
 
 IF (WS(1)<0.0D0) THEN 
 print*, 'ERROR, C is negative'
-print*, i,j
+print*, i,j,coords
 	
 	print*,'2C= ', WS(1)
 	print*,'u= ', WS(2)
@@ -215,7 +217,7 @@ print*, i,j
 !		WS(2)=0
 !		WS(3)=0
 !pause
-! stop
+call mpi_abort(mpi_comm_world,0,ierror)
 
 ELSE
   IF ((0.5D0*WS(1)).le.kappa) then

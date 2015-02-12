@@ -1,9 +1,8 @@
 SUBROUTINE solver1
 !4th order time integration
 ! NO friction, 4th order RK
-USE global_variables
-USE geometries
-use custombc
+use global_variables
+use geometries
 
 implicit none
 
@@ -274,9 +273,9 @@ qnew_global=q4
 
 !V y C para calcular dt
 call VyC!stability_celerities_in
-if ( (flagxi0.eq.1).or.(flagxiN.eq.1).or.(flageta0.eq.1).or.(flagetaN.eq.1).or.(CB(1).eq.4) )then
-    call stability_celerities_boundary(q1T)
-end if
+! if ( (flagxi0.eq.1).or.(flagxiN.eq.1).or.(flageta0.eq.1).or.(flagetaN.eq.1).or.(CB(1).eq.4) )then
+!     call stability_celerities_boundary(q1T)
+! end if
 
 !-----------------------------------------
 
