@@ -1,0 +1,60 @@
+ -------------results                                                                                                                                                                                                                                                         
+Caso:                    999
+T_final (s):                1.00
+CFL:                     0.45
+Nbx:                       300
+Nby:                       300
+Escalas (L, H, U):       1.00 1.00 1.00
+Condiciones de Borde:    1 1 1 1
+Usando limitador MINMOD, mmop 1 
+ Fr2=   0.10191602119853242     
+ InitFlowfieldOK
+ Simulacion Incializada
+Start Solver
+ ------------------------------
+ dt=    5.2521679798992749E-003
+Iteracion=   8
+ Time=   0.20000000000000001     
+%Volumen= 100.000%
+ nxi=         300 neta=         300
+Time Elapsed =        7.0 seconds.
+Time Estimated =       34.9 seconds.
+ ------------------------------
+ dt=    2.2992058596823017E-002
+Iteracion=  16
+ Time=   0.40000000000000002     
+%Volumen= 100.000%
+ nxi=         300 neta=         300
+Time Elapsed =       14.8 seconds.
+Time Estimated =       36.9 seconds.
+ ------------------------------
+ dt=    2.8817300633757759E-003
+Iteracion=  25
+ Time=   0.60000000000000009     
+%Volumen= 100.000%
+ nxi=         300 neta=         300
+Time Elapsed =       23.3 seconds.
+Time Estimated =       38.8 seconds.
+ ------------------------------
+ dt=    5.5614529553318359E-003
+Iteracion=  34
+ Time=   0.80000000000000004     
+%Volumen= 100.000%
+ nxi=         300 neta=         300
+Time Elapsed =       31.7 seconds.
+Time Estimated =       39.6 seconds.
+ ------------------------------
+ dt=    8.5801824728771736E-003
+Iteracion=  43
+ Time=    1.0000000000000000     
+%Volumen= 100.000%
+ nxi=         300 neta=         300
+Time Elapsed =       40.2 seconds.
+Time Estimated =       40.2 seconds.
+ ------------------------------
+ Simulation Ended
+ Final Time of Computation=    1.0237752596723040     
+ tfinal   1.0000000000000000     
+ treal+dtreal   1.0475505193446080     
+ Iteraciones          44
+ Time Elapsed =    41.739020000000004       seconds.
