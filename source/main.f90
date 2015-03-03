@@ -22,6 +22,7 @@ PROGRAM MAIN !Ponerle un nombre decente
   real (kind=8), dimension(2) :: xieta, loc
   real (kind=8), dimension(:), allocatable:: dxdy
   real (kind=8) :: time_start,time_finish, time_estim
+  integer :: clock_start, clock_rate, clock_finish
 
 	  
 
@@ -69,7 +70,11 @@ PROGRAM MAIN !Ponerle un nombre decente
   !MAIN CYCLE!
 
   !Do while (it<=1) !to find errors
-  call cpu_time(time_start)
+!   call cpu_time(time_start)
+  
+  call system_clock(clock_start,clock_rate)
+  
+  time_start = real(clock_start,kind=8) /real(clock_rate,kind=8)
   
   DO while(treal<=tfinal+1.d-10)
     !1. Calculate time step with the CFL condition
@@ -115,9 +120,11 @@ PROGRAM MAIN !Ponerle un nombre decente
       
       print*,'nxi=',Nbx,'neta=',Nby
       !Pvol1=Pvol
-	      call cpu_time(time_finish)
+! 	      call cpu_time(time_finish)
+      call system_clock(clock_finish, clock_rate)
+      time_finish = real(clock_finish ,kind=8) / real(clock_rate,kind=8)
       write(*,171) time_finish-time_start
-      171 format ('Time Elapsed = ',f10.1,' seconds.')
+      171 format ('Time Elapsed = ',1f10.1,' seconds.')
 
       time_estim=(time_finish-time_start)*tfinal/treal
       write(*,172) time_estim
@@ -135,7 +142,9 @@ PROGRAM MAIN !Ponerle un nombre decente
     qold_global=qnew_global
     
   END DO
-call cpu_time(time_finish)
+! call cpu_time(time_finish)
+call system_clock(clock_finish, clock_rate)
+      time_finish = real(clock_finish ,kind=8) / real(clock_rate,kind=8)
   print *, 'Simulation Ended'
   print *, 'Final Time of Computation= ', t
   print *, 'tfinal', tfinal
@@ -144,3 +153,5 @@ call cpu_time(time_finish)
   print *, 'Time Elapsed = ',time_finish-time_start,' seconds.'
   call cpu_time(time_finish)
 END PROGRAM MAIN
+
+
