@@ -1,0 +1,20 @@
+#!/bin/bash
+#PBS -N db2d_1_32_1000
+#PBS -l nodes=1:ppn=32
+#PBS -l walltime=01:59:59
+#PBS -l pmem=1000MB
+#PBS -M jdgalaz@uc.cl
+#PBS -V
+#PBS -q work
+#PBS -m ea
+cd $PBS_O_WORKDIR
+date
+ulimit -s unlimited
+module load openmpi/1.6.5/gcc
+module load anaconda/1.8.0
+export OMP_STACKSIZE=16M
+export OMP_NUM_THREADS=32
+make
+export INDIR=data_1_32_1000/
+./xsurf
+date

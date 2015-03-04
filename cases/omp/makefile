@@ -6,7 +6,6 @@ SURF_OUT_DIR=$(CURDIR)/results/
 SURF_LIB=$(SURF)/source
 SURF_MAKE=$(SURF_LIB)/makefile
 
-
 FFLAGS = -O3 -fopenmp
 LFLAGS = -O3 -fopenmp
 SURF_SOURCES = $(SURF_LIB)/MODULES.f90 \
