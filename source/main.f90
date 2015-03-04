@@ -13,6 +13,7 @@ PROGRAM MAIN !Ponerle un nombre decente
   USE senales	!Use senales module for inflow or outflow BC
   USE TimeSeries
   use custombc
+  
   implicit none 
 
   !Declare variables that are used here and only here if it is necessary
@@ -23,9 +24,10 @@ PROGRAM MAIN !Ponerle un nombre decente
   real (kind=8), dimension(:), allocatable:: dxdy
   real (kind=8) :: time_start,time_finish, time_estim
   integer :: clock_start, clock_rate, clock_finish
-
-	  
-
+  integer :: omp_nthreads, omp_threadid, omp_get_num_threads, omp_get_thread_num
+  character (len=255) :: formatstring
+  logical :: fexists
+  
   g=9.812D0
   hmin=1.0E-7
   it=0.0D0
@@ -151,7 +153,26 @@ call system_clock(clock_finish, clock_rate)
   print *, 'treal+dtreal',treal+dtreal
   print *, 'Iteraciones', it
   print *, 'Time Elapsed = ',time_finish-time_start,' seconds.'
-  call cpu_time(time_finish)
+  
+  !save execution times
+!$omp parallel private(omp_threadid, omp_nthreads)
+  omp_nthreads = omp_get_num_threads()
+  omp_threadid = omp_get_thread_num()
+  
+  if (omp_threadid==0) then
+    print *, 'Num threads used =', omp_nthreads
+    inquire(file='times.txt',exist=fexists)
+    
+    if (fexists) then
+      open(unit=0, file='times.txt', status='old', position='append', action='write')
+    else
+      open(unit=0, file='times.txt', status='new', action='write')
+    end if
+    
+    formatstring = '(i4,",",i4,",",E20.10,",",E20.10,",",E20.10)'
+    write(unit=0,fmt=formatstring) Nbx, omp_nthreads, time_finish-time_start, time_start, time_finish
+  end if
+!$omp end parallel
 END PROGRAM MAIN
 
 

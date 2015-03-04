@@ -3,8 +3,17 @@ subroutine input_control
 use global_variables
 use senales
 use custombc
+
+
 implicit none
-open(1,file='data/input.dat')
+
+integer :: omp_nthreads, omp_threadid, omp_get_num_threads, omp_get_thread_num
+  
+!get input data directory from environment
+call get_environment_variable('INDIR',indir)
+
+!start reading input data
+open(1,file=trim(indir)//'/input.dat')
 read(1,*) caso  
 read(1,*) tinit
 treal=tinit
@@ -183,6 +192,17 @@ else
 write(*,163) mmopt
 163 FORMAT ('Usando limitador MC, mmopt= ', T30, 4I2)
 end if
+
+!$omp parallel private(omp_threadid, omp_nthreads)
+omp_nthreads = omp_get_num_threads()
+omp_threadid = omp_get_thread_num()
+if (omp_threadid==0) then
+  write(*,164) omp_nthreads
+164 FORMAT ('Usando nthreads: ', T30, 4I2)
+end if
+!$omp end parallel
+
+
 
 
 end subroutine input_control

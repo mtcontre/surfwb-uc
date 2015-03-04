@@ -70,7 +70,7 @@ select case(borde)
     allocate(etaL9(Ns,Nby),timeS9(Ns))
     
     !Cambiar nombre para otros casos
-    open(unit=90,file='data/etaxi0.dat')
+    open(unit=90,file=trim(indir)//'/etaxi0.dat')
     h01=0.97D0
     read(90,*) ((etaL9(i,j),i=1,Ns),j=1,Nby)
 	!etaL9=etaL9+0.001D0
@@ -80,7 +80,7 @@ select case(borde)
     close(unit=50)
     print*,'fdsa',shape(etaL9)
     print*,'Ns',Ns
-    open(unit=91,file='data/timexi0.dat')
+    open(unit=91,file=trim(indir)//'/timexi0.dat')
     read (91,*) (timeS9(i),i=1,Ns)
     close(unit=91)
     end if

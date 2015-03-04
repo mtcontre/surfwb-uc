@@ -22,7 +22,7 @@ subroutine input_friction
 	  end do
 	end do
       else if (fM==2) then!matrix
-	open	(unit=99, file ='data/friction_run31.dat')
+	open	(unit=99, file =trim(indir)//'/friction_run31.dat')
 	read(99,*) ((buffMCoef(level)%bMcoef(i,j),i=1,nxi(level)),j=1,neta(level))
 	close(unit=99)
       end if

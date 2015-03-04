@@ -24,7 +24,7 @@ logical :: print_out = .False.
 integer,dimension(4) :: CB
 integer	::caso,Nbx, Nby, mmopt, rk, outopt, fopt, fM, Cf
 character (len=120),dimension(3) :: batiname,initqname
-character(len=256)::outdir
+character(len=256)::outdir,indir
 !Lagrangian Particle tracking
 integer, parameter :: Nbz=1
 

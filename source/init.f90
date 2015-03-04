@@ -7,6 +7,7 @@ SUBROUTINE init
   USE senales
   USE coords
   use custombc
+
   implicit none
 
   integer :: i,j 
@@ -36,7 +37,7 @@ SUBROUTINE init
       print*, 'friccionOK'
     ELSE !Lee matriz de friccion de un archivo binario
       !open	(unit=99, file ='friccion.dat', form='unformatted')
-      open	(unit=99, file ='data/friction_run31.dat')
+      open	(unit=99, file =trim(indir)//'/friction_run31.dat')
       read(99,*) ((MCoef(i,j),i=1,Nbx),j=1,Nby)
       !read	(unit=99) ((MCoef(i,j),i=1,Nbx),j=1,Nby)
       close(unit=99)
@@ -116,7 +117,7 @@ SUBROUTINE init_flowfield
 	    Ntot=Nbx*Nby
 	    print*,'Reading initq.dat . . .'
 	    !Lee batimetria Leandro
-	    open(unit=99,file='data/initq.dat')
+	    open(unit=99,file=trim(indir)//'/initq.dat')
 	    
 	    Do i=1,Ntot
 	      read(99,*) hin(i), uin(i), vin(i)

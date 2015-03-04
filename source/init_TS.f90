@@ -6,7 +6,7 @@ SUBROUTINE init_TS
 
   USE TimeSeries
   USE geometries, only: x_global, y_global
-  use global_variables, only: outdir
+  use global_variables, only: outdir,indir
   !USE geometries
   !USE senales
   !USE time0
@@ -14,7 +14,7 @@ SUBROUTINE init_TS
   integer ::error,i,j,l,m
 
   ! Nts=1 ! Number of points for time series output
-  open(unit=60,file='data/gauges.dat')
+  open(unit=60,file=trim(indir)//'/gauges.dat')
   !coordx-coordy
   read(60,*) Nts
   ! dt_TS=0.05 ! timestep to save Time Series and LPT   

@@ -60,7 +60,7 @@ subroutine custombc_xi0
   nvar=4!number of variables to read: (z,h,u,v)
   print*,'Reading customized BC for xi_0'
   !1: first group (row,column,whatever) of ghost cells
-  open(unit=99,file='data/bcxi0g1.dat')
+  open(unit=99,file=trim(indir)//'//bcxi0g1.dat')
   read(99,*) nt_xi0g1
   read(99,*) dt_xi0g1
   read(99,*) optxi0g1
@@ -79,7 +79,7 @@ subroutine custombc_xi0
   end do
   close(unit=99)
   !2: second group of ghost cells
-  open(unit=100,file='data/bcxi0g2.dat')
+  open(unit=100,file=trim(indir)//'/bcxi0g2.dat')
   read(100,*) nt_xi0g2
   read(100,*) dt_xi0g2
   read(100,*) optxi0g2
@@ -110,7 +110,7 @@ subroutine custombc_xiN
   nvar=4!number of variables to read: (z,h,u,v)
   print*,'Reading customized BC for xi_N'
   !1: first group (row,column,whatever) of ghost cells
-  open(unit=99,file='data/bcxiNg1.dat')
+  open(unit=99,file=trim(indir)//'/bcxiNg1.dat')
   read(99,*) nt_xiNg1
   read(99,*) dt_xiNg1
   read(99,*) optxiNg1
@@ -129,7 +129,7 @@ subroutine custombc_xiN
   end do
   close(unit=99)
   !2: second group of ghost cells
-  open(unit=100,file='data/bcxiNg2.dat')
+  open(unit=100,file=trim(indir)//'/bcxiNg2.dat')
   read(100,*) nt_xiNg2
   read(100,*) dt_xiNg2
   read(100,*) optxiNg2
@@ -160,7 +160,7 @@ subroutine custombc_eta0
   nvar=4!number of variables to read: (z,h,u,v)
   print*,'Reading customized BC for eta0'
   !1: first group (row,column,whatever) of ghost cells
-  open(unit=99,file='data/bceta0g1.dat')
+  open(unit=99,file=trim(indir)//'/bceta0g1.dat')
   read(99,*) nt_eta0g1
   read(99,*) dt_eta0g1
   read(99,*) opteta0g1
@@ -179,7 +179,7 @@ subroutine custombc_eta0
   end do
   close(unit=99)
   !2: second group of ghost cells
-  open(unit=100,file='data/bceta0g2.dat')
+  open(unit=100,file=trim(indir)//'/bceta0g2.dat')
   read(100,*) nt_eta0g2
   read(100,*) dt_eta0g2
   read(100,*) opteta0g2
@@ -211,7 +211,7 @@ subroutine custombc_etaN
   print*,'Reading customized BC for etaN'
   
   !1: first group (row,column,whatever) of ghost cells
-  open(unit=99,file='data/bcetaNg1.dat')
+  open(unit=99,file=trim(indir)//'/bcetaNg1.dat')
   read(99,*) nt_etaNg1
   read(99,*) dt_etaNg1
   read(99,*) optetaNg1
@@ -231,7 +231,7 @@ subroutine custombc_etaN
   close(unit=99)
   
   !2: second group of ghost cells
-  open(unit=100,file='data/bcetaNg2.dat')
+  open(unit=100,file=trim(indir)//'/bcetaNg2.dat')
   read(100,*) nt_etaNg2
   read(100,*) dt_etaNg2
   read(100,*) optetaNg2
