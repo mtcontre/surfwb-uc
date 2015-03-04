@@ -50,8 +50,12 @@ integer,dimension(4)::CB
 !Osea desde i=2 a i=Nx+3
 
 
-!$omp parallel private(U1, Fs, Fb, U2, Gs, Gb, qmenos, &
-!$omp qmas, etamenos, etamas, ximas, qs, zmj, zm)
+!$omp parallel private(x, y, z, mm, maxm1, maxm2, &
+!$omp x1, y1, z1, mm1,  zm, zmj, &
+!$omp qmenos, ximenos, qmas, ximas, qs, etamenos, etamas, &
+!$omp U1, Fs, Fb, U2, Gs, Gb)
+
+!---------loop 1---------------x,y,z,mm,maxm1,maxm2
 !$omp do
 Do i=1,Nx+1; Do j=1,Ny
   !Se necesita QiL de la celda 1 a la N+1
@@ -125,11 +129,9 @@ Do i=1,Nx+1; Do j=1,Ny
   
  
 End Do; End Do
-!$aomp end do
+!$omp end do NOWAIT
 
-
-!a$omp parallel private(U1, Fs, Fb, U2, Gs, Gb, qmenos, &
-!a$omp qmas, etamenos, etamas, ximas, qs, zmj, zm)
+!---------loop 2---------------x,y,z,mm,maxm1,maxm2
 !$omp do
 Do i=1,Nx; Do j=1,Ny+1
   
@@ -195,20 +197,18 @@ Do i=1,Nx; Do j=1,Ny+1
   END IF
   
 End Do; End Do
-!$omp end do
+!$omp end do NOWAIT
 
 !2.Linear Reconstruction of the free surface
 
-!a$omp parallel private(U1, Fs, Fb, U2, Gs, Gb, qmenos, &
-!a$omp qmas, etamenos, etamas, ximas, qs, zmj, zm)
+!---------loop 3--------------- no privates
 !$omp do
 DO i=1,(Nx+4); DO j=1,(Ny+4)
   hzt(i,j)=qt(1,i,j)+zt(i,j)
 END DO; END DO
 !$omp end do
 
-!a$omp parallel private(U1, Fs, Fb, U2, Gs, Gb, qmenos, &
-!a$omp qmas, etamenos, etamas, ximas, qs, zmj, zm)
+!---------loop 4---------------x1,y1,z1,mm1,maxm1,maxm2
 !$omp do
 Do i=1,Nx+1; Do j=1,Ny
 
@@ -268,10 +268,9 @@ Do i=1,Nx+1; Do j=1,Ny
   
   
 End Do; End Do
-!$omp end do
+!$omp end do NOWAIT
 
-!a$omp parallel private(U1, Fs, Fb, U2, Gs, Gb, qmenos, &
-!a$omp qmas, etamenos, etamas, ximas, qs, zmj, zm)
+!---------loop 5---------------x1,y1,z1,mm1,maxm1,maxm2
 !$omp do
 Do i=1,Nx; Do j=1,Ny+1
 
@@ -355,9 +354,7 @@ End Do; End Do
 
 !3.Bathymethry Reconstruction using the linear reconstruction of the free surface
 
-
-!a$omp parallel private(U1, Fs, Fb, U2, Gs, Gb, qmenos, &
-!a$omp qmas, etamenos, etamas, ximas, qs, zmj, zm)
+!---------loop 6--------------- no privates
 !$omp do
 Do i=1,Nx+1; Do j=1,Ny
 
@@ -372,8 +369,9 @@ Do i=1,Nx+1; Do j=1,Ny
   ZiL(Nx+1,j)=zA2(j)
   END IF
 End Do; End Do
-!$omp end do
+!$omp end do NOWAIT
 
+!---------loop 7---------------no privates
 !$omp do
 Do i=1,Nx; Do j=1,Ny+1
   ZjL(i,j)=HzjL(i,j)-QjL(1,i,j)
@@ -393,6 +391,7 @@ End Do; End Do
 !hmas contiene h_i+1/2mas desde i=0+1/2 a i=N+1/2
 !hmenos contiene h_i+1/2menos desde i=0+1/2 a i=N+1/2
 
+!---------loop 8---------------zm
 !$omp do
 DO i=1,Nx+1; DO j=1,Ny
 zm=max(ZiR(i,j),ZiL(i,j))	!Max(Z0R,Z1L)	!Max(ZNR,ZN+1L) !MAX(ZiR,Zi+1L)
@@ -412,8 +411,9 @@ QiL(3,i,j)=0.0D0
 end if
 
 END DO; END DO
-!$omp end do
+!$omp end do NOWAIT
 
+!---------loop 9---------------
 !$omp do
 DO i=1,Nx; DO j=1,Ny+1
 zmj=max(ZjR(i,j),ZjL(i,j))
@@ -432,7 +432,7 @@ QjL(2,i,j)=0.0D0
 QjL(3,i,j)=0.0D0
 end if
 END DO; END DO
-!$omp end do
+!$omp end do NOWAIT
 
 
 !5.Fluxes Calculations: -Riemann solver using the values from the hydrostatic reconstruction
@@ -445,25 +445,27 @@ END DO; END DO
 !Jac_global: Jac de (xi,eta)=(1,1) a (Nx,Ny), Jacobiano centrado en la celda
 ! 
 
-
-!omp do
+!---------loop 10---------------
+!$omp do
 DO i=2,Nx+2; DO j=3,Ny+2
 xi(:,i-1,j-2)=xit(:,i,j)
 !Jac1(i-1,j-2)=xit(1,i,j)*etat(2,i,j)-xit(2,i,j)*etat(1,i,j) !Ji+1/2,j, calculo J i=0 a i=Nx+1, j=1 a j=Ny
 END DO; END DO
-!omp end do
+!$omp end do NOWAIT
 
-!omp do
+!---------loop 11---------------
+!$omp do
 DO i=3,Nx+2; DO j=2,Ny+2
 eta(:,i-2,j-1)=etat(:,i,j)
 !Jac2(i-2,j-1)=xit(1,i,j)*etat(2,i,j)-xit(2,i,j)*etat(1,i,j) !Ji,j+1/2, calculo J j=0 a j=Ny+1, i=1 a i=Nx
 END DO; END DO
-!omp end do
+!$omp end do
 
 
 !Qstar
 !Variables en cada Qstar, de la interfaz 0 a N
 
+!---------loop 12--------------- qmenos,ximenos, qmas,ximas, qs
 !$omp do
 do i=1,Nx+1; do j=1,Ny
 !Parto con la interfaz  0+1/2,j hasta la interfaz N+1/2, en total son N+1 interfaces
@@ -487,13 +489,9 @@ Qstari(:,i,j)=qs(:)
 ! end if
 
 end do; end do
-!aa$omp end parallel do
-!$omp end do
+!$omp end do NOWAIT
 
-! print*, Qstari(1,Nx+1,3),Qstari(2,Nx+1,3),hmenosi(Nx+1,3),hmasi(Nx+1,3),QiR(2,Nx+1,3),QiL(2,Nx+1,3)
-
-
-
+!---------loop 13---------------qmenos,etamenos, qmas,etamas, qs
 !$omp do
 do i=1,Nx; do j=1,Ny+1
 
@@ -516,7 +514,7 @@ end do; end do
 
 !F fluxes
 
-
+!---------loop 14---------------U1,Fs,Fb
 !$omp do
 DO i=1,Nx; DO j=1,Ny
 
@@ -563,10 +561,11 @@ Jac_global(i,j)-hmenosi(i+1,j)**2.0D0*xi(2,i+1,j)/Jac_global_xi(i+1,j))
 Fmenos(:,i,j)=Fs+Fb
 
 End do; End do
-!$omp end do
+!$omp end do NOWAIT
 
 !G fluxes
 
+!---------loop 15---------------U2,Gs,Gb
 !$omp do
 DO i=1,Nx; DO j=1,Ny
 
@@ -604,10 +603,11 @@ Gb(3)=1.0D0/(2.0D0*FR2)*(QjR(1,i,j+1)**2.0D0*eta(2,i,j+1)/Jac_global(i,j)-hmenos
 Gmenos(:,i,j)=Gs+Gb
 
 END DO; END DO
-!$omp end do
+!$omp end do NOWAIT
 
 !6. Centered Source Term
 
+!---------loop 16---------------no privates
 !$omp do
 DO i=1,Nx; DO j=1,Ny
 

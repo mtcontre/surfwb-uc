@@ -33,7 +33,7 @@ def setrun(nxi,neta,nn,npr,indir):
   limtype=1
   fricopt=0
   outopt=1
-  outdir='results_%(nn)i_%(np)i_%(nm)i/'%({'nn':nn+1,'np':npr,'nm':nxi})
+  outdir='results'#_%(nn)i_%(np)i_%(nm)i/'%({'nn':nn+1,'np':npr,'nm':nxi})
 
   import os
   os.system('mkdir %s'%outdir)

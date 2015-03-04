@@ -34,7 +34,7 @@ SURF_SOURCES = $(SURF_LIB)/MODULES.f90 \
 	$(SURF_LIB)/pascua.f90 \
 	$(SURF_LIB)/solver2.f90 \
 	$(SURF_LIB)/tracking.f90 \
-	./fluxes_par1.f90 \
+	./fluxes_par2.f90 \
 	$(SURF_LIB)/fzeroEP_1.f90 \
 	$(SURF_LIB)/genabsNxi.f90 \
 	$(SURF_LIB)/init_TS.f90 \
