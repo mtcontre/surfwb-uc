@@ -1,24 +1,17 @@
 #compile Surf-UC
-F90=mpif90
+F90=gfortran
 SURF_IN_DIR=$(CURDIR)/data/
 SURF_OUT_DIR=$(CURDIR)/results/
 
 SURF_LIB=../../source/
 SURF_MAKE=$(SURF_LIB)/makefile
-
+	
 include $(SURF_MAKE)
 
 .PHONY: xsurf cleanresults cleanplot plot
 run: xsurf
 	./xsurf
-run3: xsurf
-	mpiexec.openmpi -np 3 xsurf
 cleanloc:
 	rm -f $(INDIR)
 	rm -f results
-# cleanplot:
-# 	rm visualizar/*.png
-# plot:
-# 	cd visualizar
-# 	mpiexec.openmpi -np 3 python ver_par.py
-	
+	rm -f vis	
