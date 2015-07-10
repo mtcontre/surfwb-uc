@@ -1,7 +1,0 @@
-dit 00001
-nproc 001
-dims 001 001
-ngrids 001
-nxi  0030
-neta 0130
- data/gridX.dat data/gridY.dat data/gridZ.dat

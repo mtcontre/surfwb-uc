@@ -13,13 +13,12 @@ run: xsurf
 	./xsurf
 run3: xsurf
 	mpiexec.openmpi -np 3 xsurf
-cleanresults:
-	rm -f $(SURF_OUT_DIR)*.gz
-	rm -f $(SURF_OUT_DIR)*.dat
-	rm -f visualizar/*.png
-cleanplot:
-	rm visualizar/*.png
-plot:
-	cd visualizar
-	mpiexec.openmpi -np 3 python ver_par.py
+cleanloc:
+	rm -f $(INDIR)
+	rm -f results
+# cleanplot:
+# 	rm visualizar/*.png
+# plot:
+# 	cd visualizar
+# 	mpiexec.openmpi -np 3 python ver_par.py
 	
