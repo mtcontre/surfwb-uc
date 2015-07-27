@@ -1,6 +1,7 @@
-# README #
+# SurfWB-UC #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+A two-dimensional shallow water model that accurately reproduces shock-waves and steady states through a shock-capturing well-balanced scheme (Guerra et al., 2014). It was initially developed by Maricarmen Guerra, but has had several additions from Leandro Suarez, José Galaz and María Teresa Contreras. This is the main repository for the code.
+
 
 ### What is this repository for? ###
 
