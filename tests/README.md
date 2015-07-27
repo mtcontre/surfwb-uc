@@ -1,4 +1,4 @@
-#TEST CASES#
+#TEST CASES
 
 Every major change must pass the following tests
 
