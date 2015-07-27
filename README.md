@@ -12,7 +12,46 @@ Under linux the requirements are
 
 ## Installation instructions
 First clone the repository in your home directory with
+
     git clone https://JoseGalazM@bitbucket.org/JoseGalazM/surfwb-uc.git
+
+then add to your .bashrc
+
+    export SURF=/home/username/surfwb-uc/
+
+and start a new terminal or update your environment variables with
+
+    source .bashrc
+
+## Running an example
+
+If everything is fine you should go to the tests directory with just
+
+    cd $SURF/tests/
+
+and now pick one of them, for example the two dimensional partial dambreak
+
+    cd test2_db2d
+
+if you have the gnu fortran compiler gfortran, then try compiling with
+
+     make clean
+     make
+
+now you need all python 2.7, numpy and matplotlib to run
+
+     python setrun.py
+
+this will create directories data/ and results/, and inside data/ you can see the bathymetry and initial condition in .png files. Now we are ready to run
+
+    ./xsurf
+
+and to see some results, you can try
+
+     python ver.py
+
+which should produce many png files with frames of the simulation in vis/*.png.
+
 
 
 ### What is this repository for? ###
