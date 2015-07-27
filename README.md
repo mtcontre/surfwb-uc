@@ -3,6 +3,7 @@
 A two-dimensional shallow water model that accurately reproduces shock-waves and steady states through a shock-capturing well-balanced scheme (Guerra et al., 2014). It was initially developed by Maricarmen Guerra, but has had several additions from Leandro Suarez, José Galaz and María Teresa Contreras. This is the main repository for the code.
 
 ## System requirements
+Under linux the requirements are
 
 * gfortran
 * python 2.7
@@ -10,6 +11,8 @@ A two-dimensional shallow water model that accurately reproduces shock-waves and
 * matplotlib
 
 ## Installation instructions
+First clone the repository in your home directory with
+    git clone https://JoseGalazM@bitbucket.org/JoseGalazM/surfwb-uc.git
 
 
 ### What is this repository for? ###
