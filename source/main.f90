@@ -156,22 +156,22 @@ call system_clock(clock_finish, clock_rate)
   
   !save execution times
 !$omp parallel private(omp_threadid, omp_nthreads)
-  omp_nthreads = omp_get_num_threads()
-  omp_threadid = omp_get_thread_num()
+!$  omp_nthreads = omp_get_num_threads()
+!$  omp_threadid = omp_get_thread_num()
   
-  if (omp_threadid==0) then
-    print *, 'Num threads used =', omp_nthreads
-    inquire(file='times.txt',exist=fexists)
+!$  if (omp_threadid==0) then
+!$    print *, 'Num threads used =', omp_nthreads
+!$    inquire(file='times.txt',exist=fexists)
     
-    if (fexists) then
-      open(unit=0, file='times.txt', status='old', position='append', action='write')
-    else
-      open(unit=0, file='times.txt', status='new', action='write')
-    end if
+!$    if (fexists) then
+!$      open(unit=0, file='times.txt', status='old', position='append', action='write')
+!$    else
+!$      open(unit=0, file='times.txt', status='new', action='write')
+!$    end if
     
-    formatstring = '(i4,",",i4,",",E20.10,",",E20.10,",",E20.10)'
-    write(unit=0,fmt=formatstring) Nbx, omp_nthreads, time_finish-time_start, time_start, time_finish
-  end if
+!$    formatstring = '(i4,",",i4,",",E20.10,",",E20.10,",",E20.10)'
+!$    write(unit=0,fmt=formatstring) Nbx, omp_nthreads, time_finish-time_start, time_start, time_finish
+!$  end if
 !$omp end parallel
 END PROGRAM MAIN
 
