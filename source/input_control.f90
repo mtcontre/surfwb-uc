@@ -194,8 +194,8 @@ write(*,163) mmopt
 end if
 
 !$omp parallel private(omp_threadid, omp_nthreads)
-omp_nthreads = omp_get_num_threads()
-omp_threadid = omp_get_thread_num()
+!$ omp_nthreads = omp_get_num_threads()
+!$ omp_threadid = omp_get_thread_num()
 if (omp_threadid==0) then
   write(*,164) omp_nthreads
 164 FORMAT ('Usando nthreads: ', T30, 4I2)

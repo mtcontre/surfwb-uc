@@ -5,71 +5,80 @@ import os
 os.system('mkdir data')
 os.system('mkdir results')
 os.system('mkdir results/timeseries')
-
 #=====================================
 #computational domain
 #=====================================
-dx=0.45/20
-n=int(5.6/dx)
 
-x=np.linspace(0,5.6,n)
-y=np.linspace(-dx,dx,3)
-x,y=np.meshgrid(x,y)
+x = np.linspace(-100,100,50)
+y = np.linspace(-100,100,50)
+x,y = np.meshgrid(x,y)
+z = np.where((y<=-30)*(x<=5)*(x>=-5),15.,0.)
+z = np.where((y>=70)*(x<=5)*(x>=-5),15.,z)
 
-z=np.zeros(x.shape)
-z = np.where( (x>=2.39+1.61)*(x<=2.39+1.61+0.45),0.065/0.45*(x-2.39-1.61),z)
-z = np.where( (x>=2.39+1.61+0.45)*(x<=2.39+1.61+0.45*2),-0.065/0.45*(x-2.39-1.61-0.45)+0.065,z)
 
-h = np.zeros(x.shape)
-h = np.where(x<=2.39,0.111,h)
-h = np.where((x>=2.39+1.61+0.45),0.02-z,h)
-h = np.where(h<=0,0.,h)
+h = np.where(x<=0.,10.,5.)
+h = np.where(z>0.,0.,h)
+u = np.zeros_like(x)
+v = np.zeros_like(x)
 
-u = np.zeros(x.shape)
-v = np.zeros(x.shape)
 
-batifiles=['data/gridX.dat','data/gridY.dat','data/gridZ.dat']
-initqfiles=['data/inith.dat', 'data/initu.dat', 'data/initv.dat']
+plt.figure()
+plt.pcolormesh(x ,y ,z )
+plt.colorbar()
+plt.savefig('data/bati.png')
 
-np.savetxt(batifiles[0],x)
-np.savetxt(batifiles[1],y)
-np.savetxt(batifiles[2],z)
-np.savetxt(initqfiles[0],h)
-np.savetxt(initqfiles[1],u)
-np.savetxt(initqfiles[2],v)
+plt.figure()
+plt.pcolormesh(x ,y ,h )
+plt.colorbar()
+plt.savefig('data/inith.png')
 
-plt.figure(figsize=(8.,3.))
-plt.fill_between(x[0,:],z[0,:],z[0,:]+h[0,:],color='b')
-plt.fill_between(x[0,:],0.*z[0,:],z[0,:],color='k')
-plt.tight_layout()
-plt.savefig('data/condicion_inicial.png',dpi=300)
+plt.figure()
+plt.pcolormesh(x ,y ,h +z)
+plt.colorbar()
+plt.savefig('data/initeta.png')
 
+plt.figure()
+plt.pcolormesh(x ,y ,u )
+plt.savefig('data/initu.png')
+plt.colorbar()
+
+plt.figure()
+plt.pcolormesh(x ,y ,v )
+plt.savefig('data/initv.png')
+plt.colorbar()
+
+
+np.savetxt('data/gridx.dat',x )
+np.savetxt('data/gridy.dat',y )
+np.savetxt('data/gridz.dat',z )
+np.savetxt('data/inith.dat',h )
+np.savetxt('data/initu.dat',u )
+np.savetxt('data/initv.dat',v )
 
 #=====================================
 #wave gauges
 #=====================================
-b=[[1,5.575,0],\
-   [2,4.925,0.],\
-   [3,3.935,0.]]
+b=[[1,-25., 0.],
+   [2,0., 0.],
+   [3,25., 0.]]; 
 f=open('data/gauges.dat','w')
 f.write('%i\n'%len(b))
 for i in range(len(b)):
-  s='%i %.18e %.18e\n'%(b[i][0],b[i][1],b[i][2])
-  f.write(s)
-f.close()
+  f.write('%i %.18e %.18e\n'%(b[i][0],b[i][1],b[i][2]))
 
 #=====================================
 #input.dat parameters
 #=====================================
 caso=999
 tinit=0.0
-tfinal=50.0
-cfl=1.
+tfinal=20.
+cfl=0.95
 nxi=x.shape[0]
-neta=y.shape[1]
+neta=x.shape[1]
 batiopt=1
+batifiles=['data/gridx.dat','data/gridy.dat','data/gridz.dat']
 initqopt=1
-
+initqfiles=['data/inith.dat', 'data/initu.dat', 'data/initv.dat']
 dxi=1.
 deta=1.
 L=1.
@@ -79,13 +88,13 @@ bcxi0=1
 if bcxi0==4:
   GA1=9
   if GA1==9 or GA1==1:
-    Nsenal1=451
+    Nsenal1=txi0.shape[0]
 bcxiN=1
 bceta0=1
-bcetaN=1
+bcetaN=3
 dit=-1
-dtout=1.
-kappa=1e-5
+dtout = 1.
+kappa=1e-3
 rktype=1
 limtype=1
 fricopt=0
