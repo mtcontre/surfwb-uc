@@ -62,7 +62,7 @@ Every new feature must be able to pass each one of the tests in the tests folder
 
 Only shared repository pull requests are allowed. Each new feature must be reflected in a new branch. For more information see [this tutorial](https://es.atlassian.com/git/tutorials/making-a-pull-request/).
 
-
+<!--
 ### What is this repository for? ###
 
 * Quick summary
@@ -87,4 +87,4 @@ Only shared repository pull requests are allowed. Each new feature must be refle
 ### Who do I talk to? ###
 
 * Repo owner or admin
-* Other community or team contact
+* Other community or team contact-->
