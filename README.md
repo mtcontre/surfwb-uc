@@ -52,6 +52,15 @@ and to see some results, you can try
 
 which should produce many png files with frames of the simulation in vis/*.png.
 
+## Contribution guidelines
+
+### Test cases
+
+Every new feature must be able to pass each one of the tests in the tests folder, and before merging, each test case must be reconfigured so it can run under the latest version of the code.
+
+### Pull requests
+
+Only shared repository pull requests are allowed. Each new feature must be reflected in a new branch. For more information see [this tutorial](https://es.atlassian.com/git/tutorials/making-a-pull-request/).
 
 
 ### What is this repository for? ###
