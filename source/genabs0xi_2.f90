@@ -391,8 +391,8 @@ real (kind=8), dimension(2,Nx,Ny)::ep_x
 real (kind=8), dimension(3,Ny)::qA0,qA
 real (kind=8), dimension(Ny)::zA
 real (kind=8), dimension(Nx)::h,u,zep_x,epx
-real (kind=8), dimension(NL,2)::etaL, etaL_tmp
-real (kind=8), dimension(NL,2)::timeS
+real (kind=8), dimension(NL,Ny)::etaL, etaL_tmp
+real (kind=8), dimension(NL)::timeS
 real (kind=8), dimension(Nx,Ny)::MC
 
 borde=1
