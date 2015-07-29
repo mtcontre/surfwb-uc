@@ -122,7 +122,7 @@ for i in range(len(b)):
 #=====================================
 caso=999
 tinit=0.0
-tfinal=28.
+tfinal=50.
 cfl=0.45
 nxi=x.shape[0]
 neta=x.shape[1]

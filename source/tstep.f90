@@ -65,7 +65,7 @@ subroutine tstep(dtreal)
   
   if (dit==-1) then
     print_out = .False.
-    if ((treal+dtreal>=(nitout+1)*dtout+tinit).or.(treal==tinit)) then
+    if (treal+dtreal>=(nitout+1)*dtout+tinit) then
       dtreal = (nitout+1)*dtout+tinit-treal
       print_out = .True.    
       nitout=nitout+1

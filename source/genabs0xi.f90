@@ -390,7 +390,7 @@ DO j=1,Ny
   DO i=1,Nx
   zep_x(i)=(zt(i+3,j+2)-zt(i+2,j+2))/dep	!j+2 porque incluye celdas ficticias
   END DO
-
+!   print*, t+dt,etai
   !ESSAI POUR LA CONDITION ENTRANTE!!!!
   !h0=h0-z_global(1,j)
 
