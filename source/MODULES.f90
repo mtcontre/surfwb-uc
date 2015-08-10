@@ -44,7 +44,6 @@ MODULE coords
 !Coordenadas Curvilíneas
 real (kind=8),dimension(:), save, allocatable :: coordxi, coordeta
 real (kind=8),dimension(:),save,allocatable :: angulo1,angulo2,angulo3,angulo4
-
 END MODULE coords
 
 
