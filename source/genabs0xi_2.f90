@@ -48,8 +48,7 @@ END DO
 
 !L
 !h0=0.0D0-zt(3,j+2) !!!!SOLO MATAQUITO!!!!!
- C0=sqrt(h0/Fr2)
- 
+ C0=sqrt(h0/Fr2) 
 epL=epA-dt*C0
 hL=etai+h0
 uL=(hL/Fr2)**0.5D0*(etai)/hL

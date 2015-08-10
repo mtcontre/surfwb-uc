@@ -47,7 +47,6 @@ zep_x(i)=(zt(i+3,j+2)-zt(i+2,j+2))/dep	!j+2 porque incluye celdas ficticias
 END DO
 
 !h0=0.0D0-zt(3,j+2)!!!!SOLO MATAQUITO!!!!!
-
  C0=sqrt(h0/Fr2)
 !L
 epL=epA-dt*C0

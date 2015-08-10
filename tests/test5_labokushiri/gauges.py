@@ -43,3 +43,5 @@ for i in range(3):
     ax2.plot(time,eta[k],color='r')
     ax2.set_title(gauges[k])
     ax2.set_xlim(0.,50.)
+f2.tight_layout()
+f2.savefig('vis/gauges.png',dpi=180)

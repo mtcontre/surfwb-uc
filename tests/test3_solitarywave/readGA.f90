@@ -8,7 +8,6 @@ implicit none
 integer::GA,Ns,borde,i,j
 
 select case(borde)
-
     CASE(1) !Borde xi=0
     !allocate(qA1(3,Nby),zA1(Nby))
     if (GA==1) then
@@ -16,6 +15,7 @@ select case(borde)
     open(unit=50,file=trim(indir)//'/etaL.dat')
     !read(50,*) h01
     h01=0.2D0
+    
     DO i=1,Ns
     read(50,*) etaL1(i,1), etaL1(i,2)
     END DO
