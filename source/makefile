@@ -42,22 +42,25 @@ SURF_SOURCES ?= $(SURF_LIB)/MODULES.f90 \
  	$(SURF_LIB)/fzeroEP_1.f90 \
  	$(SURF_LIB)/q0.f90 
 
+ 	
 #deprecated source files
-# 	$(SURF_LIB)/CarSaliente.f90 \
-# 	$(SURF_LIB)/lpt_c.f90 \
-# 	$(SURF_LIB)/metrics8.f90 \
-# 	$(SURF_LIB)/bati.f90 \
-# 	$(SURF_LIB)/LPT.f90 \
-# 	$(SURF_LIB)/pascua.f90 \
-# 	$(SURF_LIB)/tracking.f90 \
-# 	$(SURF_LIB)/lpt_p.f90 \
-# 	$(SURF_LIB)/PropSecNat.f90 \
-# 	$(SURF_LIB)/fzero.f90 \
-# 	$(SURF_LIB)/grado3.f90 \
-# 	$(SURF_LIB)/kdtree2.f90 \
-# 	$(SURF_LIB)/blend.f90 \
-# 	$(SURF_LIB)/fzero_2.f90 \ 	
-# 	$(SURF_LIB)/locate.f90 \
+SURF_OLD=$(SURF_LIB)/oldsources/
+DSOURCES = $(SURF_OLD)/CarSaliente.f90 \
+	$(SURF_OLD)/lpt_c.f90 \
+	$(SURF_OLD)/metrics8.f90 \
+	$(SURF_OLD)/bati.f90 \
+	$(SURF_OLD)/LPT.f90 \
+	$(SURF_OLD)/pascua.f90 \
+	$(SURF_OLD)/tracking.f90 \
+	$(SURF_OLD)/lpt_p.f90 \
+	$(SURF_OLD)/PropSecNat.f90 \
+	$(SURF_OLD)/fzero.f90 \
+	$(SURF_OLD)/grado3.f90 \
+	$(SURF_OLD)/kdtree2.f90 \
+	$(SURF_OLD)/blend.f90 \
+	$(SURF_OLD)/fzero_2.f90 \
+	$(SURF_OLD)/locate.f90
+	
 
 SURF_OBJECTS=$(subst .f90,.o, $(SURF_SOURCES))
 
