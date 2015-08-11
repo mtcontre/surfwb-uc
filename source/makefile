@@ -2,32 +2,16 @@ F90=gfortran
 FFLAGS?=-O3
 LFLAGS?= 
 SURF_LIB?=.
+RUNPAR?=true
 
-SURF_SOURCES ?= $(SURF_LIB)/MODULES.f90 \
-	$(SURF_LIB)/main.f90 \
+SURF_MODULES ?= $(SURF_LIB)/MODULES.f90
+SURF_SEQ ?= $(SURF_LIB)/main.f90 \
 	$(SURF_LIB)/init.f90 \
 	$(SURF_LIB)/input_control.f90 \
-	$(SURF_LIB)/input_bound.f90 \
+	$(SURF_LIB)/BCS.f90 \
 	$(SURF_LIB)/readIO.f90 \
 	$(SURF_LIB)/readGA.f90 \
-	$(SURF_LIB)/input_geom.f90 \
-	$(SURF_LIB)/input_ic.f90 \
-	$(SURF_LIB)/init_TS.f90 \
-	$(SURF_LIB)/metrics.f90 \
 	$(SURF_LIB)/Angulos.f90 \
-	$(SURF_LIB)/massbalance.f90 \
-	$(SURF_LIB)/tstep.f90 \
-	$(SURF_LIB)/solver.f90 \
-	$(SURF_LIB)/solver2.f90 \
-	$(SURF_LIB)/solverf2.f90 \
-	$(SURF_LIB)/solverf4.f90 \
-	$(SURF_LIB)/friccion.f90 \
-	$(SURF_LIB)/BCS.f90 \
-	$(SURF_LIB)/fluxes.f90 \
-	$(SURF_LIB)/vfroe1.f90 \
-	$(SURF_LIB)/cfl_celerities.f90 \
-	$(SURF_LIB)/outputmat.f90 \
-	$(SURF_LIB)/outputgauges.f90 \
 	$(SURF_LIB)/genabs0xi.f90 \
 	$(SURF_LIB)/genabs0xi_2.f90 \
 	$(SURF_LIB)/genabsNxi.f90 \
@@ -41,26 +25,31 @@ SURF_SOURCES ?= $(SURF_LIB)/MODULES.f90 \
  	$(SURF_LIB)/fzero_B2.f90  \
  	$(SURF_LIB)/fzeroEP_1.f90 \
  	$(SURF_LIB)/q0.f90 
-
- 	
-#deprecated source files
-SURF_OLD=$(SURF_LIB)/oldsources/
-DSOURCES = $(SURF_OLD)/CarSaliente.f90 \
-	$(SURF_OLD)/lpt_c.f90 \
-	$(SURF_OLD)/metrics8.f90 \
-	$(SURF_OLD)/bati.f90 \
-	$(SURF_OLD)/LPT.f90 \
-	$(SURF_OLD)/pascua.f90 \
-	$(SURF_OLD)/tracking.f90 \
-	$(SURF_OLD)/lpt_p.f90 \
-	$(SURF_OLD)/PropSecNat.f90 \
-	$(SURF_OLD)/fzero.f90 \
-	$(SURF_OLD)/grado3.f90 \
-	$(SURF_OLD)/kdtree2.f90 \
-	$(SURF_OLD)/blend.f90 \
-	$(SURF_OLD)/fzero_2.f90 \
-	$(SURF_OLD)/locate.f90
 	
+SURF_PAR ?= $(SURF_LIB)/mpi_main.f90 \
+	$(SURF_LIB)/mpisurf_init.f90 \
+	$(SURF_LIB)/mpi_input_control.f90 \
+	$(SURF_LIB)/mpi_BCS.f90 \
+
+SURF_COMMON ?= $(SURF_LIB)/input_bound.f90 \
+	$(SURF_LIB)/input_geom.f90 \
+	$(SURF_LIB)/input_ic.f90 \
+	$(SURF_LIB)/init_TS.f90 \
+	$(SURF_LIB)/metrics.f90 \
+	$(SURF_LIB)/massbalance.f90 \
+	$(SURF_LIB)/tstep.f90 \
+	$(SURF_LIB)/solver.f90 \
+	$(SURF_LIB)/solver2.f90 \
+	$(SURF_LIB)/solverf2.f90 \
+	$(SURF_LIB)/solverf4.f90 \
+	$(SURF_LIB)/friccion.f90 \
+	$(SURF_LIB)/fluxes.f90 \
+	$(SURF_LIB)/vfroe1.f90 \
+	$(SURF_LIB)/cfl_celerities.f90 \
+	$(SURF_LIB)/outputmat.f90 \
+	$(SURF_LIB)/outputgauges.f90
+
+SURF_SOURCES ?= $(SURF_MODULES) $(SURF_PAR) $(SURF_COMMON)
 
 SURF_OBJECTS=$(subst .f90,.o, $(SURF_SOURCES))
 
@@ -69,7 +58,7 @@ xsurf: $(SURF_OBJECTS)
 	$(F90) $(LFLAGS) $(SURF_OBJECTS) -o $(CURDIR)/$@
 
 %.o %.mod: %.f90
-	$(F90) $(FFLAGS) -c $< -o $@ -J $(SURF_LIB)/
+	$(F90) $(FFLAGS) -c $< -o $@ -J $(SURF_LIB)
 clean:
 	rm -f $(SURF_LIB)/*.o
 	rm -f $(SURF_LIB)/*.mod
@@ -77,4 +66,3 @@ clean:
 test: 
 	@echo $(SURF_OBJECTS)
 	@echo $(SURF_LIB)
-

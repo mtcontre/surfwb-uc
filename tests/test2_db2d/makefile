@@ -8,6 +8,7 @@ SURF_MAKE=$(SURF_LIB)/makefile
 
 include $(SURF_MAKE)
 
+
 runsurf: xsurf
 	./xsurf
 	
