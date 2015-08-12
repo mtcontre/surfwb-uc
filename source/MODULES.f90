@@ -115,7 +115,20 @@ real (kind=8), dimension(:,:),save,allocatable ::x00, x01, x10, x11
 ! real (kind=8), dimension(:,:),save,allocatable :: x1,x2,y1,y2
 
 integer	:: Nts ! Number of points for the time series
-real (kind=8):: dt_TS ! timestep to record the time serie
+real (kind=8):: dt_TS ! timestep to g00goorecord the time serie
 real (kind=8):: sav_TS ! timestep to record the time serie
+END MODULE
+
+
+MODULE MPI_SURF
+  !mpi comm world properties
+  integer ::  ierror, myrank, nproc
+  
+  !mpi comm2d properties (cart topo)
+  integer, parameter ::  ndim = 2
+  integer :: comm2d
+  integer, dimension(2) :: dims, topology_coords
+  logical, dimension(2) :: isperiodic
+  logical, parameter :: reorder=.true.
 END MODULE
 

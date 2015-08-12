@@ -13,11 +13,13 @@ subroutine tstep(dtreal)
   real (kind=8) ::minxieta,maxS1,maxS2,maxUC,dtreal
   integer :: nt1,nt2
   
+  
   minxieta=minval((/dxi,deta/))
   maxS1=maxval(S1_global)
   maxS2=maxval(S2_global)  
   maxUC=maxval((/maxS1,maxS2/))
-  
+
+
   
   ! check celerities in ghost cells
   if (flagxi0.eq.1) then    

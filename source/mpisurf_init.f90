@@ -7,11 +7,16 @@ SUBROUTINE init
   USE senales
   USE coords
   use custombc
+  use MPI
+  use MPI_SURF
 
   implicit none
 
   integer :: i,j 
   real (kind=8)::U1,U2
+  
+  call MPI_COMM_RANK(MPI_COMM_WORLD, myrank, ierror)
+  call MPI_COMM_SIZE(MPI_COMM_WORLD, nproc, ierror)
   
 
   !Leer informacion de la simulacion
@@ -52,6 +57,8 @@ SUBROUTINE init
     END DO
   
   END IF
+  !Decompose domain into a cartesian topology
+  call decomp2d
   
   !Adimensionalizar CI y Bathy
   call adimension
