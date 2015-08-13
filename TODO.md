@@ -19,8 +19,13 @@ Working on test2_db2d:
     * ~~all arrays allocated in input_geom.f90, input_ic.f90~~
     * ~~no others array are declared before decomp2d in mpisurf_init.f90~~
   
-* modify outputmat and outputgauges to generate parallel output properly
-    *outputgauges modification will be after master merging,now commented from main!!
+~~* modify outputmat and outputgauges to generate parallel output properly~~
+~~    *mpisurf_outputgauges modification will be after master merging,now commented from main!!~~
+~~    *mpisurf_outputmat was ready since before! :)~~
+~~* save topology information to a file for later check~~
+~~    * save total nxi and neta (nbx,nby before decomp2d) in variable old_nbx,old_nby~~
+~~* run test2 with changes up to this point~~
+    * runs well with 1 processor
     
 * reduce dt
 * communicate

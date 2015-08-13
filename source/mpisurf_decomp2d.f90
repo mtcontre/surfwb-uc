@@ -90,11 +90,11 @@ subroutine decomp2d
     !write gridproperties.dat
     fname=trim(outdir)//'/grids/gridproperties.dat'
     open(unit=50,file=fname)
-    write(unit=50,fmt='("dit ",I5.5)') dit
+    write(unit=50,fmt=*)'dit', dit
     write(unit=50,fmt='("nproc ",I3.3)') nproc  
     write(unit=50,fmt='("dims ",I3.3,X,I3.3)') dims(1),dims(2)
-    write(unit=50,fmt='(4A,I4.4)')'nxi  ',old_nbx
-    write(unit=50,fmt='(4A,I4.4)')'neta ', old_nby 
+    write(unit=50,fmt='("nxi ", I3.3)'),old_nbx
+    write(unit=50,fmt='("neta ", I3.3)')old_nby 
   end if
   
   !write this grid

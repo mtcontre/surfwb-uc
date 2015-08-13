@@ -9,7 +9,7 @@ subroutine outputmat
   character(len=255) ::filename,filenameT,ofmt,fout_param
   logical::dir_exists,t_exists,param_exist
   logical::to_out=.false.
-  character(len=8)::charit, charrank
+  character(len=8)::charit, charrank, charcoord1, charcoord2
   if (dit==-1) then
     to_out = print_out
     print_out=.False.
@@ -46,8 +46,10 @@ subroutine outputmat
   !write results to file
   if (to_out.or.treal==tinit) then    
     write(charit,'(I8.8)') nitout
-    write(charrank,'(I3.3)') myrank
-      filename=trim(outdir)// '/SOL2D.'//trim(charrank)//'.'//trim(charit)//'.dat'
+    write(charcoord1,'(I3.3)') topology_coords(1)
+    write(charcoord2,'(I3.3)') topology_coords(2)
+      filename=trim(outdir)// '/SOL2D.'//trim(charcoord1)//'_'//trim(charcoord2)// &
+	'.'//trim(charit)//'.dat'
 !     filename='results/SOL2D.'//trim(charit)//'.dat'
 !     filename=trim(filename)//'.dat'
     open(unit=100,file=filename)
@@ -60,18 +62,7 @@ subroutine outputmat
     end do
     close(unit=100)
     
-    !write parameters
-    fout_param=trim(outdir)//'/param.dat'
-    inquire(file=fout_param, exist=param_exist)
-    if (param_exist) then
-      open (25,file=fout_param, status='replace',action='write')
-    else
-      open(25,file=fout_param, status='new', action='write')
-    end if
-    
-    write(25,'(6(I5,2x))') caso, Nbx, Nby, Nts,nitout, dit
-    close(25)
-    
+   
     call system('gzip -f '//filename)
   end if
   

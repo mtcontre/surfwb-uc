@@ -111,7 +111,7 @@ PROGRAM MAIN !Ponerle un nombre decente
   print *, 'Iteraciones', it
   print *, 'Time Elapsed = ',time_finish-time_start,' seconds.'
  
-!   CALL MPI_finalize(ierror)
+  CALL MPI_finalize(ierror)
 END PROGRAM MAIN
 
 
