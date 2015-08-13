@@ -13,8 +13,10 @@ Working on test2_db2d:
 * ~~ add init and finalize clauses to main.f90 ~~
 * ~~ run code with 4 processes, each one saving files called SOL2D.P.it.dat.gz~~
 * ~~Create cartesian topology~~
-* calculate si,ei,sj,ej, nbx,nby for each process
-* determine which matrices should be extracted and reallocate them
-  * x_global, y_global, z_global, qold_global, qnew_global ??
+* ~~calculate si,ei,sj,ej, nbx,nby for each process~~
+* ~~ determine which matrices should be extracted and red~~
+  * ~~all arrays allocated in input_geom.f90, input_ic.f90~~
+  * ~~no others array are declared before decomp2d in mpisurf_init.f90~~
+* modify outputmat and outputgauges to generate parallel output properly
 * reduce dt
 * communicate
