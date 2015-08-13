@@ -7,6 +7,7 @@
 ##Parallel dev
 Steps:
 Working on test2_db2d:
+
 * ~~ separate makefile source lists in: parallel, sequential and common ~~
 * ~~ add mpisurf_* on duplicate files ~~
 * ~~ leave only periodic/open/closed boundary conditions in BCS.f90~~
@@ -15,8 +16,11 @@ Working on test2_db2d:
 * ~~Create cartesian topology~~
 * ~~calculate si,ei,sj,ej, nbx,nby for each process~~
 * ~~ determine which matrices should be extracted and red~~
-  * ~~all arrays allocated in input_geom.f90, input_ic.f90~~
-  * ~~no others array are declared before decomp2d in mpisurf_init.f90~~
+    * ~~all arrays allocated in input_geom.f90, input_ic.f90~~
+    * ~~no others array are declared before decomp2d in mpisurf_init.f90~~
+  
 * modify outputmat and outputgauges to generate parallel output properly
+    *outputgauges modification will be after master merging,now commented from main!!
+    
 * reduce dt
 * communicate

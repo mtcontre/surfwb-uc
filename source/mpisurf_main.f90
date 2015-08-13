@@ -34,7 +34,7 @@ PROGRAM MAIN !Ponerle un nombre decente
   
   IF (outopt==1) THEN
     CALL outputmat
-    CALL outputgauges(treal)
+!     CALL outputgauges(treal)
   END IF
   
   CALL massbalance	!Calculates the initial volume and mass of water
@@ -94,7 +94,7 @@ PROGRAM MAIN !Ponerle un nombre decente
     !3.Dimensionalize results and write results into a file
     IF (outopt==1) THEN
 	  CALL outputmat
-	  CALL outputgauges(treal)
+! 	  CALL outputgauges(treal)
     END IF
     
     !Update global variables (adimensionalized)
