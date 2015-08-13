@@ -26,6 +26,7 @@ Working on test2_db2d:
 ~~    * save total nxi and neta (nbx,nby before decomp2d) in variable old_nbx,old_nby~~
 ~~* run test2 with changes up to this point~~
     * runs well with 1 processor
-    
+* save batifiles in output directory, and remove x,y,z from sol2d
+* fix ver.py to read this
 * reduce dt
 * communicate

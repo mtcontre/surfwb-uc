@@ -447,7 +447,7 @@ END DO; END DO
 
 !---------loop 10---------------
 !$omp do
-DO i=2,Nx+2; DO j=3,Ny+2
+DO i=2,Nx+3; DO j=3,Ny+2
 xi(:,i-1,j-2)=xit(:,i,j)
 !Jac1(i-1,j-2)=xit(1,i,j)*etat(2,i,j)-xit(2,i,j)*etat(1,i,j) !Ji+1/2,j, calculo J i=0 a i=Nx+1, j=1 a j=Ny
 END DO; END DO
@@ -455,7 +455,7 @@ END DO; END DO
 
 !---------loop 11---------------
 !$omp do
-DO i=3,Nx+2; DO j=2,Ny+2
+DO i=3,Nx+2; DO j=2,Ny+3
 eta(:,i-2,j-1)=etat(:,i,j)
 !Jac2(i-2,j-1)=xit(1,i,j)*etat(2,i,j)-xit(2,i,j)*etat(1,i,j) !Ji,j+1/2, calculo J j=0 a j=Ny+1, i=1 a i=Nx
 END DO; END DO

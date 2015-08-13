@@ -5,6 +5,7 @@ import os
 os.system('mkdir data')
 os.system('mkdir results')
 os.system('mkdir results/timeseries')
+
 #=====================================
 #computational domain
 #=====================================
@@ -71,7 +72,7 @@ for i in range(len(b)):
 #=====================================
 caso=999
 tinit=0.0
-tfinal=20.
+tfinal=40.
 cfl=0.95
 nxi=x.shape[0]
 neta=x.shape[1]

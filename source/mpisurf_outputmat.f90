@@ -9,7 +9,7 @@ subroutine outputmat
   character(len=255) ::filename,filenameT,ofmt,fout_param
   logical::dir_exists,t_exists,param_exist
   logical::to_out=.false.
-  character(len=8)::charit, charrank, charcoord1, charcoord2
+  character(len=8)::charit, charnproc, charcoord1, charcoord2
   if (dit==-1) then
     to_out = print_out
     print_out=.False.
@@ -17,7 +17,7 @@ subroutine outputmat
     to_out=mod(it,dit)==0  
     nitout = it
   end if
-  if (to_out.or.treal==tinit) then
+  if (myrank==0.and.(to_out.or.treal==tinit) )then
     filenameT=trim(outdir)//'/time.dat'
     inquire(file=filenameT,exist=t_exists)
     if (.not. t_exists) then
@@ -48,15 +48,16 @@ subroutine outputmat
     write(charit,'(I8.8)') nitout
     write(charcoord1,'(I3.3)') topology_coords(1)
     write(charcoord2,'(I3.3)') topology_coords(2)
-      filename=trim(outdir)// '/SOL2D.'//trim(charcoord1)//'_'//trim(charcoord2)// &
-	'.'//trim(charit)//'.dat'
+    write(charnproc,'(I3.3)') nproc
+
+      filename=trim(outdir)// '/SOL2D.P'//trim(charnproc)//'_'//&
+	trim(charcoord1)//'_'//trim(charcoord2)//'.'//trim(charit)//'.dat'
 !     filename='results/SOL2D.'//trim(charit)//'.dat'
 !     filename=trim(filename)//'.dat'
     open(unit=100,file=filename)
     do j=1,Nby
       do i=1,Nbx
-	write(unit=100,fmt='(6(E20.10,2X))') &
-	    x_global(i,j),y_global(i,j),z_global(i,j),qold_global(1,i,j), &
+	write(unit=100,fmt='(6(E20.10,2X))') qold_global(1,i,j), &
 	    qold_global(2,i,j),qold_global(3,i,j)
       end do
     end do

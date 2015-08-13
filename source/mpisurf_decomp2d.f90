@@ -11,21 +11,22 @@ subroutine decomp2d
   real(kind=8), dimension(:,:,:), allocatable :: buf_qold
   character(len=255) :: fname,ofmt,command,filename
   logical::dir_e
+  integer :: i
   
   !mpi knows how to split comm_world better into a cart topo:  
   !obtain dims vector given ndim and nproc (let mpi decide it)
-  call MPI_DIMS_CREATE(nproc,ndim,dims,ierror)
+  CALL MPI_DIMS_CREATE(nproc,ndim,dims,ierror)
   !create the communicator comm2d
-  call MPI_CART_CREATE(MPI_COMM_WORLD,ndim,dims,isperiodic,&
+  CALL MPI_CART_CREATE(MPI_COMM_WORLD,ndim,dims,isperiodic,&
     reorder,comm2d,ierror)
   !obtain myrank2d
-  call MPI_COMM_RANK(COMM2D,myrank2d,ierror)
+  CALL MPI_COMM_RANK(COMM2D,myrank2d,ierror)
   !get the topology_coords in the cart topo for this process
-  call MPI_CART_GET(COMM2D,ndim,dims,isperiodic,topology_coords,ierror)  
+  CALL MPI_CART_GET(COMM2D,ndim,dims,isperiodic,topology_coords,ierror)  
   
   !get my neighbors
   !left/right & back/front as when looking to the matrix
-  !increasing indices to the upper right corner 
+  !increasing indices starting from the bottom left corner
   !ex:  
   !	  COORDS
   !	1,0	1,1
@@ -36,12 +37,12 @@ subroutine decomp2d
   !	2	3
   !	0	1
   
-  call MPI_CART_SHIFT(COMM2D,0,shift,myback,myfront,ierror) 
-  call MPI_CART_SHIFT(COMM2D,1,shift,myleft,myright,ierror) 
+  CALL MPI_CART_SHIFT(COMM2D,0,shift,myback,myfront,ierror) 
+  CALL MPI_CART_SHIFT(COMM2D,1,shift,myleft,myright,ierror) 
   
   !obtain starting and ending grid indices si,ei and sj,ej
-  call DECOMP1D(Nbx,dims(1),topology_coords(1),si,ei)
-  call DECOMP1D(Nby,dims(2),topology_coords(2),sj,ej)    
+  CALL DECOMP1D(Nbx,dims(1),topology_coords(1),si,ei)
+  CALL DECOMP1D(Nby,dims(2),topology_coords(2),sj,ej)    
   
   !re distribute pieces of 2darrays
   old_nbx = Nbx
@@ -95,6 +96,15 @@ subroutine decomp2d
     write(unit=50,fmt='("dims ",I3.3,X,I3.3)') dims(1),dims(2)
     write(unit=50,fmt='("nxi ", I3.3)'),old_nbx
     write(unit=50,fmt='("neta ", I3.3)')old_nby 
+    write(unit=50,fmt=*) trim(batiname(1))
+    write(unit=50,fmt=*) trim(batiname(2))
+    write(unit=50,fmt=*) trim(batiname(3))
+    
+    do i=1,3
+      command='cp '//trim(batiname(i))//' '//trim(outdir)//'/.'
+      call system(command)
+    end do
+    
   end if
   
   !write this grid

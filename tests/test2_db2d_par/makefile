@@ -18,5 +18,3 @@ runsurf: xsurf
 cleanresults:
 	rm -f $(SURF_OUT_DIR)*.gz
 	rm -f $(SURF_OUT_DIR)*.dat
-	
-	
