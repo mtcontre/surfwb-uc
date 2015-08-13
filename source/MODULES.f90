@@ -132,5 +132,6 @@ MODULE MPI_SURF
   integer, parameter :: shift = 1
   integer :: myleft, myright, myback, myfront
   integer :: si, ei, sj, ej
+  integer :: old_nbx, old_nby
 END MODULE
 

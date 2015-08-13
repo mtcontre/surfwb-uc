@@ -9,7 +9,9 @@ subroutine decomp2d
   
   real(kind=8), dimension(:,:), allocatable :: buf_x,buf_y,buf_z
   real(kind=8), dimension(:,:,:), allocatable :: buf_qold
-
+  character(len=255) :: fname,ofmt,command,filename
+  logical::dir_e
+  
   !mpi knows how to split comm_world better into a cart topo:  
   !obtain dims vector given ndim and nproc (let mpi decide it)
   call MPI_DIMS_CREATE(nproc,ndim,dims,ierror)
@@ -42,6 +44,8 @@ subroutine decomp2d
   call DECOMP1D(Nby,dims(2),topology_coords(2),sj,ej)    
   
   !re distribute pieces of 2darrays
+  old_nbx = Nbx
+  old_nby = Nby
   Nbx = ei-si+1
   Nby = ej-sj+1
   
@@ -53,7 +57,7 @@ subroutine decomp2d
   buf_z = z_global(si:ei,sj:ej)
   buf_qold = qold_global(:,si:ei, sj:ej)
   
-  !up to these points, only matrices in input_geom.f90 and input_ic.f90
+  !up to this point, only matrices in input_geom.f90 and input_ic.f90
   !are defined.
   !We need to update them to have only the values of the processor's grid
   
@@ -72,6 +76,47 @@ subroutine decomp2d
   qold_global = buf_qold     
   
   deallocate(buf_x, buf_y, buf_z, buf_qold)
+  
+  !now save topology data for posterior output reconstruction
+  if (myrank==0) then    
+    !check if outdir/grids exists
+    fname=trim(outdir)//'/grids/'
+    inquire(file=fname,exist=dir_e)    
+    if( .not. dir_e) then
+      command='mkdir '//trim(fname)
+      call system(trim(command))
+    end if   
+
+    !write gridproperties.dat
+    fname=trim(outdir)//'/grids/gridproperties.dat'
+    open(unit=50,file=fname)
+    write(unit=50,fmt='("dit ",I5.5)') dit
+    write(unit=50,fmt='("nproc ",I3.3)') nproc  
+    write(unit=50,fmt='("dims ",I3.3,X,I3.3)') dims(1),dims(2)
+    write(unit=50,fmt='(4A,I4.4)')'nxi  ',old_nbx
+    write(unit=50,fmt='(4A,I4.4)')'neta ', old_nby 
+  end if
+  
+  !write this grid
+  write(filename,'("/grids/grid",I3.3,"_",I3.3,".dat")') topology_coords(1),topology_coords(2)
+  filename=trim(outdir)//trim(adjustl(filename))
+  open(unit=myrank+100,file=filename)
+  write(unit=myrank+100,fmt='( I3.3, "  Nbx" )') Nbx
+  write(unit=myrank+100,fmt='( I3.3, "  Nby" )') Nby  
+  write(unit=myrank+100,fmt='( I3.3, "  si" )') si
+  write(unit=myrank+100,fmt='( I3.3, "  ei" )') ei
+  write(unit=myrank+100,fmt='( I3.3, "  sj" )') sj
+  write(unit=myrank+100,fmt='( I3.3, "  ej" )') ej
+  write(unit=myrank+100,fmt='( I3.3, "  coord(1)" )') topology_coords(1)
+  write(unit=myrank+100,fmt='( I3.3, "  coord(2)" )') topology_coords(2)
+  write(unit=myrank+100,fmt='( I3.3, "  dims(1)" )') dims(1)
+  write(unit=myrank+100,fmt='( I3.3, "  dims(2)" )') dims(2)  
+  write(unit=myrank+100,fmt='( I3.3, "  rank2d" )') myrank2d
+  write(unit=myrank+100,fmt='( I4.3, "  left" )') myleft
+  write(unit=myrank+100,fmt='( I4.3, "  right" )') myright
+  write(unit=myrank+100,fmt='( I4.3, "  back" )') myback
+  write(unit=myrank+100,fmt='( I4.3, "  front" )') myfront
+  close(unit=myrank+100)
 end subroutine
 
 subroutine decomp1d(n,p,rank,s,e)
