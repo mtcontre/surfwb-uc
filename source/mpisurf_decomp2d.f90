@@ -7,7 +7,7 @@ subroutine decomp2d
   
   implicit none
   
-  real(kind=8), dimension(:,:), allocatable :: buf_x,buf_y,buf_z
+  real(kind=8), dimension(:,:), allocatable :: buf_x,buf_y,buf_z, buf_fric
   real(kind=8), dimension(:,:,:), allocatable :: buf_qold
   character(len=255) :: fname,ofmt,command,filename
   logical::dir_e
@@ -70,32 +70,34 @@ subroutine decomp2d
   
   !save in buffers
   allocate(buf_x(Nbx,Nby), buf_y(Nbx,Nby), buf_z(Nbx,Nby), &
-    buf_qold(3,Nbx,Nby))
+    buf_qold(3,Nbx,Nby), buf_fric(Nbx,Nby))
   buf_x = x_global(si:ei,sj:ej)
   buf_y = y_global(si:ei,sj:ej)
   buf_z = z_global(si:ei,sj:ej)
   buf_qold = qold_global(:,si:ei, sj:ej)
+  buf_fric = Mcoef
   
-  !up to this point, only matrices in input_geom.f90 and input_ic.f90
-  !are defined.
+  !up to this point, only matrices in mpisurf_input_geom.f90, 
+  !mpisurf_ input_ic.f90 and Mcoef defined in init.f90 are defined.
   !We need to update them to have only the values of the processor's grid
   
   !Forget old and define new local 2darrays
   deallocate(x_global, y_global, z_global, qold_global, qnew_global, q0_global, &
-     qreal_global, V_global, C_global, VC,S1_global,S2_global)
+     qreal_global, V_global, C_global, VC,S1_global,S2_global, Mcoef)
   allocate(x_global(Nbx,Nby), y_global(Nbx,Nby), z_global(Nbx,Nby), &
     qold_global(3,Nbx,Nby), qnew_global(3,Nbx,Nby), q0_global(3,Nbx,Nby), &
      qreal_global(3,Nbx,Nby), V_global(Nbx,Nby), C_global(Nbx,Nby), &
-     VC(Nbx,Nby),S1_global(Nbx,Nby),S2_global(Nbx,Nby))
+     VC(Nbx,Nby),S1_global(Nbx,Nby),S2_global(Nbx,Nby), Mcoef(Nbx,Nby))
   !im ommiting GA variables defined in input_ic.f90 ...(?)
   
   x_global = buf_x
   y_global = buf_y
   z_global = buf_z
   qold_global = buf_qold     
+  Mcoef = buf_fric
   
   !forget buffers
-  deallocate(buf_x, buf_y, buf_z, buf_qold)
+  deallocate(buf_x, buf_y, buf_z, buf_qold, Mcoef)
   
   !now save topology data for posterior output reconstruction
   if (myrank==0) then    
