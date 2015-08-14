@@ -76,8 +76,42 @@ SUBROUTINE bcs(fopt,Cf,Coef,pasoRK,t,dt,Fr2,caso,qn,z,Nx,Ny,CB,xi,eta,Jac,dxi,de
     zt(1,j)=zt(4,j)
     zt(2,j)=zt(3,j)
   END DO
+  
+  DO j=3,Ny+2
+    xit(:,Nx+4,j)=xi(:,Nx-1,j-2)	!xiNx+4=xiNx-1
+    xit(:,Nx+3,j)=xi(:,Nx,j-2)		!xiNx+3=xiNx
 
+    etat(:,Nx+4,j)=eta(:,Nx-1,j-2)	!etaNx+4=etaNx-1
+    etat(:,Nx+3,j)=eta(:,Nx,j-2)	!etaNx+3=etaNx
 
+    zt(Nx+4,j)=zt(Nx+2,j)
+    zt(Nx+3,j)=zt(Nx+2,j)
+  END DO
+
+  DO i=3,Nx+2	
+    !Metricas
+    xit(:,i,1)=xi(:,i-2,2)		!xi-1=xi2
+    xit(:,i,2)=xi(:,i-2,1)		!xi0=xi12	  
+    etat(:,i,1)=eta(:,i-2,2)	!eta-1=eta2
+    etat(:,i,2)=eta(:,i-2,1)	!eta0=eta1	  
+    zt(i,1)=zt(i,3)
+    zt(i,2)=zt(i,3)	
+  END DO
+  
+  DO i=3,Nx+2
+    !Metricas
+    xit(:,i,Ny+4)=xi(:,i-2,Ny-1)	!xiNy+4=xiNy-1
+    xit(:,i,Ny+3)=xi(:,i-2,Ny)	!xiNy+3=xiNy
+
+    etat(:,i,Ny+4)=eta(:,i-2,Ny-1)	!etaNy+4=etaNy-1
+    etat(:,i,Ny+3)=eta(:,i-2,Ny)	!etaNy+3=etaNy
+
+    zt(i,Ny+4)=zt(i,Ny+1)
+    zt(i,Ny+3)=zt(i,Ny+2)
+  END DO  
+  
+  call exchange_2d(qt,xit,etat,zt)
+  
   SELECT CASE (CB(1))
     CASE(1) !Solid Wall
       DO j=3,Ny+2
@@ -116,17 +150,6 @@ SUBROUTINE bcs(fopt,Cf,Coef,pasoRK,t,dt,Fr2,caso,qn,z,Nx,Ny,CB,xi,eta,Jac,dxi,de
       END DO	
   END SELECT
   !---------------------------------------------------------------------------
-
-  DO j=3,Ny+2
-    xit(:,Nx+4,j)=xi(:,Nx-1,j-2)	!xiNx+4=xiNx-1
-    xit(:,Nx+3,j)=xi(:,Nx,j-2)		!xiNx+3=xiNx
-
-    etat(:,Nx+4,j)=eta(:,Nx-1,j-2)	!etaNx+4=etaNx-1
-    etat(:,Nx+3,j)=eta(:,Nx,j-2)	!etaNx+3=etaNx
-
-    zt(Nx+4,j)=zt(Nx+2,j)
-    zt(Nx+3,j)=zt(Nx+2,j)
-  END DO
 
   SELECT CASE (CB(2))
     CASE(1) !Solid Wall 
@@ -167,16 +190,6 @@ SUBROUTINE bcs(fopt,Cf,Coef,pasoRK,t,dt,Fr2,caso,qn,z,Nx,Ny,CB,xi,eta,Jac,dxi,de
   !---------------------------------------------------------------------------
   !Eta=1, CB(3)
 
-  DO i=3,Nx+2	
-    !Metricas
-    xit(:,i,1)=xi(:,i-2,2)		!xi-1=xi2
-    xit(:,i,2)=xi(:,i-2,1)		!xi0=xi12	  
-    etat(:,i,1)=eta(:,i-2,2)	!eta-1=eta2
-    etat(:,i,2)=eta(:,i-2,1)	!eta0=eta1	  
-    zt(i,1)=zt(i,3)
-    zt(i,2)=zt(i,3)	
-  END DO
-
   SELECT CASE (CB(3)) 
     CASE(1) !Solid Wall
       DO i=3,Nx+2	
@@ -214,17 +227,6 @@ SUBROUTINE bcs(fopt,Cf,Coef,pasoRK,t,dt,Fr2,caso,qn,z,Nx,Ny,CB,xi,eta,Jac,dxi,de
   END SELECT
   !----------------------------------------------------------------------------------
   !Eta=Ny, CB(4)
-  DO i=3,Nx+2
-    !Metricas
-    xit(:,i,Ny+4)=xi(:,i-2,Ny-1)	!xiNy+4=xiNy-1
-    xit(:,i,Ny+3)=xi(:,i-2,Ny)	!xiNy+3=xiNy
-
-    etat(:,i,Ny+4)=eta(:,i-2,Ny-1)	!etaNy+4=etaNy-1
-    etat(:,i,Ny+3)=eta(:,i-2,Ny)	!etaNy+3=etaNy
-
-    zt(i,Ny+4)=zt(i,Ny+1)
-    zt(i,Ny+3)=zt(i,Ny+2)
-  END DO
 
   SELECT CASE (CB(4))
     CASE(1)

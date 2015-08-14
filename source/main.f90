@@ -107,7 +107,7 @@ PROGRAM MAIN !Ponerle un nombre decente
 !       if (it==528) then
 ! 	goout=.true.
 !       end if
-    if (print_out) then
+    if (print_out.and.myrank==0) then
       !Print iteration information on the screen
 
       print*, 'dt= ', dt
@@ -145,34 +145,17 @@ PROGRAM MAIN !Ponerle un nombre decente
     
   END DO
 ! call cpu_time(time_finish)
-call system_clock(clock_finish, clock_rate)
+  call mpi_barrier(mpi_comm_world,ierror)
+  if (myrank==master) then
+    call system_clock(clock_finish, clock_rate)
       time_finish = real(clock_finish ,kind=8) / real(clock_rate,kind=8)
-  print *, 'Simulation Ended'
-  print *, 'Final Time of Computation= ', t
-  print *, 'tfinal', tfinal
-  print *, 'treal+dtreal',treal+dtreal
-  print *, 'Iteraciones', it
-  print *, 'Time Elapsed = ',time_finish-time_start,' seconds.'
-  
-  !save execution times
-!$omp parallel private(omp_threadid, omp_nthreads)
-!$  omp_nthreads = omp_get_num_threads()
-!$  omp_threadid = omp_get_thread_num()
-  
-!$  if (omp_threadid==0) then
-!$    print *, 'Num threads used =', omp_nthreads
-!$    inquire(file='times.txt',exist=fexists)
-    
-!$    if (fexists) then
-!$      open(unit=0, file='times.txt', status='old', position='append', action='write')
-!$    else
-!$      open(unit=0, file='times.txt', status='new', action='write')
-!$    end if
-    
-!$    formatstring = '(i4,",",i4,",",E20.10,",",E20.10,",",E20.10)'
-!$    write(unit=0,fmt=formatstring) Nbx, omp_nthreads, time_finish-time_start, time_start, time_finish
-!$  end if
-!$omp end parallel
+    print *, 'Simulation Ended'
+    print *, 'Final Time of Computation= ', t
+    print *, 'tfinal', tfinal
+    print *, 'treal+dtreal',treal+dtreal
+    print *, 'Iteraciones', it
+    print *, 'Time Elapsed = ',time_finish-time_start,' seconds.'
+  end if  
 END PROGRAM MAIN
 
 

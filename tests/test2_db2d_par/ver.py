@@ -46,8 +46,6 @@ rango=range(len(t)-1)
 
 
 for it in rango:
-
-
   #get bathymetry filenames  for each level
   x=np.loadtxt(outdir+''+batinames[0])
   y=np.loadtxt(outdir+''+batinames[1])
@@ -57,9 +55,10 @@ for it in rango:
       #file with properties for this grid
       fname=outdir+'grids/grid%03d_%03d.dat'%(i,j)
       f=open(fname)
-      line=f.readline()
+      line=f.readline()      
       nbx=int(split(line)[0]);line=f.readline()
       nby=int(split(line)[0]);line=f.readline()
+      #print nbx,nby
       si=int(split(line)[0])-1;line=f.readline()#minus one for python
       ei=int(split(line)[0]);line=f.readline()
       sj=int(split(line)[0])-1;line=f.readline()
@@ -86,10 +85,11 @@ for it in rango:
       plt.plot(x[ei,sj:ej],y[ei,sj:ej],color='k')#,linewidth=1.)
   plt.axis('equal')
   plt.colorbar()  
-  plt.savefig(plt.plotdir+'/framexy%08d.png'%it)
+  plt.title('P=%i, t=%.3fs'%(nproc,t[it]))
+  plt.savefig(plt.plotdir+'/p%03dframexy%08d.png'%(nproc,it))
   plt.close()
 
-#title('t=%.3fs'%(t[it/dit]))
+
 #axis('equal')
 #
 #close()

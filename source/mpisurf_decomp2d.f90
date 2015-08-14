@@ -30,8 +30,8 @@ subroutine decomp2d
   !ex:  
   !	  COORDS
   !	1,0	1,1
-  !	0,0	0,1  
-  !
+  !^xi	0,0	0,1  
+  !>eta
   !corresponds to
   !	myrank2d
   !	2	3
@@ -49,6 +49,24 @@ subroutine decomp2d
   old_nby = Nby
   Nbx = ei-si+1
   Nby = ej-sj+1
+  
+  !assign boundary conditions  
+  if (myback /= MPI_PROC_NULL) then
+    CB(1) = -1
+  end if
+  
+  if (myfront /= MPI_PROC_NULL) then
+    CB(2) = -1
+  end if
+  
+  if (myleft /= MPI_PROC_NULL) then
+    CB(3) = -1
+  end if
+  
+  if (myright /= MPI_PROC_NULL) then
+    CB(4) = -1
+  end if
+  
   
   !save in buffers
   allocate(buf_x(Nbx,Nby), buf_y(Nbx,Nby), buf_z(Nbx,Nby), &
@@ -76,6 +94,7 @@ subroutine decomp2d
   z_global = buf_z
   qold_global = buf_qold     
   
+  !forget buffers
   deallocate(buf_x, buf_y, buf_z, buf_qold)
   
   !now save topology data for posterior output reconstruction
@@ -103,8 +122,7 @@ subroutine decomp2d
     do i=1,3
       command='cp '//trim(batiname(i))//' '//trim(outdir)//'/.'
       call system(command)
-    end do
-    
+    end do   
   end if
   
   !write this grid

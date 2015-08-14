@@ -25,8 +25,27 @@ Working on test2_db2d:
 ~~* save topology information to a file for later check~~
 ~~    * save total nxi and neta (nbx,nby before decomp2d) in variable old_nbx,old_nby~~
 ~~* run test2 with changes up to this point~~
-    * runs well with 1 processor
-* save batifiles in output directory, and remove x,y,z from sol2d
-* fix ver.py to read this
-* reduce dt
-* communicate
+~~    * runs well with 1 processor~~
+~~* save batifiles in output directory, and remove x,y,z from sol2d~~
+~~* fix ver.py to read this~~
+~~* reduce cfl-dt~~
+~~* assign CB=-1 in interior boundaries (decomp2d)~~
+~~* communicate through exchng2d~~
+    *it fails with P=16,17,18,19
+    *fixed!!!! the trick was on moving all blocks in mpisurf_BCS.f90 like
+    
+  DO i=3,Nx+2
+    !Metricas
+    xit(:,i,Ny+4)=xi(:,i-2,Ny-1)	!xiNy+4=xiNy-1
+    xit(:,i,Ny+3)=xi(:,i-2,Ny)	!xiNy+3=xiNy
+
+    etat(:,i,Ny+4)=eta(:,i-2,Ny-1)	!etaNy+4=etaNy-1
+    etat(:,i,Ny+3)=eta(:,i-2,Ny)	!etaNy+3=etaNy
+
+    zt(i,Ny+4)=zt(i,Ny+1)
+    zt(i,Ny+3)=zt(i,Ny+2)
+  END DO  
+  
+    above the "call exchange_2d" line (l.113)
+* fix verbose (master only)
+* add tests: thacker & pascua    

@@ -41,8 +41,13 @@ if you have the gnu fortran compiler gfortran, then try compiling with
 now you need all python 2.7, numpy and matplotlib to run
 
      python setrun.py
+  
+     
+this will create directories data/ and results/, and inside data/ you can see the bathymetry and initial condition in .png files. Tell the computer where the input data directory is by typing
 
-this will create directories data/ and results/, and inside data/ you can see the bathymetry and initial condition in .png files. Now we are ready to run
+    export INDIR=data
+
+now we are ready to run the model through
 
     ./xsurf
 
