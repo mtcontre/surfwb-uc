@@ -112,6 +112,18 @@ PROGRAM MAIN !Ponerle un nombre decente
     print *, 'treal+dtreal',treal+dtreal
     print *, 'Iteraciones', it
     print *, 'Time Elapsed = ',time_finish-time_start,' seconds.'
+    
+    inquire(file='times.txt',exist=fexists)
+    if (.not. fexists) then
+      open(100,file='times.txt',status='new',action='write')
+    else
+      
+      open(100,file='times.txt',status='old',action='write',position='append')
+    end if
+    
+    !save nproc,nxi,nit,tcalc
+    write(unit=100,fmt='(I3.3,X,I3.3,X,I6.6,X,E16.10)') nproc,old_nbx,it,time_finish-time_start
+    close(unit=100)
   END IF
   CALL MPI_finalize(ierror)
 END PROGRAM MAIN
