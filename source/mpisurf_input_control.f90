@@ -3,7 +3,7 @@ subroutine input_control
 use global_variables
 use senales
 use custombc
-
+USE MPI_SURF
 
 implicit none
 
@@ -65,38 +65,39 @@ read(1,*) outdir
 print*,'-------------',outdir
 close(1)
 
-write(*,100) caso
-100 FORMAT ('Caso: ', T25, I4)
+if (myrank==0) then
+  write(*,100) caso
+  100 FORMAT ('Caso: ', T25, I4)
 
-write(*,110) tfinal
-110 FORMAT ('T_final (s): ', T25, F8.2)
+  write(*,110) tfinal
+  110 FORMAT ('T_final (s): ', T25, F8.2)
 
-write(*,120) CFL
-120 FORMAT ('CFL: ', T25, F5.2)
+  write(*,120) CFL
+  120 FORMAT ('CFL: ', T25, F5.2)
 
-write(*,130) Nbx
-130 FORMAT ('Nbx: ', T25,  I6)
+  write(*,130) Nbx
+  130 FORMAT ('Nbx: ', T25,  I6)
 
-write(*,140) Nby
-140 FORMAT ('Nby: ', T25, I6)
+  write(*,140) Nby
+  140 FORMAT ('Nby: ', T25, I6)
 
 
-write(*,150)  L, H, U
-150 FORMAT ('Escalas (L, H, U): ', T25, 3F5.2)
+  write(*,150)  L, H, U
+  150 FORMAT ('Escalas (L, H, U): ', T25, 3F5.2)
 
-write(*,160) CB(1), CB(2), CB(3), CB(4)
-160 FORMAT ('Condiciones de Borde: ', T25, 4I2)
+  write(*,160) CB(1), CB(2), CB(3), CB(4)
+  160 FORMAT ('Condiciones de Borde: ', T25, 4I2)
 
-if (mmopt==1) then
-write(*,161) mmopt
-161 FORMAT ('Usando limitador MINMOD, mmopt= ', T30, 4I2)
-else if (mmopt==2) then
-write(*,162) mmopt
-162 FORMAT ('Usando limitador SUPERBEE, mmopt= ', T30, 4I2)
-else
-write(*,163) mmopt
-163 FORMAT ('Usando limitador MC, mmopt= ', T30, 4I2)
+  if (mmopt==1) then
+  write(*,161) mmopt
+  161 FORMAT ('Usando limitador MINMOD, mmopt= ', T30, 4I2)
+  else if (mmopt==2) then
+  write(*,162) mmopt
+  162 FORMAT ('Usando limitador SUPERBEE, mmopt= ', T30, 4I2)
+  else
+  write(*,163) mmopt
+  163 FORMAT ('Usando limitador MC, mmopt= ', T30, 4I2)
+  end if
 end if
-
 
 end subroutine input_control

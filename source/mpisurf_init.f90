@@ -27,12 +27,11 @@ SUBROUTINE init
   call input_geom		!Leer batimetria
   call input_ic		!Leer condición inicial, reemplace el init_flowfield por este
   call init_TS		! Time Series
-  print*,'InitFlowfieldOK'
+
   !Coeficiente de friccion: debe venir adimensionalizado
   allocate(MCoef(Nbx,Nby))
 
-  IF (fopt==1) THEN
-    
+  IF (fopt==1) THEN    
     IF (fM==1) THEN !Completa matriz de friccion con el valor ingresado en input.dat
       DO i=1,Nbx 
       DO j=1,Nby
@@ -91,7 +90,8 @@ SUBROUTINE init
     call stability_celerities_boundary_init
   end if
 
-  print*, 'Simulacion Incializada'
+  write(*,'(A36,I3.3,A27,I3.3)'), 'Initialized simulation in processor ',myrank, &
+	' in a communicator of size ',nproc
 
 END SUBROUTINE init
 

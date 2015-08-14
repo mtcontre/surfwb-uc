@@ -66,7 +66,7 @@ PROGRAM MAIN !Ponerle un nombre decente
     treal=treal+dtreal
     t=treal*U/L
     it=it+1
-    IF (print_out) THEN
+    IF (print_out.and.myrank==0) THEN
       CALL massbalance
       
       !Print iteration information on the screen
@@ -102,15 +102,17 @@ PROGRAM MAIN !Ponerle un nombre decente
   END DO
   
   ! CALL cpu_time(time_finish)
-  CALL system_clock(clock_finish, clock_rate)
-      time_finish = real(clock_finish ,kind=8) / real(clock_rate,kind=8)
-  print *, 'Simulation Ended'
-  print *, 'Final Time of Computation= ', t
-  print *, 'tfinal', tfinal
-  print *, 'treal+dtreal',treal+dtreal
-  print *, 'Iteraciones', it
-  print *, 'Time Elapsed = ',time_finish-time_start,' seconds.'
- 
+  CALL MPI_Barrier(MPI_COMM_WORLD,ierror)
+  IF (myrank==0) THEN
+    CALL system_clock(clock_finish, clock_rate)
+	time_finish = real(clock_finish ,kind=8) / real(clock_rate,kind=8)
+    print *, 'Simulation Ended'
+    print *, 'Final Time of Computation= ', t
+    print *, 'tfinal', tfinal
+    print *, 'treal+dtreal',treal+dtreal
+    print *, 'Iteraciones', it
+    print *, 'Time Elapsed = ',time_finish-time_start,' seconds.'
+  END IF
   CALL MPI_finalize(ierror)
 END PROGRAM MAIN
 
