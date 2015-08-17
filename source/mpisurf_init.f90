@@ -14,11 +14,10 @@ SUBROUTINE init
 
   integer :: i,j 
   real (kind=8)::U1,U2
-  
+  print*,'pre commworld----------'
   call MPI_COMM_RANK(MPI_COMM_WORLD, myrank, ierror)
   call MPI_COMM_SIZE(MPI_COMM_WORLD, nproc, ierror)
-  
-
+  print*,'post commworld----------'
   !Leer informacion de la simulacion
   call input_control
 

@@ -20,7 +20,9 @@ subroutine decomp2d
   CALL MPI_CART_CREATE(MPI_COMM_WORLD,ndim,dims,isperiodic,&
     reorder,comm2d,ierror)
   !obtain myrank2d
+  print*,'pre comm2d----------'
   CALL MPI_COMM_RANK(COMM2D,myrank2d,ierror)
+  print*,'post comm2d----------'
   !get the topology_coords in the cart topo for this process
   CALL MPI_CART_GET(COMM2D,ndim,dims,isperiodic,topology_coords,ierror)  
   
