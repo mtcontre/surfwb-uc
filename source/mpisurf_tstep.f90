@@ -12,7 +12,7 @@ subroutine tstep(dtreal)
   USE MPI
   USE MPI_SURF
   implicit none
-  real (kind=8) ::minxieta,maxS1,maxS2,maxUC,dtreal
+  real (kind=8) ::minxieta,maxS1,maxS2,maxUC,dtreal, maxUCbuf
   integer :: nt1,nt2
   
   
@@ -37,8 +37,8 @@ subroutine tstep(dtreal)
     maxUC=maxval((/maxUC,maxval(SetaN)/))
   end if
   !reduce maxUC over all procs
-  call mpi_allreduce(maxUC,maxUC,1,mpi_double_precision,mpi_max,comm2d,ierror)
-    
+  call mpi_allreduce(maxUC,maxUCbuf,1,mpi_double_precision,mpi_max,comm2d,ierror)
+  maxUC = maxUCbuf
   
   !CFL condition
   dt=CFL*minxieta/maxUC		!This dt is adimensional

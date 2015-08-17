@@ -66,7 +66,7 @@ PROGRAM MAIN !Ponerle un nombre decente
     treal=treal+dtreal
     t=treal*U/L
     it=it+1
-    IF (print_out.and.myrank==0) THEN
+    IF (myrank==0) THEN!print_out.and.
       CALL massbalance
       
       !Print iteration information on the screen
