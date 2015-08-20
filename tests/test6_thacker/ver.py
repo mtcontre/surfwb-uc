@@ -72,7 +72,7 @@ def plotframes(outdir,plotdir):
 	u=np.reshape(s[:,1],(nbx,nby),order='F')
 	v=np.reshape(s[:,2],(nbx,nby),order='F')
 
-	eta = np.ma.masked_where(h<=1e-5,h+z[si:ei,sj:ej])
+	eta = np.ma.masked_where(h<=1e-3,h+z[si:ei,sj:ej])
 	plt.pcolormesh(x[si:(ei+1),sj:(ej+1)],y[si:(ei+1),sj:(ej+1)],
 		      eta,vmin=-0.08,vmax=0.05)
 

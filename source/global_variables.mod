@@ -1,5 +1,5 @@
-GFORTRAN module version '10' created from /home/jgm/surfwb-uc/source/MODULES.f90
-MD5:c8f11b2ad7ca2757a88aa8fc158e750a -- If you edit this, you'll get what you deserve.
+GFORTRAN module version '10' created from /home/jgm/Downloads/SurfWB-UC_PAR//source/MODULES.f90
+MD5:338827959cc542eafce5c19a7171076f -- If you edit this, you'll get what you deserve.
 
 (() () () () () () () () () () () () () () () () () () () () () () () ()
 () () ())
@@ -56,30 +56,30 @@ UNKNOWN IMPLICIT-SAVE 0 0) (REAL 8 0 0 0 REAL ()) 0 0 () () 0 () () () 0
 14 'dtout' 'global_variables' '' 1 ((VARIABLE UNKNOWN-INTENT
 UNKNOWN-PROC UNKNOWN IMPLICIT-SAVE 0 0) (REAL 8 0 0 0 REAL ()) 0 0 () ()
 0 () () () 0 0)
-15 'dxi' 'global_variables' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
+15 'dtreal' 'global_variables' '' 1 ((VARIABLE UNKNOWN-INTENT
+UNKNOWN-PROC UNKNOWN IMPLICIT-SAVE 0 0) (REAL 8 0 0 0 REAL ()) 0 0 () ()
+0 () () () 0 0)
+16 'dxi' 'global_variables' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
 UNKNOWN IMPLICIT-SAVE 0 0) (REAL 8 0 0 0 REAL ()) 0 0 () () 0 () () () 0
 0)
-16 'eta_global' 'global_variables' '' 1 ((VARIABLE UNKNOWN-INTENT
+17 'eta_global' 'global_variables' '' 1 ((VARIABLE UNKNOWN-INTENT
 UNKNOWN-PROC UNKNOWN EXPLICIT-SAVE 0 0 ALLOCATABLE DIMENSION) (REAL 8 0
 0 0 REAL ()) 0 0 () (3 0 DEFERRED () () () () () ()) 0 () () () 0 0)
-17 'fm' 'global_variables' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
+18 'fm' 'global_variables' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
 UNKNOWN IMPLICIT-SAVE 0 0) (INTEGER 4 0 0 0 INTEGER ()) 0 0 () () 0 () ()
 () 0 0)
-18 'fopt' 'global_variables' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
+19 'fopt' 'global_variables' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
 UNKNOWN IMPLICIT-SAVE 0 0) (INTEGER 4 0 0 0 INTEGER ()) 0 0 () () 0 () ()
 () 0 0)
-19 'fr2' 'global_variables' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
+20 'fr2' 'global_variables' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
 UNKNOWN IMPLICIT-SAVE 0 0) (REAL 8 0 0 0 REAL ()) 0 0 () () 0 () () () 0
 0)
-20 'g' 'global_variables' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
+21 'g' 'global_variables' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
 UNKNOWN IMPLICIT-SAVE 0 0) (REAL 8 0 0 0 REAL ()) 0 0 () () 0 () () () 0
 0)
-21 'global_variables' 'global_variables' '' 1 ((MODULE UNKNOWN-INTENT
+22 'global_variables' 'global_variables' '' 1 ((MODULE UNKNOWN-INTENT
 UNKNOWN-PROC UNKNOWN UNKNOWN 0 0) (UNKNOWN 0 0 0 0 UNKNOWN ()) 0 0 () ()
 0 () () () 0 0)
-22 'goout' 'global_variables' '' 1 ((VARIABLE UNKNOWN-INTENT
-UNKNOWN-PROC UNKNOWN IMPLICIT-SAVE 0 0) (LOGICAL 4 0 0 0 LOGICAL ()) 0 0
-() () 0 () () () 0 0)
 23 'h' 'global_variables' '' 1 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC
 UNKNOWN IMPLICIT-SAVE 0 0) (REAL 8 0 0 0 REAL ()) 0 0 () () 0 () () () 0
 0)
@@ -88,7 +88,7 @@ UNKNOWN IMPLICIT-SAVE 0 0) (REAL 8 0 0 0 REAL ()) 0 0 () () 0 () () () 0
 0)
 25 'indir' 'global_variables' '' 1 ((VARIABLE UNKNOWN-INTENT
 UNKNOWN-PROC UNKNOWN IMPLICIT-SAVE 0 0) (CHARACTER 1 0 0 0 CHARACTER ((
-CONSTANT (INTEGER 4 0 0 0 INTEGER ()) 0 '256'))) 0 0 () () 0 () () () 0
+CONSTANT (INTEGER 4 0 0 0 INTEGER ()) 0 '255'))) 0 0 () () 0 () () () 0
 0)
 26 'initqname' 'global_variables' '' 1 ((VARIABLE UNKNOWN-INTENT
 UNKNOWN-PROC UNKNOWN IMPLICIT-SAVE 0 0 DIMENSION) (CHARACTER 1 0 0 0
@@ -130,7 +130,7 @@ UNKNOWN-PROC UNKNOWN IMPLICIT-SAVE 0 0) (INTEGER 4 0 0 0 INTEGER ()) 0 0
 () () 0 () () () 0 0)
 38 'outdir' 'global_variables' '' 1 ((VARIABLE UNKNOWN-INTENT
 UNKNOWN-PROC UNKNOWN IMPLICIT-SAVE 0 0) (CHARACTER 1 0 0 0 CHARACTER ((
-CONSTANT (INTEGER 4 0 0 0 INTEGER ()) 0 '256'))) 0 0 () () 0 () () () 0
+CONSTANT (INTEGER 4 0 0 0 INTEGER ()) 0 '255'))) 0 0 () () 0 () () () 0
 0)
 39 'outopt' 'global_variables' '' 1 ((VARIABLE UNKNOWN-INTENT
 UNKNOWN-PROC UNKNOWN IMPLICIT-SAVE 0 0) (INTEGER 4 0 0 0 INTEGER ()) 0 0
@@ -202,8 +202,8 @@ UNKNOWN EXPLICIT-SAVE 0 0 ALLOCATABLE DIMENSION) (REAL 8 0 0 0 REAL ())
 
 ('aj_global' 0 2 'batiname' 0 3 'batiopt' 0 4 'c_global' 0 5 'caso' 0 6
 'cb' 0 7 'cf' 0 8 'cfl' 0 9 'coef' 0 10 'deta' 0 11 'dit' 0 12 'dt' 0 13
-'dtout' 0 14 'dxi' 0 15 'eta_global' 0 16 'fm' 0 17 'fopt' 0 18 'fr2' 0
-19 'g' 0 20 'global_variables' 0 21 'goout' 0 22 'h' 0 23 'hmin' 0 24
+'dtout' 0 14 'dtreal' 0 15 'dxi' 0 16 'eta_global' 0 17 'fm' 0 18 'fopt'
+0 19 'fr2' 0 20 'g' 0 21 'global_variables' 0 22 'h' 0 23 'hmin' 0 24
 'indir' 0 25 'initqname' 0 26 'initqopt' 0 27 'it' 0 28 'iteration' 0 29
 'kappa' 0 30 'l' 0 31 'mcoef' 0 32 'mmopt' 0 33 'nbx' 0 34 'nby' 0 35
 'nbz' 0 36 'nitout' 0 37 'outdir' 0 38 'outopt' 0 39 'print_out' 0 40

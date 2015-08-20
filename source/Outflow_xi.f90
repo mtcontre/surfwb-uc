@@ -10,9 +10,9 @@ USE coords
 USE time0
 !Fija una altura afuera del dominio en el borde 0, flujo unidireccional v=0.0
 implicit none
-real (kind=8):: C,t,dt,Fr2,epA, hR, uR,vR, epR, epxR,epyR, RR,dep, &
-zepR, epxA,epyA,epxA2,epyA2,zepA,tauR,Rmenos,hA,zmin,uA,vA, &
-Rmas,RmenosU,U1, alfa,a1,a2,a3,a4,K,qp,U1u,uU,vU,hU, cero, JacA, us, vs, hs
+real (kind=8):: C,t,dt,Fr2,epA, hR, uR,vR, epR, epxR,epyR, RR,dep, zepR, &
+  epxA,epyA,epxA2,epyA2,zepA,tauR,Rmenos,hA,zmin,uA,vA, Rmas,RmenosU,U1, &
+    alfa,a1,a2,a3,a4,K,qp,U1u,uU,vU,hU, cero, JacA, us, vs, hs
 real (kind=8)::etaL,uL,vL,hL,RL, epL,epxL,epyL, zepL,C0, h0, tauL, qpar, Uper,Upar, UparL, UparR 
 
 integer:: Nx,Ny,j,i, Ns, fopt, tipo, borde, pasoRK
@@ -125,8 +125,7 @@ else
     if(hR/=0.0D0) then
     C=MC(1,j)
     call  tauU(tipo,C,Fr2,hR,uR,vR,tauR)
-    Rmenos=RR-0.5D0*dt/Fr2*(zepR*(epxR**2.0D0+epyR**2.0D0)+&
-    zepA*(epxA**2.0D0+epyA**2.0D0))-tauR/hR*dt*(epxR+epyR)
+    Rmenos=RR-0.5D0*dt/Fr2*(zepR*(epxR**2.0D0+epyR**2.0D0)+zepA*(epxA**2.0D0+epyA**2.0D0))-tauR/hR*dt*(epxR+epyR)
     else
     tauR=0.0D0
     Rmenos=RR-0.5D0*dt/Fr2*(zepR*(epxR**2.0D0+epyR**2.0D0)+zepA*(epxA**2.0D0+epyA**2.0D0))
@@ -404,9 +403,9 @@ USE coords
 USE time0
 !Fija una altura afuera del dominio en el borde 0, flujo unidireccional v=0.0
 implicit none
-real (kind=8):: C,t,dt,Fr2,epA, hL, uL,vL, epL, epxL,epyL, RL,dep, &
-zepL, epxA,epyA,zepA,tauL,Rmenos, hb,hA,zmin,uA,vA, Rmas, U1, alfa, &
-uU,vU,U1u,hU,RmasU,uR,vR, Upar, UparR, UparL
+real (kind=8):: C,t,dt,Fr2,epA, hL, uL,vL, epL, epxL,epyL, RL,dep, zepL, &
+  epxA,epyA,zepA,tauL,Rmenos, hb,hA,zmin,uA,vA, Rmas, U1, alfa, uU,vU,U1u,&
+    hU,RmasU,uR,vR, Upar, UparR, UparL
 integer:: Nx,Ny,j,i, Ns, fopt, tipo, borde
 real (kind=8), dimension(3,Nx,Ny)::q
 real (kind=8), dimension(Nx+4,Ny+4)::zt
@@ -481,8 +480,7 @@ else
     if(hL/=0.0D0) then
     C=MC(Nx,j)
     call  tauU(tipo,C,Fr2,hL,uL,vL,tauL)
-    Rmas=RL-0.5D0*dt/Fr2*(zepL*(epxL**2.0D0+epyL**2.0D0)+&
-    zepA*(epxA**2.0D0+epyA**2.0D0))-tauL/hL*dt*(epxL+epyL)
+    Rmas=RL-0.5D0*dt/Fr2*(zepL*(epxL**2.0D0+epyL**2.0D0)+zepA*(epxA**2.0D0+epyA**2.0D0))-tauL/hL*dt*(epxL+epyL)
     else
     tauL=0.0D0
     Rmas=RL-0.5D0*dt/Fr2*(zepL*(epxL**2.0D0+epyL**2.0D0)+zepA*(epxA**2.0D0+epyA**2.0D0))
@@ -555,9 +553,9 @@ USE coords
 USE time0
 !Fija una altura afuera del dominio en el borde 0, flujo unidireccional v=0.0
 implicit none
-real (kind=8):: C,t,dt,Fr2,epA, hL, uL,vL, epL, epxL,epyL, RL,dep, &
-zepL, epxA,epyA,zepA,tauL,Rmenos, hb,hA,zmin,uA,vA, Rmas, U1, alfa,&
-ub, hU,uU,vU,U1u,RmasU, uR, vR, UparL, UparR, Upar
+real (kind=8):: C,t,dt,Fr2,epA, hL, uL,vL, epL, epxL,epyL, RL,dep, zepL,&
+  epxA,epyA,zepA,tauL,Rmenos, hb,hA,zmin,uA,vA, Rmas, U1, alfa, ub, hU,uU,&
+    vU,U1u,RmasU, uR, vR, UparL, UparR, Upar
 integer:: Nx,Ny,j,i, Ns, fopt, tipo, borde
 real (kind=8), dimension(3,Nx,Ny)::q
 real (kind=8), dimension(Nx+4,Ny+4)::zt
@@ -633,8 +631,7 @@ else
     if(hL/=0.0D0) then
     C=MC(Nx,j)
     call  tauU(tipo,C,Fr2,hL,uL,vL,tauL)
-    Rmas=RL-0.5D0*dt/Fr2*(zepL*(epxL**2.0D0+epyL**2.0D0)+&
-    zepA*(epxA**2.0D0+epyA**2.0D0))-tauL/hL*dt*(epxL+epyL)
+    Rmas=RL-0.5D0*dt/Fr2*(zepL*(epxL**2.0D0+epyL**2.0D0)+zepA*(epxA**2.0D0+epyA**2.0D0))-tauL/hL*dt*(epxL+epyL)
     else
     tauL=0.0D0
     Rmas=RL-0.5D0*dt/Fr2*(zepL*(epxL**2.0D0+epyL**2.0D0)+zepA*(epxA**2.0D0+epyA**2.0D0))

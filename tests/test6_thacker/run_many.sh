@@ -1,4 +1,4 @@
-for i in $(seq 1 1 4)
+for i in $(seq 1 1 25)
 do
   echo running with $i procs
   python setrun.py 100 $i

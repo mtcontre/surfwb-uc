@@ -18,8 +18,9 @@ USE coords
 !Borde xi=0
 
 implicit none
-real (kind=8):: C,t,dt,Fr2,h0,C0,etai, epA, hL, uL, epL, epxL, RL,dep, zepL
-real (kind=8)::epxA,zepA,tauL,epR,epxR,uR,hR,zepR, tauR,RR, Rmas, Rmenos,hAo,uAo,tauAo
+real (kind=8):: C,t,dt,Fr2,h0,C0,etai, epA, hL, uL, epL, epxL, RL,dep,&
+  zepL, epxA,zepA,tauL,epR,epxR,uR,hR,zepR, tauR,RR, Rmas, Rmenos, &
+hAo,uAo,tauAo
 integer:: Nx,Ny,j,i, NR, fopt, tipo, borde
 real (kind=8), dimension(3,Nx,Ny)::q
 real (kind=8), dimension(Nx+4,Ny+4)::zt
@@ -139,8 +140,9 @@ USE coords
 !Borde xi=0
 
 implicit none
-real (kind=8):: C,t,dt,Fr2,h0,C0,etai, epA, hL, uL, epL, epxL, RL,dep, zepL,epxA,zepA
-real (kind=8)::tauL,epR,epxR,qR,uR,hR,zepR, tauR,RR, Rmas, Rmenos,hAo,uAo,tauAo, zmin, AR, VR, Qt, dQ,hR1
+real (kind=8):: C,t,dt,Fr2,h0,C0,etai, epA, hL, uL, epL, epxL, RL,dep, zepL, &
+  epxA,zepA,tauL,epR,epxR,qR,uR,hR,zepR, tauR,RR, Rmas, Rmenos, &
+hAo,uAo,tauAo, zmin, AR, VR, Qt, dQ,hR1
 integer:: Nx,Ny,j,i, Ns, fopt, tipo, borde
 real (kind=8), dimension(3,Nx,Ny)::q
 real (kind=8), dimension(Nx+4,Ny+4)::zt
@@ -299,8 +301,8 @@ USE coords
 !Borde xi=N
 
 implicit none
-real (kind=8):: C,t,dt,Fr2,h0,C0,etai, epA,qL, hL, uL, epL, epxL, RL,dep, zepL, epxA,zepA,&
-tauL,epR,epxR,uR,hR,zepR, tauR,RR, Rmas, Rmenos,hAo,uAo,tauAo
+real (kind=8):: C,t,dt,Fr2,h0,C0,etai, epA,qL, hL, uL, epL, epxL, RL,dep, zepL, &
+  epxA,zepA,tauL,epR,epxR,uR,hR,zepR, tauR,RR, Rmas, Rmenos,hAo,uAo,tauAo
 integer:: Nx,Ny,j,i, Ns, fopt, tipo, borde
 real (kind=8), dimension(3,Nx,Ny)::q
 real (kind=8), dimension(Nx+4,Ny+4)::zt
@@ -366,6 +368,7 @@ else
     if (hR/=0.0D0) then
     C=MC(Nx,1)
     call tau(tipo,C,Fr2,hR,uR,tauR)
+		   
     tauR=tauR/hR
     else
     tauR=0.0D0

@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import colormaps as cmaps
+#import colormaps as cmaps
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 import os
 

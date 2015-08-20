@@ -1,4 +1,4 @@
-subroutine tstep(dtreal)
+subroutine tstep
   !(JGalazM,2013) calculates dtreal satisfying the cfl condition, 
   !so if there are boundary conditions with a given time step, it always 
   !passes through t_i, for instance, considering the xi0 boundary
@@ -10,7 +10,7 @@ subroutine tstep(dtreal)
   use custombc
   use global_variables
   implicit none
-  real (kind=8) ::minxieta,maxS1,maxS2,maxUC,dtreal
+  real (kind=8) ::minxieta,maxS1,maxS2,maxUC
   integer :: nt1,nt2
   
   

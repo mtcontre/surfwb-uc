@@ -33,18 +33,18 @@ z = -1.*np.reshape(bati[:,2],(-1,ny))[::4,::4]
 
 dx = np.diff(x[:,0])[0]
 
-#xwall = x[:,0].max()*np.ones((2,x.shape[1]))
-#xwall[0,:] += dx
-#xwall[1,:] *= 2*dx
+xwall = x[:,0].max()*np.ones((2,x.shape[1]))
+xwall[0,:] += dx
+xwall[1,:] *= 2*dx
 
-#ywall = np.zeros_like(xwall)
-#ywall[0,:] = y[-1,:]
-#ywall[1,:] = y[-1,:]
-#zwall = np.ones_like(xwall)*0.5
+ywall = np.zeros_like(xwall)
+ywall[0,:] = y[-1,:]
+ywall[1,:] = y[-1,:]
+zwall = np.ones_like(xwall)*0.5
 
-#x = np.vstack([x,xwall])
-#y = np.vstack([y,ywall])
-#z = np.vstack([z,zwall])
+x = np.vstack([x,xwall])
+y = np.vstack([y,ywall])
+z = np.vstack([z,zwall])
 
 
 h = np.where(z<=0.,-z,0.)
@@ -145,8 +145,8 @@ if bcxi0==4:
 bcxiN=1
 bceta0=1
 bcetaN=1
-dit=100
-#dtout = 0.5
+dit=-1
+dtout = 0.5
 kappa=1e-5
 rktype=1
 limtype=1

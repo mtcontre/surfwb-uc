@@ -3,7 +3,6 @@
 !SUBROUTINE VFROENCV(FR2,qR,qL,epx,epy,hmin,qs)
 ! Este es el que se está usando!!!!
 SUBROUTINE VFROENCV(i,j,FR2,qR,qL,epR,epL,hmin,qs)
-use global_variables, only:goout
 !qR=qmas
 !qL=qmenos
 real (kind=8), dimension(3)	:: qL,qR,qs, WL,WR,WS,WRL,Fs,WM,L,LR,LL
@@ -215,7 +214,7 @@ print*, i,j
 !		WS(2)=0
 !		WS(3)=0
 !pause
-! stop
+ stop
 
 ELSE
   IF ((0.5D0*WS(1)).le.kappa) then

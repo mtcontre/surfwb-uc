@@ -47,5 +47,22 @@ Working on test2_db2d:
   END DO  
   
     above the "call exchange_2d" line (l.113)
-* fix verbose (master only)
-* add tests: thacker & pascua    
+* ~~fix verbose (master only)~~
+* ~~distribute friction matrix~~
+* ~~re-write outputgauges.f90~~
+*~~ save executions time and number of processes~~
+* add tests: thacker & pascua  and measure speedup
+* Thacker: cartesian+variablebathymetry+wet-dry
+    *setrun.py ready
+    *figures dont match after 0.2T, with different processors
+    *maybe some issue with the minimum height??
+    *create editsub.py and the pbs file
+    *spam!!!
+~~* pascua:~~
+
+~~* it fails for no reason :S see test6. I run the thacker case in ~/Downloads/SurfWB-UC_PAR/ and it looks great~~
+~~* i should try to clean the other version.~~
+
+#New version
+The old version (the one I sent to Carlos) was OK, except for the bug that Marite found.
+So I modified its makefiles, fixed some .f90 files and copied everything in the bitbucket repo.

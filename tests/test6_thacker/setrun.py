@@ -47,8 +47,8 @@ def setrun(nxi,neta,nn,npr):
   
   caso = 999
   tinit = 0.0
-  tfinal = T*5
-  cfl = 0.8
+  tfinal = T
+  cfl = 0.7
   #nxi=x.shape[0]
   #neta=x.shape[1]
   batiopt=1
@@ -64,7 +64,7 @@ def setrun(nxi,neta,nn,npr):
   bcetaN=1
   dit=-1
   if dit==-1:
-    dtout = tfinal/5.
+    dtout = T/5.
   kappa=1e-5
   rktype=1
   limtype=1

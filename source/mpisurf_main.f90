@@ -1,131 +1,73 @@
-PROGRAM MAIN !Ponerle un nombre decente
-
-  USE global_variables !Use the global variables module
-  USE geometries	!Use geometries module
-  USE senales	!Use senales module for inflow or outflow BC
-  USE TimeSeries
-  USE MPI
-  USE MPI_surf
+program main
+  use mpi
+  use mpi_surf
+  use multigrid_surf
+  use global_variables
+  use performance_stats
+  implicit none
   
-  implicit none 
-
-  
-  !Declare variables that are used here and only here IF it is necessary
-
-  integer::i,j,k
-  real (kind=8) :: mindxdy,minxieta,maxUC, maxV, maxC, zmax, maxS1, maxS2, pVol1,dtreal
-  real (kind=8), dimension(2) :: xieta, loc
-  real (kind=8), dimension(:), allocatable:: dxdy
-  real (kind=8) :: time_start,time_finish, time_estim
-  integer :: clock_start, clock_rate, clock_finish
-  character (len=255) :: formatstring
-  logical :: fexists
-  
-  CALL MPI_INIT(ierror) 
-  
-  g=9.812D0
-  hmin=1.0E-7
-  it=0.0D0
-  dt=0.0D0
-  t=0.0D0
-  treal=0.0D0
-
-  call init
-  
-  IF (outopt==1) THEN
-    CALL outputmat
-    CALL outputgauges(treal)
-  END IF
-  
-  CALL massbalance	!Calculates the initial volume and mass of water
-
-  CALL system_clock(clock_start,clock_rate)  
-  time_start = real(clock_start,kind=8) /real(clock_rate,kind=8)    
-  
-  
-  
-  DO WHILE(treal<=tfinal+1.d-10)
-    !1. Calculate time step with the CFL condition
-    CALL tstep(dtreal)    
-
-    !2.Calling main_solver, which solves the 4 stages of RK method, and calculates qnew_global(h,u,v)
-    IF (fopt==0) THEN
-      IF (rk==1) THEN		
-	CALL solver1 !Solver RK4, 	sin fricción	
+  call mpi_init(ierror)
+    call init
+    
+    call massbalance
+    
+    !write initial condition
+    if (outopt==1) then
+      call outputmat_par
+    end if
+   
+    time_start=mpi_wtime()
+    do while(treal<=tfinal)
+      !set a stable delta t
+      call setdt      
+      !pick one solver from input_control params
+      if (fopt==0) then
+	if (rk==1) then
+	  call solver1 !Solver RK4, 	sin fricción
+	else
+	  call solver2 !Solver RK2, 	sin fricción
+	end if
       else
-	CALL solver2 !Solver RK2, 	sin fricción
-      END IF
-    else
-      IF (rk==1) THEN
-    	CALL solverf4 !Solver RK4, 	con fricción
-      else
-	CALL solverf2 !Solver RK2, 	con fricción
-      END IF
-    END IF
+	if (rk==1) then
+	  call solverf4 !Solver RK4, 	con fricción
+	else
+	  call solverf2 !Solver RK2, 	con fricción
+	end if
+      end if	
+      
+      t=t+dt
+      treal=treal+dtreal
+      it=it+1	
+      
+      !print screen information for this iteration
+      call it_verbose
+      
+      !Lagrangian Particle Tracking
+      !call LPT () 
+      !print current new results
+      if (outopt==1) then
+	call outputmat_par
+      end if
+      
+      !Actualization of the global variables (adimensionalized)
+      qold_global=qnew_global
+    end do
     
-    treal=treal+dtreal
-    t=treal*U/L
-    it=it+1
-    IF (myrank==0) THEN!print_out.and.
-      CALL massbalance
-      
-      !Print iteration information on the screen
-      print*, 'dt= ', dt
-      write(*,199) it
-      199 FORMAT ('Iteracion= ',I3)
-      print*, 'Time= ', t
-      
-      !Adimensional Mass Balance VerIFication      
-      write(*,170) Pvol
-      170 FORMAT ('%Volumen= ',F7.3 ,'%')      
-      print*,'nxi=',Nbx,'neta=',Nby
-      
-      CALL system_clock(clock_finish, clock_rate)
-      time_finish = real(clock_finish ,kind=8) / real(clock_rate,kind=8)
-      write(*,171) time_finish-time_start
-      171 format ('Time Elapsed = ',1f10.1,' seconds.')
-
-      time_estim=(time_finish-time_start)*tfinal/treal
-      write(*,172) time_estim
-      172 format ('Time Estimated = ',f10.1,' seconds.')
-      print*,'------------------------------'
-    END IF
-    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	CALL LPT () ! Lagrangian Particle Tracking
-    !3.Dimensionalize results and write results into a file
-    IF (outopt==1) THEN
-	  CALL outputmat
-	  CALL outputgauges(treal)
-    END IF
+    !print the last iteration
     
-    !Update global variables (adimensionalized)
-    qold_global=qnew_global    
-  END DO
-  
-  ! CALL cpu_time(time_finish)
-  CALL MPI_Barrier(MPI_COMM_WORLD,ierror)
-  IF (myrank==0) THEN
-    CALL system_clock(clock_finish, clock_rate)
-	time_finish = real(clock_finish ,kind=8) / real(clock_rate,kind=8)
-    print *, 'Simulation Ended'
-    print *, 'Final Time of Computation= ', t
-    print *, 'tfinal', tfinal
-    print *, 'treal+dtreal',treal+dtreal
-    print *, 'Iteraciones', it
-    print *, 'Time Elapsed = ',time_finish-time_start,' seconds.'
-    
-    inquire(file='times.txt',exist=fexists)
-    if (.not. fexists) then
-      open(100,file='times.txt',status='new',action='write')
-    else
-      
-      open(100,file='times.txt',status='old',action='write',position='append')
+    if (myrank==master) then
+      print *, 'Simulation Ended'
+      print *, 'Final Time of Computation= ', t
+      print *, 'tfinal', tfinal
+      print *, 'treal+dtreal',treal+dtreal
+      print *, 'Iteraciones', it
+      print *, 'Time Elapsed = ',time_finish-time_start,' seconds.'
+      open(unit=100,file='stats.text',status='old',position='append')
+      write(unit=100,fmt=*) nproc,nxi,neta,time_finish-time_start
+      close(unit=100)
     end if
     
-    !save nproc,nxi,nit,tcalc
-    write(unit=100,fmt='(I3.3,X,I3.3,X,I6.6,X,E16.10)') nproc,old_nbx,it,time_finish-time_start
-    close(unit=100)
-  END IF
-  CALL MPI_finalize(ierror)
-END PROGRAM MAIN
-
+  call mpi_finalize(ierror)
+  
+end program main
 
