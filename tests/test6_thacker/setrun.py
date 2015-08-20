@@ -75,9 +75,9 @@ def setrun(nxi,neta,nn,npr):
   #---------write to file
   f=open('%s/input.dat'%indir,'w')
   f.write('%i'%caso)
-  f.write('\n%.8f'%tinit)
-  f.write('\n%.8f'%tfinal)
-  f.write('\n%.8f'%cfl)
+  f.write('\n%.8f'%(tinit))
+  f.write('\n%.8f'%(tfinal))
+  f.write('\n%.8f'%(cfl))  
   f.write('\n%i'%nxi)
   f.write('\n%i'%neta)
   f.write('\n%i'%batiopt)

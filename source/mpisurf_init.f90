@@ -154,18 +154,19 @@ subroutine print_params
     
     
     do i=1,ngrids
-      if( (batiopt(i)==0).or.(batiopt(i)==1) )then
-	command='cp '//trim(batiname(i,1))//' '//trim(outdir)//'/.'
+      if( (batiopts(i)==0).or.(batiopts(i)==1) )then
+	command='cp '//trim(batinames(i,1))//' '//trim(outdir)//'/.'
 	call system(command)
-	command='cp '//trim(batiname(i,2))//' '//trim(outdir)//'/.'
+	command='cp '//trim(batinames(i,2))//' '//trim(outdir)//'/.'
 	call system(command)
-	command='cp '//trim(batiname(i,3))//' '//trim(outdir)//'/.'
+	command='cp '//trim(batinames(i,3))//' '//trim(outdir)//'/.'
 	call system(command)
-	write(unit=50,fmt=*) trim(batiname(i,1)),' ',trim(batiname(i,2)),' ',trim(batiname(i,3))
-      else if( (batiopt(i)==2).or.(batiopt(i)==3) )then
-	command='cp '//trim(batiname(i,1))//' '//trim(outdir)//'/.'
+	write(unit=50,fmt=*) trim(batinames(i,1)),' ', &
+	  trim(batinames(i,2)),' ',trim(batinames(i,3))
+      else if( (batiopts(i)==2).or.(batiopts(i)==3) )then
+	command='cp '//trim(batinames(i,1))//' '//trim(outdir)//'/.'
 	call system(command)
-	write(unit=50,fmt=*) trim(batiname(i,1))
+	write(unit=50,fmt=*) trim(batinames(i,1))
       end if
     end do
     close(unit=50)       

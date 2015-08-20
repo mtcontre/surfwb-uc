@@ -16,34 +16,34 @@ SUBROUTINE input_geom
     allocate(geom(level)%X(nxi(level),neta(level)), &
       geom(level)%Y(nxi(level),neta(level)), &
       geom(level)%Z(nxi(level),neta(level)))      
-    SELECT CASE (int(batiopt(level)))
+    SELECT CASE (int(batiopts(level)))
       CASE(0)
-	open(unit=2,file=batiname(level,1),form='unformatted')
+	open(unit=2,file=batinames(level,1),form='unformatted')
 	read(2) ((geom(level)%X(i,j),j=1,neta(level)),i=1,nxi(level))
 	close(unit=2)
 	
-	open(unit=2,file=batiname(level,2),form='unformatted')
+	open(unit=2,file=batinames(level,2),form='unformatted')
 	read(2) ((geom(level)%Y(i,j),j=1,neta(level)),i=1,nxi(level))
 	close(unit=2)	
 	
-	open(unit=2,file=batiname(level,3),form='unformatted')
+	open(unit=2,file=batinames(level,3),form='unformatted')
 	read(2) ((geom(level)%Z(i,j),j=1,neta(level)),i=1,nxi(level))
 	close(unit=2)
       CASE(1)
-	open(unit=2,file=batiname(level,1))
+	open(unit=2,file=batinames(level,1))
 	read(2,*) ((geom(level)%X(i,j),j=1,neta(level)),i=1,nxi(level))
 	close(unit=2)
 	
-	open(unit=2,file=batiname(level,2))
+	open(unit=2,file=batinames(level,2))
 	read(2,*) ((geom(level)%Y(i,j),j=1,neta(level)),i=1,nxi(level))
 	close(unit=2)
 	
-	open(unit=2,file=batiname(level,3))
+	open(unit=2,file=batinames(level,3))
 	read(2,*) ((geom(level)%Z(i,j),j=1,neta(level)),i=1,nxi(level))
 	close(unit=2)
       CASE(2)	
 	allocate(xaux(nxi(level)*neta(level)),yaux(nxi(level)*neta(level)), zaux(nxi(level)*neta(level)))
-	open(unit=2,file=batiname(level,1))
+	open(unit=2,file=batinames(level,1))
 	Do i=1,nxi(level)*neta(level)
 	  read(2,*) xaux(i), yaux(i), zaux(i)
 	End Do
@@ -56,7 +56,7 @@ SUBROUTINE input_geom
 	deallocate(xaux,yaux,zaux)
       CASE(3)
 	allocate(xaux(nxi(level)*neta(level)),yaux(nxi(level)*neta(level)), zaux(nxi(level)*neta(level)))
-	open(unit=2,file=batiname(level,1))
+	open(unit=2,file=batinames(level,1))
 	Do i=1,nxi(level)*neta(level)
 	  read(2,*) xaux(i), yaux(i), zaux(i)
 	End Do

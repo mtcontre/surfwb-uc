@@ -59,7 +59,7 @@ MODULE multigrid_surf
 !   integer, dimension(:),allocatable::myzone!current zone
   integer,dimension(4)::CB_real
   integer, dimension(:),allocatable::nxi,neta !vectors with size for each zone 
-  integer,dimension(:),allocatable::batiopt,initqopt
+  integer,dimension(:),allocatable::batiopts,initqopts
   character(len=255),dimension(:,:),allocatable::batinames,initqnames
   
   type gridarray

@@ -13,35 +13,35 @@ SUBROUTINE input_ic
     allocate(initq(level)%H(nxi(level),neta(level)), &
 	initq(level)%U(nxi(level),neta(level)),&
 	initq(level)%V(nxi(level),neta(level)))
-    SELECT CASE (int(initqopt(level)))
+    SELECT CASE (int(initqopts(level)))
       CASE(0)
-	open(unit=2,file=initqname(level, 1),form='unformatted')
+	open(unit=2,file=initqnames(level, 1),form='unformatted')
 	read(2) ((initq(level)%H(i,j),j=1,neta(level)), i=1,nxi(level))
 	close(unit=2)
 	
-	open(unit=2,file=initqname(level,2),form='unformatted')
+	open(unit=2,file=initqnames(level,2),form='unformatted')
 	read(2) ((initq(level)%U(i,j), j=1,neta(level)), i=1,nxi(level))
 	close(unit=2)
 	
-	open(unit=2,file=initqname(level,3),form='unformatted')
+	open(unit=2,file=initqnames(level,3),form='unformatted')
 	read(2) ((initq(level)%V(i,j),j=1,neta(level)),i=1,nxi(level))
 	close(unit=2)
       CASE(1)
-	open(unit=2,file=initqname(level,1))
+	open(unit=2,file=initqnames(level,1))
 	read(2,*) ((initq(level)%H(i,j),j=1,neta(level)),i=1,nxi(level))
 	close(unit=2)
 	
-	open(unit=2,file=initqname(level,2))
+	open(unit=2,file=initqnames(level,2))
 	read(2,*) ((initq(level)%U(i,j),j=1,neta(level)),i=1,nxi(level))
 	close(unit=2)
 	
-	open(unit=2,file=initqname(level,3))
+	open(unit=2,file=initqnames(level,3))
 	read(2,*) ((initq(level)%V(i,j),j=1,neta(level)),i=1,nxi(level))
 	close(unit=2)
       CASE (2)
 	allocate(hin(nxi(level)*neta(level)),&
 	  uin(nxi(level)*neta(level)), vin(nxi(level)*neta(level)))
-	open(unit=99,file=initqname(level,1))
+	open(unit=99,file=initqnames(level,1))
 	Do i=1,nxi(level)*neta(level)
 	  read(99,*) hin(i), uin(i), vin(i)
 	End Do
@@ -55,7 +55,7 @@ SUBROUTINE input_ic
       CASE (3)
 	allocate(hin(nxi(level)*neta(level)),&
 	  uin(nxi(level)*neta(level)), vin(nxi(level)*neta(level)))
-	open(unit=99,file=initqname(level,1))
+	open(unit=99,file=initqnames(level,1))
 	Do i=1,nxi(level)*neta(level)
 	  read(99,*) hin(i), uin(i), vin(i)
 	End Do

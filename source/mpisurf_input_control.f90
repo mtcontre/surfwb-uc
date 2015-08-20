@@ -8,31 +8,38 @@ subroutine input_control
   integer ::i
   character(len=256) ::command,intchar
   logical::dir_exists
+  call get_environment_variable('INDIR',indir)
 
-  open(1,file='data/input.dat')
+  !start reading input data
+  open(1,file=trim(indir)//'/input.dat')
+
   read(1,*) caso
-  read(1,*) tinit,tfinal,CFL	  
+  read(1,*) tinit
+  read(1,*) tfinal
+  read(1,*) CFL	  
   ngrids=1			
   !number of overlapped grids (1fornow)
   allocate(Nxi(ngrids),Neta(ngrids),&
-    batiname(ngrids,3),initqname(ngrids,3),batiopt(ngrids),initqopt(ngrids)) 
+    batinames(ngrids,3),initqnames(ngrids,3),batiopts(ngrids),initqopts(ngrids)) 
   do i=1,ngrids
-    read(1,*) Nxi(i),Neta(i),batiopt(i)	
-    if ((batiopt(i)==0).or.(batiopt(i)==1)) then	
-      read(1,'(A)') batiname(i,1)!Xmatrix	
-      read(1,'(A)') batiname(i,2)!Ymatrix
-      read(1,'(A)') batiname(i,3)!Zmatrix
-    else if ((batiopt(i)==2).or.(batiopt(i)==3)) then
-      read(1,'(A)') batiname(i,1)!3columns X,Y,Z
+    read(1,*) Nxi(i)
+    read(1,*) Neta(i)
+    read(1,*) batiopts(i)	
+    if ((batiopts(i)==0).or.(batiopts(i)==1)) then	
+      read(1,'(A)') batinames(i,1)!Xmatrix	
+      read(1,'(A)') batinames(i,2)!Ymatrix
+      read(1,'(A)') batinames(i,3)!Zmatrix
+    else if ((batiopts(i)==2).or.(batiopts(i)==3)) then
+      read(1,'(A)') batinames(i,1)!3columns X,Y,Z
     end if
     
-    read(1,*) initqopt(i)
-    if ((initqopt(i)==0).or.(initqopt(i)==1)) then
-      read(1,'(A)') initqname(i,1)!h-matrix
-      read(1,'(A)') initqname(i,2)!u-matrix
-      read(1,'(A)') initqname(i,3)!v-matrix
-    else if ((initqopt(i)==2).or.(initqopt(i)==3)) then
-      read(1,'(A)') initqname(i,1)!recolumns, h,u,v
+    read(1,*) initqopts(i)
+    if ((initqopts(i)==0).or.(initqopts(i)==1)) then
+      read(1,'(A)') initqnames(i,1)!h-matrix
+      read(1,'(A)') initqnames(i,2)!u-matrix
+      read(1,'(A)') initqnames(i,3)!v-matrix
+    else if ((initqopts(i)==2).or.(initqopts(i)==3)) then
+      read(1,'(A)') initqnames(i,1)!recolumns, h,u,v
     end if
   end do
   read(1,*) dxi
@@ -71,13 +78,6 @@ subroutine input_control
     read(1,*) Nsenal1
     call readGA(1,GA1,Nsenal1)
   end if
-
-  if (CB_real(1)==5) then !Outflow en 1, se fija una altura o Inflow en 1
-    !Brett-Sanders Inflow-Outflow boundary condition
-    read(1,*) IO1
-    read(1,*) Nsenal1
-    call readIO(1,IO1,Nsenal1)
-  end if
       
   !Boundary Condition for xi=nbx
   read(1,*) CB_real(2)	
@@ -101,11 +101,6 @@ subroutine input_control
     read(1,*) Nsenal2
     call readGA(2,GA2,Nsenal2)
   END IF
-  IF (CB_real(2)==5) THEN !Outflow or Inflow en 2, se fija una altura o Inflow en 1
-    read(1,*) IO2
-    read(1,*) Nsenal2
-    call readIO(2,IO2,Nsenal2)
-  END IF
    
   !Boundary Condition for eta_i,0
   read(1,*) CB_real(3)
@@ -128,11 +123,6 @@ subroutine input_control
     read(1,*) GA3
     read(1,*) Nsenal3
   call readGA(3,GA3,Nsenal3)
-  END IF
-  IF (CB(3)==5) THEN !Outflow or Inflow en 3, se fija una altura o Inflow en 1
-    read(1,*) IO3
-    read(1,*) Nsenal3
-    call readIO(3,IO3,Nsenal3)
   END IF
 
   !Boundary Condition for eta_i,Nby
@@ -158,12 +148,10 @@ subroutine input_control
     read(1,*) Nsenal4
     call readGA(4,GA4,Nsenal4)
   END IF
-  IF (CB_real(4)==5) THEN !Outflow or Inflow en 4, se fija una altura o Inflow en 1
-    read(1,*) IO4
-    read(1,*) Nsenal4
-    call readIO(4,IO4,Nsenal4)
-  END IF
   read(1,*) dit	!dit to print results, write files every pdt iterations
+  if (dit == -1) then
+    read(1,*) dtout
+  end if
   read(1,*) kappa !To consider a 0.0 value
   read(1,*) rk !Runge Kutta method 1=Rk4, 2=Rk2
   read(1,*) mmopt !1=Minmod, 2=Superbee Limiters
@@ -183,6 +171,7 @@ subroutine input_control
   read(1,*) outopt !1=Matlab, 2=Tecplot files
   read(1,*) outdir
   
+  !create outdir if necessary
   write(intchar,*) nproc
   print*,'a'//trim(adjustl(intchar))//'a'
   outdir=trim(outdir)//trim(adjustl(intchar))//'/'  
@@ -193,9 +182,12 @@ subroutine input_control
     command='mkdir '//trim(outdir)//'/grids'
     call system(trim(command))
   end if
-  close(1)
+  close(1) 
+  
   
   FR2=U**2.0D0/(g*H)
+  
+  !this print should be somewhere else
   write(*,100) caso
   100 FORMAT ('Caso: ', T25, I4)
   

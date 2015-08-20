@@ -1,19 +1,18 @@
 #compile parallel Surf-UC
 
-SURF_PAR ?= /home/jgm/Downloads/SurfWB-UC_PAR/
+# SURF_PAR ?= /home/jgm/Downloads/SurfWB-UC_PAR/
 F90 ?= mpif90
 FFLAGS ?= -O3 -g
 LFLAGS ?= -O3 -g
-SURF_LIB ?= $(SURF_PAR)/source/
+SURF_LIB ?= .
 
-SURF_MODULES =  $(SURF_LIB)/MODULES.f90
+SURF_MODULES ?=  $(SURF_LIB)/MODULES.f90
 
 SURF_SEQ ?= $(SURF_LIB)/main.f90 \
 	$(SURF_LIB)/init.f90 \
 	$(SURF_LIB)/input_control.f90 \
 	$(SURF_LIB)/input_geom.f90 \
 	$(SURF_LIB)/input_ic.f90 \
-	$(SURF_LIB)/input_bound.f90 \
 	$(SURF_LIB)/BCS.f90 \
  	$(SURF_LIB)/outputmat.f90 \
 	$(SURF_LIB)/outputgauges.f90 \
@@ -26,6 +25,7 @@ SURF_SEQ ?= $(SURF_LIB)/main.f90 \
 	$(SURF_LIB)/cfl_celerities.f90	
 
 SURF_COMMON ?= $(SURF_LIB)/init_TS.f90 \
+	$(SURF_LIB)/input_bound.f90 \
 	$(SURF_LIB)/metrics.f90 \
 	$(SURF_LIB)/solver.f90 \
 	$(SURF_LIB)/solver2.f90 \
@@ -47,7 +47,7 @@ SURF_COMMON ?= $(SURF_LIB)/init_TS.f90 \
 	$(SURF_LIB)/tau.f90 \
 	$(SURF_LIB)/Angulos.f90
 	
-SURF_PARS ?= $(SURF_LIB)/mpisurf_input_geom.f90 \
+SURF_PAR ?= $(SURF_LIB)/mpisurf_input_geom.f90 \
 	$(SURF_LIB)/mpisurf_input_ic.f90 \
 	$(SURF_LIB)/mpisurf_main.f90 \
 	$(SURF_LIB)/mpisurf_init.f90 \
@@ -64,7 +64,7 @@ SURF_PARS ?= $(SURF_LIB)/mpisurf_input_geom.f90 \
 	$(SURF_LIB)/mpisurf_exchange_2d.f90
 
 
-SURF_SOURCES ?= $(SURF_MODULES) $(SURF_COMMON) $(SURF_SEQ)
+SURF_SOURCES ?= $(SURF_MODULES) $(SURF_COMMON) $(SURF_PAR)
 
 SURF_OBJECTS ?= $(subst .f90,.o, $(SURF_SOURCES))
 

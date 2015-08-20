@@ -66,3 +66,12 @@ Working on test2_db2d:
 #New version
 The old version (the one I sent to Carlos) was OK, except for the bug that Marite found.
 So I modified its makefiles, fixed some .f90 files and copied everything in the bitbucket repo.
+
+#New TODO
+on the Thacker case
+* fix mpisurf_input_control.f90 so it matches the same input.dat as in the sequential version
+* fixed timestep feature
+* outputgauges.f90 in parallel
+* measure new speed-up
+* cant think of anything else -_-
+

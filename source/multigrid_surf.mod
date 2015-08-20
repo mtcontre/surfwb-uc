@@ -1,5 +1,5 @@
-GFORTRAN module version '10' created from /home/jgm/Downloads/SurfWB-UC_PAR//source/MODULES.f90
-MD5:b7bf8bb28d7328aa71d17eb8a4ccae2e -- If you edit this, you'll get what you deserve.
+GFORTRAN module version '10' created from MODULES.f90
+MD5:ff58dc056ff617075e5e5248fee278d1 -- If you edit this, you'll get what you deserve.
 
 (() () () () () () () () () () () () () () () () () () () () () () () ()
 () () ())
@@ -47,7 +47,7 @@ UNKNOWN-PROC UNKNOWN IMPLICIT-SAVE 0 0) (INTEGER 4 0 0 0 INTEGER ()) 0 0
 UNKNOWN-PROC UNKNOWN IMPLICIT-SAVE 0 0 ALLOCATABLE DIMENSION) (
 CHARACTER 1 0 0 0 CHARACTER ((CONSTANT (INTEGER 4 0 0 0 INTEGER ()) 0
 '255'))) 0 0 () (2 0 DEFERRED () () () ()) 0 () () () 0 0)
-14 'batiopt' 'multigrid_surf' '' 1 ((VARIABLE UNKNOWN-INTENT
+14 'batiopts' 'multigrid_surf' '' 1 ((VARIABLE UNKNOWN-INTENT
 UNKNOWN-PROC UNKNOWN IMPLICIT-SAVE 0 0 ALLOCATABLE DIMENSION) (INTEGER 4
 0 0 0 INTEGER ()) 0 0 () (1 0 DEFERRED () ()) 0 () () () 0 0)
 15 'bmcoef' 'multigrid_surf' '' 1 ((PROCEDURE UNKNOWN-INTENT
@@ -142,7 +142,7 @@ UNKNOWN-PROC DECL UNKNOWN 0 0 FUNCTION GENERIC) (INTEGER 4 0 0 0 INTEGER
 UNKNOWN-PROC UNKNOWN IMPLICIT-SAVE 0 0 ALLOCATABLE DIMENSION) (
 CHARACTER 1 0 0 0 CHARACTER ((CONSTANT (INTEGER 4 0 0 0 INTEGER ()) 0
 '255'))) 0 0 () (2 0 DEFERRED () () () ()) 0 () () () 0 0)
-45 'initqopt' 'multigrid_surf' '' 1 ((VARIABLE UNKNOWN-INTENT
+45 'initqopts' 'multigrid_surf' '' 1 ((VARIABLE UNKNOWN-INTENT
 UNKNOWN-PROC UNKNOWN IMPLICIT-SAVE 0 0 ALLOCATABLE DIMENSION) (INTEGER 4
 0 0 0 INTEGER ()) 0 0 () (1 0 DEFERRED () ()) 0 () () () 0 0)
 46 'multigrid_surf' 'multigrid_surf' '' 1 ((MODULE UNKNOWN-INTENT
@@ -169,12 +169,12 @@ UNKNOWN IMPLICIT-SAVE 0 0) (INTEGER 4 0 0 0 INTEGER ()) 0 0 () () 0 () ()
 )
 
 ('Bmcoef' 0 2 'Gridarray' 0 3 'Initqarray' 0 4 'allgroup' 0 12 'batinames'
-0 13 'batiopt' 0 14 'bmcoef' 0 15 'buffmcoef' 0 16 'bufqeta0g1' 0 17
+0 13 'batiopts' 0 14 'bmcoef' 0 15 'buffmcoef' 0 16 'bufqeta0g1' 0 17
 'bufqeta0g2' 0 18 'bufqetang1' 0 19 'bufqetang2' 0 20 'bufqxi0g1' 0 21
 'bufqxi0g2' 0 22 'bufqxing1' 0 23 'bufqxing2' 0 24 'cb_real' 0 25
 'commeta0' 0 26 'commetan' 0 27 'commxi0' 0 28 'commxin' 0 29 'ei' 0 30
 'ej' 0 31 'geom' 0 32 'gridarray' 0 33 'groupeta0' 0 34 'groupetan' 0 35
 'groupxi0' 0 36 'groupxin' 0 37 'incleta0' 0 38 'incletan' 0 39 'inclxi0'
 0 40 'inclxin' 0 41 'initq' 0 42 'initqarray' 0 43 'initqnames' 0 44
-'initqopt' 0 45 'multigrid_surf' 0 46 'myzone' 0 47 'neta' 0 48 'ngrids'
+'initqopts' 0 45 'multigrid_surf' 0 46 'myzone' 0 47 'neta' 0 48 'ngrids'
 0 49 'nxi' 0 50 'si' 0 51 'sj' 0 52)
