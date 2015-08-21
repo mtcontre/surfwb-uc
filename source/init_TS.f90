@@ -12,6 +12,7 @@ SUBROUTINE init_TS
   !USE time0
   implicit none
   integer ::error,i,j,l,m
+  logical :: f_exists
 
   ! Nts=1 ! Number of points for time series output
   open(unit=60,file=trim(indir)//'/gauges.dat')
@@ -34,7 +35,14 @@ SUBROUTINE init_TS
   
   
   !guardar los indices encontrados para revisar despues.
-  open(unit=60, file=trim(outdir)//'/timeseries/indices.dat')
+  
+  inquire(file=trim(outdir)//'/timeseries/indices.dat',exist=f_exists)
+  if (.not. f_exists) then
+    open(unit=60, file=trim(outdir)//'/timeseries/indices.dat',status='new',action='write')
+  else
+    open(unit=60, file=trim(outdir)//'/timeseries/indices.dat',status='replace')
+  end if
+  
   do i=1,Nts
     write(unit=60,fmt=*) m1(1,i), m1(2,i)
   end do

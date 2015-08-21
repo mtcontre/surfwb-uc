@@ -172,14 +172,13 @@ subroutine input_control
   read(1,*) outdir
   
   !create outdir if necessary
-  write(intchar,*) nproc
-  print*,'a'//trim(adjustl(intchar))//'a'
-  outdir=trim(outdir)//trim(adjustl(intchar))//'/'  
   inquire(file=outdir,exist=dir_exists)
   if (.not. dir_exists) then
     command='mkdir '//trim(outdir)
     call system(trim(command))
     command='mkdir '//trim(outdir)//'/grids'
+    call system(trim(command))
+    command='mkdir '//trim(outdir)//'/timeseries'
     call system(trim(command))
   end if
   close(1) 
