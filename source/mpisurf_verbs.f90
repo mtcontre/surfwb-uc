@@ -5,7 +5,7 @@ subroutine it_verbose
   use performance_stats
   
   call massbalance
-  if (mod(it,1)==0.and.myrank==master) then
+  if (mod(it,10)==0.and.myrank==master) then
     !Print iteration information on the screen
     print*, 'dt= ', dt
     write(*,199) it

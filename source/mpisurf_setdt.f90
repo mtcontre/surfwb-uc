@@ -36,10 +36,13 @@ subroutine setdt
     maxUC=maxval((/maxUC,maxval(SetaN)/))
   end if
   
+  !get the true maxUC  
+  call mpi_allreduce(maxUC,maxUC,1,mpi_double_precision,mpi_max,comm2d,ierror)
+  
   !CFL condition
   dt=CFL*minxieta/maxUC		!This dt is adimensional
   dtreal=dt*L/U
- 
+  
   ! now fix dtreal so it satisfies t+dtreal<=nt*dtboundary
   if (flagxi0.eq.1) then
     nt1=int(treal/dt_xi0g1)+1!satisfies nt1=min{n : n*dt_xi0g1>t}
@@ -62,12 +65,20 @@ subroutine setdt
     dtreal=minval((/dtreal,nt1*dt_etaNg1-treal,nt2*dt_etaNg2-treal/))
   end if
   
-  
-  !now everyone gets the smallest dt
-  call mpi_allreduce(dtreal,dtreal,1,mpi_double_precision,mpi_min,comm2d,ierror)
-  
-  dt=dtreal*U/L
-  
+  !criteria to save results to file
+  if (dit==-1) then
+    print_out = .False.
+    if (treal+dtreal>=(nitout+1)*dtout+tinit) then
+      dtreal = (nitout+1)*dtout+tinit-treal
+      print_out = .True.    
+      nitout=nitout+1
+    else
+      print_out = .False.
+    end if    
+  else if (mod(it,dit)==0) then
+    print_out = .True.
+    nitout = it
+  end if  
 !   call mpi_allreduce(dt,dt,1,mpi_double_precision,mpi_min,comm2d,ierror)
 !   CALL MPI Allreduce( &
 ! send buffer, recv buffer, count, MPI DOUBLE PRECISION, &

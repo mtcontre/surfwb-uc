@@ -5,6 +5,7 @@ program main
   use global_variables
   use performance_stats
   implicit none
+  logical :: fexists
   
   call mpi_init(ierror)
     call init
@@ -12,7 +13,7 @@ program main
     call massbalance
     
     !write initial condition
-    if (outopt==1) then
+    if (outopt==1) then      
       call outputmat_par
     end if
    
@@ -38,7 +39,6 @@ program main
       t=t+dt
       treal=treal+dtreal
       it=it+1	
-      
       !print screen information for this iteration
       call it_verbose
       
@@ -62,7 +62,12 @@ program main
       print *, 'treal+dtreal',treal+dtreal
       print *, 'Iteraciones', it
       print *, 'Time Elapsed = ',time_finish-time_start,' seconds.'
-      open(unit=100,file='stats.text',status='old',position='append')
+      inquire(file='stats.txt',exist=fexists)
+      if (fexists) then
+	open(unit=100,file='stats.txt',status='old',position='append')
+      else
+	open(unit=100,file='stats.txt',status='new',action='write')
+      end if
       write(unit=100,fmt=*) nproc,nxi,neta,time_finish-time_start
       close(unit=100)
     end if

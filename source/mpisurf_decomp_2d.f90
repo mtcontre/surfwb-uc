@@ -119,6 +119,9 @@ subroutine bcast_input_control
   call mpi_bcast(U,	1,	mpi_double_precision,master,comm2d,ierror)  
   call mpi_bcast(CB_real,4,	mpi_integer,master,comm2d,ierror)
   call mpi_bcast(dit,	1,	mpi_integer,master,comm2d,ierror)
+  if (dit==-1) then
+    call mpi_bcast(dtout,1,	mpi_double_precision,master,comm2d,ierror)
+  end if
   call mpi_bcast(kappa,1,	mpi_double_precision,master,comm2d,ierror)
   call mpi_bcast(rk,	1,	mpi_integer,master,comm2d,ierror)
   call mpi_bcast(mmopt,1,	mpi_integer,master,comm2d,ierror)

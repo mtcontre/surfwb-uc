@@ -24,28 +24,29 @@ def plotframes(outdir,plotdir):
   dims[1]=int(line[2])
 
   line=f.readline();line=split(line)
+  ngrids=int(line[1])
+
+  line=f.readline();line=split(line)
   nxi=int(line[1])
 
   line=f.readline();line=split(line)
   neta=int(line[1])
 
   batinames = [0,0,0]
-  line=f.readline();line=split(line);line = split(line[0],sep='/')
-  batinames[0] = line[2]
-  line=f.readline();line=split(line);line = split(line[0],sep='/')
-  batinames[1] = line[2]
-  line=f.readline();line=split(line);line = split(line[0],sep='/')
-  batinames[2] = line[2]
+  line=f.readline(); line=split(line);
+  batinames[0] = split(line[0],sep='/')[2]
+  batinames[1] = split(line[1],sep='/')[2]
+  batinames[2] = split(line[2],sep='/')[2]
   f.close()
 
 
   #set the range of frames to plt.plot
-  t=np.loadtxt(outdir+'time.dat')
-  rango=range(len(t)-1)
+  t=np.loadtxt(outdir+'timeP%03d.dat'%nproc)
+  rango=range(len(t))
 
 
   for it in rango:
-    print 'frame %i of sim. with %i procs and grid %i'%(it,nproc,nxi)
+    print 'frame %i/%i of sim. with %i procs and grid %i'%(it,rango[-1],nproc,nxi)
     #get bathymetry filenames  for each level
     x=np.loadtxt(outdir+''+batinames[0])
     y=np.loadtxt(outdir+''+batinames[1])
@@ -65,7 +66,7 @@ def plotframes(outdir,plotdir):
 	ej=int(split(line)[0]);line=f.readline()
 	f.close()
 	
-	fname ='%s/SOL2D.P%03d_%03d_%03d.%08d.dat.gz'%(outdir,nproc,i,j,it)
+	fname ='%s/P%03dframe%08d.%03d_%03d.dat'%(outdir,nproc,it,i,j)
 	#fname=outdir+'P%03dframe%08d.%03d_%03d.dat'%(it,i,j)
 	s=np.loadtxt(fname)
 	h=np.reshape(s[:,0],(nbx,nby),order='F')
