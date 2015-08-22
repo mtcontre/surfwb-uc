@@ -164,14 +164,14 @@ def setrun(nxi,neta,nn,npr):
   #=====================================
   #wave gauges
   #=====================================
-  #b=[[1,-25., 0.],
-    #[2,0., 0.],
-    #[3,25., 0.]]; 
-  b = []
+  b=[[1,-1., 0.],
+    [2,0., 0.],
+    [3,1., 0.]]; 
+  #b = []
   f=open('%s/gauges.dat'%indir,'w')
   f.write('%i\n'%len(b))
-  #for i in range(len(b)):
-    #f.write('%i %.18e %.18e\n'%(b[i][0],b[i][1],b[i][2]))
+  for i in range(len(b)):
+    f.write('%i %.18e %.18e\n'%(b[i][0],b[i][1],b[i][2]))
   f.close()
   return indir
 if __name__=='__main__':

@@ -3,13 +3,7 @@ import matplotlib.pyplot as plt
 from string import split
 import os
 
-def plotframes(outdir,plotdir):
-
-  if not os.path.isdir(plotdir):
-    print '%s no existe. Creando directorio'%plotdir
-    os.system('mkdir %s'%plotdir)
-    
-  # Read general parameters
+def get_gridprops(outdir):  
   f=open(outdir+'grids/gridproperties.dat')
 
   line=f.readline();line=split(line)
@@ -38,6 +32,16 @@ def plotframes(outdir,plotdir):
   batinames[1] = split(line[1],sep='/')[2]
   batinames[2] = split(line[2],sep='/')[2]
   f.close()
+  
+  return dit,nproc,dims,ngrids,nxi,neta,batinames
+def plotframes(outdir,plotdir):
+
+  if not os.path.isdir(plotdir):
+    print '%s no existe. Creando directorio'%plotdir
+    os.system('mkdir %s'%plotdir)
+    
+  # Read general parameters
+  dit,nproc,dims,ngrids,nxi,neta,batinames = get_gridprops(outdir)
 
 
   #set the range of frames to plt.plot

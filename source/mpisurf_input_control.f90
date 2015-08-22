@@ -8,7 +8,6 @@ subroutine input_control
   integer ::i
   character(len=256) ::command,intchar
   logical::dir_exists
-  call get_environment_variable('INDIR',indir)
 
   !start reading input data
   open(1,file=trim(indir)//'/input.dat')

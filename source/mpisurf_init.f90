@@ -24,6 +24,7 @@ SUBROUTINE init
   
   call mpi_comm_rank(mpi_comm_world,myrank,ierror)
   call mpi_comm_size(mpi_comm_world,nproc,ierror)
+  call get_environment_variable('INDIR',indir)
   
   !master reads input and decomposes the domain  
   if (myrank==master) then
@@ -34,11 +35,8 @@ SUBROUTINE init
     call input_geom
     
     !intial condition
-    call input_ic	
-    
-    !initialize output time series (?deprecated)
-    call init_TS	     
-    
+    call input_ic	   
+       
     !read friction matrix if neccesary
     call input_friction  
   end if
@@ -49,6 +47,8 @@ SUBROUTINE init
   call decomp_2d
   
   call print_params
+  
+  call init_TS
   
   !up to this point
   !everyone should have their one 'global variables'(x,y,z,h,u,v,nbx,nby,etc)
