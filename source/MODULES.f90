@@ -172,7 +172,7 @@ MODULE TimeSeries ! Time Series at different points
 !check init_TS.f90
 integer, dimension(:),save,allocatable ::id0
 real (kind=8), dimension(:),save,allocatable ::x0, y0, i0, j0, H0, Uts, Vts
-integer, dimension(:,:),save, allocatable::m1,m2
+integer, dimension(:,:),save, allocatable::m1,m2,m1_temp
 logical, dimension(:), allocatable :: gaugeflag
 real (kind=8), dimension(:),save,allocatable ::r, s, x 
   ! Interpolation by blending (see blend.f90, function blend_102)

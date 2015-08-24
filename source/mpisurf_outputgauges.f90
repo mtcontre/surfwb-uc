@@ -13,7 +13,7 @@ real (kind=8)	:: ind1, dec1
 logical	:: lexist, lexistT
  character(len=1100):: filename, filenameT,fgauges
  character(len=10)::number, numbercaso
- character(len=1000)::intchar, ncaso,nprocchar
+ character(len=1000)::intchar, ncaso,nprocchar, rankchar
  character(len=1100):: filename_LPTx, filename_LPTy, filename_LPTu, filename_LPTv
 !-------------------------
 logical	:: lexistPh, lexistPu, lexistPv, lexistT_eta, lexist_LPTx, lexist_LPTy, lexist_LPTu, lexist_LPTv 
@@ -25,24 +25,26 @@ logical	:: lexist_TSxy
 logical	:: lexist_H, lexist_U, lexist_V
  character(len=1100):: filename_H, filename_U, filename_V
  real (kind=8) :: h_g,u_g,v_g,z_g
-integer, dimension(2) :: m1_temp
+integer, dimension(2) :: m1_t
 write(ncaso,*) caso
 write(nprocchar,'(I3.3)') nproc
+write(rankchar,'(I3.3)') myrank
 path=outdir
 
 
-fgauges=trim(path)//'/timeseries/gauges.' // 'P'//trim(adjustl(nprocchar)) // '.dat'
 
+fgauges=trim(path)//'/timeseries/gauges.' // 'P'//trim(adjustl(nprocchar)) // &
+	'.R'//trim(adjustl(rankchar))//'.dat'
 
 do i=1,Nts
   !3.- Generar los datos interpolados (interpolacion bilineal)
   !------------------h-------------------------------
   if (gaugeflag(i)) then
-    m1_temp = m1(:,i)
-    call interpxy(m1_temp,x_global,y_global,qreal_global(1,:,:),x0(i),y0(i),h_g,0)
-    call interpxy(m1_temp,x_global,y_global,qreal_global(2,:,:),x0(i),y0(i),u_g,0)
-    call interpxy(m1_temp,x_global,y_global,qreal_global(3,:,:),x0(i),y0(i),v_g,0)
-    call interpxy(m1_temp,x_global,y_global,z_global(:,:),x0(i),y0(i),z_g,0)
+    m1_t = m1(:,i)
+    call interpxy(m1_t,x_global,y_global,qreal_global(1,:,:),x0(i),y0(i),h_g,0)
+    call interpxy(m1_t,x_global,y_global,qreal_global(2,:,:),x0(i),y0(i),u_g,0)
+    call interpxy(m1_t,x_global,y_global,qreal_global(3,:,:),x0(i),y0(i),v_g,0)
+    call interpxy(m1_t,x_global,y_global,z_global(:,:),x0(i),y0(i),z_g,0)
 
     !5.- Guardar en archivo
     inquire(FILE=fgauges, EXIST=lexist)

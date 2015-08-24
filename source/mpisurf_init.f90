@@ -39,22 +39,22 @@ SUBROUTINE init
        
     !read friction matrix if neccesary
     call input_friction  
+    
+    !read and bcast gauges points
+    call init_TS
   end if
- 
   
   !decompose the domain, distribute parameters to everyone
 
   call decomp_2d
   
-  call print_params
-  
-  call init_TS
+  call print_params  
+
   
   !up to this point
-  !everyone should have their one 'global variables'(x,y,z,h,u,v,nbx,nby,etc)
+  !everyone should have their own 'global variables'(x,y,z,h,u,v,nbx,nby,etc)
   !so everyone processes their metrics and adimensionalize independently
-  !communication has to be made through file BCS.f90, defining a new bc in the vector CB
-  !master then decides timestep..
+  !communication has to be made through BCS.f90
   
 !--------------------------------------
   !adimension q and bathy
@@ -91,7 +91,8 @@ SUBROUTINE init
     call stability_celerities_boundary_init
   end if
 
-  print*, 'Simulacion Incializada'
+  print*, 'Simulacion Incializada en procesador',myrank, &
+    ' en una comunicacion de ',nproc,'procesos'
   
 
 END SUBROUTINE init

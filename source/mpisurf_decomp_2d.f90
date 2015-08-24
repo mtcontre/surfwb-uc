@@ -80,6 +80,9 @@ subroutine decomp_2d
   !properly assign boundary conditions...
   !in a separate file (a lot of lines)
   call bcast_bcs
+  
+  !bcast gauge points
+  call bcast_gauges
 end subroutine decomp_2d
 
 subroutine bcast_input_control
@@ -219,6 +222,56 @@ subroutine bcast_initq_grids
 
   deallocate(geom,initq)
 end subroutine bcast_initq_grids
+
+subroutine bcast_gauges
+  use TimeSeries
+  use geometries, only: x_global, y_global
+  use global_variables, only: outdir
+  use mpi_surf
+  use multigrid_surf
+  use mpi
+  
+  implicit none
+  integer :: i,aloc
+  character(len=100)::intchar
+  !idea: use m1_temp to see if the point lies in mygrid
+  
+  !let other procs allocate ids,x0,y0, and m1_temp
+  if (myrank/=master) then
+    allocate(x0(Nts),y0(Nts),id0(Nts), m1_temp(2,Nts))
+  end if
+  
+  !bcast this thing
+  call mpi_bcast(Nts,1, mpi_integer,master,comm2d,ierror)
+  call mpi_bcast(m1_temp,2*Nts, mpi_integer,master,comm2d,ierror)
+  call mpi_bcast(x0,Nts, mpi_double_precision,master,comm2d,ierror)
+  call mpi_bcast(y0,Nts, mpi_double_precision,master,comm2d,ierror)
+  call mpi_bcast(id0,Nts, mpi_integer,master,comm2d,ierror)  
+  
+  call mpi_barrier(comm2d,ierror)
+  !allocate position indices and gaugeflags
+  allocate(m1(2,Nts),gaugeflag(Nts))
+  !now find the indices
+
+  write(intchar,'("P",I3.3,"R",I3.3)') nproc,myrank
+  open(unit=10+myrank,file=trim(outdir)//'/timeseries/gaugeflag'//trim(adjustl(intchar))//'.txt')
+  DO i=1,Nts    
+    !im assuming rectangular grid
+    !otherwise the criteria is just to check if 
+    !the points is inside the rectangle on which
+    !the grid is inscribed        
+    if (m1_temp(1,i)>=si .and. m1_temp(1,i)<=ei .and. &
+	m1_temp(2,i)>=sj .and. m1_temp(2,i)<=ej) then	
+	gaugeflag(i) = .true.
+	m1(:,i) = minloc((x_global-x0(i))*(x_global-x0(i))+(y_global-y0(i))*(y_global-y0(i)))    
+    else
+	gaugeflag(i) = .false.
+    end if    
+      write(10+myrank,*) gaugeflag(i)
+ END DO
+  
+  close(10+myrank)
+end subroutine
 
 subroutine decomp1d(n,p,rank,s,e) !based in the book of Gropp,1999
   !recibe el numero total n y el numero de bloques p

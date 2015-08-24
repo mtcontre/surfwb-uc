@@ -32,7 +32,8 @@ def gaugessurfuc2(fname):
   #eta_clawcart=reordenar(eta_clawcart,orden)
   return gaugenos,eta_clawcart,time_clawcart
 
-gauges,eta,time = gaugessurfuc2('results_100_1_2/timeseries/gauges.P002.dat')
+nproc = 4
+gauges,eta,time = gaugessurfuc2('results_100_1_4/timeseries/gauges.P004.R001.dat')
 gauges=list(gauges)
 
 for k in range(len(gauges)):
