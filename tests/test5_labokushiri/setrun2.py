@@ -1,9 +1,8 @@
 import numpy as np
 import matplotlib
-#matplotlib.use('Agg')
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import os
-
 import urllib
 os.system('mkdir data')
 os.system('mkdir results')
@@ -22,7 +21,6 @@ if not os.path.isfile('data/'+wavefname0):
   urllib.urlretrieve(rooturl+wavefname0,'data/'+wavefname0)
 bati = np.loadtxt('data/MonaiValley_Bathymetry.txt',skiprows=1)
 wave = np.loadtxt('data/MonaiValley_InputWave.txt',skiprows=1)
-
 #=====================================
 #computational domain
 #=====================================
@@ -31,12 +29,11 @@ ny = np.unique(bati[:,1]).shape[0]
 x = np.reshape(bati[:,0],(-1,ny))[::4,::4]
 y = np.reshape(bati[:,1],(-1,ny))[::4,::4]
 z = -1.*np.reshape(bati[:,2],(-1,ny))[::4,::4]
-
 dx = np.diff(x[:,0])[0]
 
 xwall = x[:,0].max()*np.ones((2,x.shape[1]))
 xwall[0,:] += dx
-xwall[1,:] += 2*dx
+xwall[1,:] *= 2*dx
 
 ywall = np.zeros_like(xwall)
 ywall[0,:] = y[-1,:]
@@ -51,7 +48,6 @@ z = np.vstack([z,zwall])
 h = np.where(z<=0.,-z,0.)
 u = np.zeros_like(x)
 v = np.zeros_like(x)
-
 
 plt.figure()
 plt.pcolormesh(x ,y ,z )
@@ -85,23 +81,6 @@ np.savetxt('data/gridz.dat',z )
 np.savetxt('data/inith.dat',h )
 np.savetxt('data/initu.dat',u )
 np.savetxt('data/initv.dat',v )
-
-#=====================================
-#incident wave
-#=====================================
-txi0 = wave[:,0]
-etaxi0 = np.zeros((x.shape[1],txi0.shape[0]))
-for i in range(x.shape[1]):
-  etaxi0[i,:] = wave[:,1]
-np.savetxt('data/timexi0.dat',txi0)
-np.savetxt('data/etaxi0.dat',etaxi0)
-#np.savetxt('data/etaL.dat',wave)
-
-plt.figure()  
-for i in range(etaxi0.shape[0]):
-    plt.plot(txi0,etaxi0[i,:])
-plt.savefig('data/etaxi0.png')    
-
 
 #=====================================
 #wave gauges
@@ -148,7 +127,7 @@ bceta0=1
 bcetaN=1
 dit=-1
 dtout = 0.5
-kappa=1e-5
+kappa=1e-3
 rktype=1
 limtype=1
 fricopt=0
@@ -185,7 +164,7 @@ f.write('\n%i'%bcetaN)
 f.write('\n%i'%dit)
 if dit==-1:
   f.write('\n%.3f'%dtout)
-f.write('\n%3.16e'%kappa)
+f.write('\n%3.20e'%kappa)
 f.write('\n%i'%rktype)
 f.write('\n%i'%limtype)
 f.write('\n%i'%fricopt)

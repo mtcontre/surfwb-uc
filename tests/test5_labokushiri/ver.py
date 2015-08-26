@@ -1,69 +1,102 @@
 import numpy as np
 import matplotlib.pyplot as plt
-#import colormaps as cmaps
-from mpl_toolkits.axes_grid1 import make_axes_locatable
+from string import split
 import os
-os.mkdir('vis')
-outdir='results/'
-plotdir='vis/'
-#read parameters
-p=np.loadtxt('%s/param.dat'%outdir)
-caso=p[0]
-nxi=p[1]
-neta=p[2]
-nts=p[3]
-nit=p[4]
-dit=p[5]
 
-#time vector and geometry
-t=np.loadtxt('%s/time.dat'%(outdir))
-if int(dit)==-1:
-  sit=str(1).rjust(8,'0')
-  s=np.loadtxt('%s/SOL2D.%s.dat.gz'%(outdir,sit))
-else:
-  sit=str(0).rjust(8,'0')
-  s=np.loadtxt('%s/SOL2D.%s.dat.gz'%(outdir,sit))
-x=np.reshape(s[:,0],(nxi,neta),order='F')
-y=np.reshape(s[:,1],(nxi,neta),order='F')
-z=np.reshape(s[:,2],(nxi,neta),order='F')
+outdir = 'results/'
+plt.plotdir = 'ver/'
 
-#loop
-rango=range(0,len(t)-1,1)
-#rango = np.nonzero(t>14.)[0]
-#rango=[0]
-x0=4.7
-xf=5.2
-y0=1.5
-yf=2.2
-for i in rango:
-  if int(dit)==-1:
-    sit=str(i+1).rjust(8,'0')
-    s=np.loadtxt('%s/SOL2D.%s.dat.gz'%(outdir,sit))
-  else:
-    sit=str(i*int(dit)).rjust(8,'0')
-    s=np.loadtxt('%s/SOL2D.%s.dat.gz'%(outdir,sit))
-    
-  h=np.reshape(s[:,3],(nxi,neta),order='F')
-  f=plt.figure()#figsize=(5.5,0.8*3.4))
-  ax=f.add_subplot(1,1,1)
-  p2=ax.pcolormesh(x,y,np.ma.masked_where(h<=1e-5,h+z),vmin=-0.05,vmax=0.05,cmap=plt.cm.coolwarm)
-  #ax.set_xticks(np.linspace(y0,yf,5))
-  #ax.set_xticklabels(['%.2f'%yi for yi in np.linspace(y0,yf,5)])
-  #ax.set_xlim(-yf,-y0)
-  #ax.set_ylim(x0,xf)
-  ax.set_xlabel('y[m]')
-  ax.set_ylabel('x[m]')
-  ax.set_aspect(1)
-  ax.set_title('T=%ss '%(t[i]))#,t[-1]))
-  divider = make_axes_locatable(ax)
-  cax = divider.append_axes("right", size="5%", pad=0.05)
-  plt.colorbar(p2, cax=cax)
-  ax.contour(x,y,z,np.arange(0.,0.2,0.009),colors='k')
-  ax.contour(x,y,z,np.arange(-0.04,0.,0.009),colors='k')
+if not os.path.isdir(plt.plotdir):
+  print '%s no existe. Creando directorio'%plt.plotdir
+  os.system('mkdir %s'%plt.plotdir)
   
-  f.tight_layout() 
-  #show()
-  print plotdir+'1dfig'+str(i).rjust(6,'0')+'.png'
-  plt.savefig(plotdir+'1dfig'+str(i).rjust(6,'0')+'.png',bbox_inches='tight')
+# Read general parameters
+f=open(outdir+'grids/gridproperties.dat')
+
+line=f.readline();line=split(line)
+dit=int(line[1])
+
+line=f.readline();line=split(line)
+nproc=int(line[1])
+
+line=f.readline();line=split(line)
+dims=[0,0]
+dims[0]=int(line[1])
+dims[1]=int(line[2])
+
+line=f.readline();line=split(line)
+ngrids=int(line[1])
+
+line=f.readline();line=split(line)
+nxi=int(line[1])
+
+line=f.readline();line=split(line)
+neta=int(line[1])
+
+batinames = [0,0,0]
+line=f.readline();line=split(line);
+print line
+line = split(line[0],sep='/')
+batinames = line[0]
+#line=f.readline();line=split(line);line = split(line[0],sep='/')
+#batinames[1] = line[1]
+#line=f.readline();line=split(line);line = split(line[0],sep='/')
+#batinames[2] = line[1]
+f.close()
+
+
+#set the range of frames to plt.plot
+t=np.loadtxt(outdir+'time.dat')
+rango=range(len(t)-1)
+
+
+for it in rango:
+  #get bathymetry filenames  for each level
+  x=np.loadtxt(outdir+''+batinames[0])
+  y=np.loadtxt(outdir+''+batinames[1])
+  z=np.loadtxt(outdir+''+batinames[2])
+  for i in range(dims[0]):
+    for j in range(dims[1]):
+      #file with properties for this grid
+      fname=outdir+'grids/grid%03d_%03d.dat'%(i,j)
+      f=open(fname)
+      line=f.readline()      
+      nbx=int(split(line)[0]);line=f.readline()
+      nby=int(split(line)[0]);line=f.readline()
+      #print nbx,nby
+      si=int(split(line)[0])-1;line=f.readline()#minus one for python
+      ei=int(split(line)[0]);line=f.readline()
+      sj=int(split(line)[0])-1;line=f.readline()
+      ej=int(split(line)[0]);line=f.readline()
+      f.close()
+      
+      fname ='%s/SOL2D.P%03d_%03d_%03d.%08d.dat.gz'%(outdir,nproc,i,j,it)
+      #fname=outdir+'P%03dframe%08d.%03d_%03d.dat'%(it,i,j)
+      s=np.loadtxt(fname)
+      h=np.reshape(s[:,0],(nbx,nby),order='F')
+      u=np.reshape(s[:,1],(nbx,nby),order='F')
+      v=np.reshape(s[:,2],(nbx,nby),order='F')
+
+      plt.pcolormesh(x[si:(ei+1),sj:(ej+1)],y[si:(ei+1),sj:(ej+1)],h,vmin=-0.08,vmax=0.08)
+
+      if i == dims[0]-1:
+	ei-=1
+      if j == dims[1] -1:
+	ej-=1
+
+      plt.plot(x[si:ei,sj],y[si:ei,sj],color='k')#,linewidth=1.)
+      plt.plot(x[si:ei,ej],y[si:ei,ej],color='k')#,linewidth=1.)
+      plt.plot(x[si,sj:ej],y[si,sj:ej],color='k')#,linewidth=1.)
+      plt.plot(x[ei,sj:ej],y[ei,sj:ej],color='k')#,linewidth=1.)
+  plt.axis('equal')
+  plt.colorbar()  
+  plt.title('P=%i, t=%.3fs'%(nproc,t[it]))
+  plt.savefig(plt.plotdir+'/p%03dframexy%08d.png'%(nproc,it))
   plt.close()
 
+
+#axis('equal')
+#
+#close()
+#if __name__=='__main__':
+  #doplt.plots('results/','ver/')
