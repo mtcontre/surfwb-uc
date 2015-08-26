@@ -7,24 +7,38 @@ os.system('mkdir results')
 os.system('mkdir results/timeseries')
 
 #=====================================
+#incident wave
+#=====================================
+d0 = 0.2
+h0 = 0.07
+
+c = np.sqrt(9.81*(d0+h0))
+k = np.sqrt(0.75*h0/d0**3)
+
+t = np.linspace(-3.,6.,200)
+x = 0.
+eta = h0*(np.cosh(k*(x-c*t)))**(-2)
+
+etaL = np.vstack([t,eta]).T
+np.savetxt('data/etaL.dat',etaL)
+
+plt.figure()
+plt.plot(etaL[:,0],etaL[:,1])
+plt.savefig('data/etaL.png')
+
+
+#=====================================
 #computational domain
 #=====================================
-dx=0.45/20
-n=int(5.6/dx)
-
-x=np.linspace(0,5.6,n)
+dx=0.1
+n = 100
+x=np.linspace(0,10.,n)
+dx = np.diff(x)[0]
 y=np.linspace(-dx*5,dx*5,11)
 x,y=np.meshgrid(x,y)
 
 z=np.zeros(x.shape)
-z = np.where( (x>=2.39+1.61)*(x<=2.39+1.61+0.45),0.065/0.45*(x-2.39-1.61),z)
-z = np.where( (x>=2.39+1.61+0.45)*(x<=2.39+1.61+0.45*2),-0.065/0.45*(x-2.39-1.61-0.45)+0.065,z)
-
-h = np.zeros(x.shape)
-h = np.where(x<=2.39,0.111,h)
-h = np.where((x>=2.39+1.61+0.45),0.02-z,h)
-h = np.where(h<=0,0.,h)
-
+h = np.ones_like(x)
 u = np.zeros(x.shape)
 v = np.zeros(x.shape)
 
@@ -62,8 +76,8 @@ f.close()
 #input.dat parameters
 #=====================================
 caso=999
-tinit=0.0
-tfinal=50.0
+tinit=-3.
+tfinal=10.0
 cfl=1.
 nxi=x.shape[0]
 neta=y.shape[1]

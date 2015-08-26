@@ -87,7 +87,7 @@ deta=1.
 L=1.
 H=1.
 U=1.
-bcxi0=4
+bcxi0=1
 if bcxi0==4:
   GA1=1
   if GA1==9 or GA1==1:

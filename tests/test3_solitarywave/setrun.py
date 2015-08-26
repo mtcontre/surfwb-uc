@@ -32,7 +32,7 @@ plt.savefig('data/etaL.png')
 n=100.
 x=np.linspace(0,10.,n)
 dx = np.diff(x)[0]
-y=np.linspace(-dx,dx,3)
+y=np.linspace(-dx,dx,10)
 x,y=np.meshgrid(x,y,indexing='ij')
 
 z=np.zeros(x.shape)
@@ -87,7 +87,7 @@ deta=1.
 L=1.
 H=1.
 U=1.
-bcxi0=4
+bcxi0=1
 if bcxi0==4:
   GA1=1
   if GA1==9 or GA1==1:
