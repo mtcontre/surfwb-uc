@@ -13,9 +13,9 @@ select case(borde)
     !allocate(qA1(3,Nby),zA1(Nby))
     if (GA==1) then
     allocate(etaL1(Ns,2))
-    open(unit=50,file='etaL.dat')
+    open(unit=50,file='data/etaL.dat')
     !read(50,*) h01
-    h01=20.0D0
+    h01=0.2D0
     DO i=1,Ns
     read(50,*) etaL1(i,1), etaL1(i,2)
     END DO

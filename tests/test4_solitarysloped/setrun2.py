@@ -34,7 +34,7 @@ n = 100
 x=np.linspace(0,10.,n)
 dx = np.diff(x)[0]
 y=np.linspace(-dx*5,dx*5,11)
-x,y=np.meshgrid(x,y)
+x,y=np.meshgrid(x,y,indexing='ij')
 
 z = -d0 + 1./20.*x
 h = np.where(z<=0,-z,0.)
@@ -61,9 +61,9 @@ plt.savefig('data/condicion_inicial.png',dpi=300)
 #=====================================
 #wave gauges
 #=====================================
-b=[[1,5.575,0],\
-   [2,4.925,0.],\
-   [3,3.935,0.]]
+b=[[1,0.,0],\
+   [2,3.,0.],\
+   [3,6.,0.]]
 f=open('data/gauges.dat','w')
 f.write('%i\n'%len(b))
 for i in range(len(b)):
@@ -77,7 +77,7 @@ f.close()
 caso=999
 tinit=-3.
 tfinal=20.0
-cfl=1.
+cfl=.45
 nxi=x.shape[0]
 neta=y.shape[1]
 batiopt=1
@@ -88,16 +88,16 @@ deta=1.
 L=1.
 H=1.
 U=1.
-bcxi0=1
+bcxi0=4
 if bcxi0==4:
-  GA1=9
+  GA1=1
   if GA1==9 or GA1==1:
-    Nsenal1=451
+    Nsenal1=etaL.shape[0]
 bcxiN=1
 bceta0=1
 bcetaN=1
 dit=-1
-dtout=1.
+dtout=.5
 kappa=1e-5
 rktype=1
 limtype=1
