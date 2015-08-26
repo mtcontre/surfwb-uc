@@ -41,7 +41,7 @@ SUBROUTINE init
     call input_friction  
     
     !read and bcast gauges points
-!     call init_TS
+    call init_TS
   end if
   
   !decompose the domain, distribute parameters to everyone
