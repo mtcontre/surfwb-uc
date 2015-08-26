@@ -186,7 +186,6 @@ subroutine bcast_initq_grids
   implicit none
   integer::level,i,j
   
-  print*,shape(geom(myzone)),Nbx,Nby,myrank
   if (myrank/=master) then
     allocate(geom(ngrids),initq(ngrids))
   end if
@@ -242,13 +241,13 @@ subroutine bcast_gauges
   character(len=100)::intchar
   !idea: use m1_temp to see if the point lies in mygrid
   
+  call mpi_bcast(Nts,1, mpi_integer,master,comm2d,ierror)
   !let other procs allocate ids,x0,y0, and m1_temp
   if (myrank/=master) then
     allocate(x0(Nts),y0(Nts),id0(Nts), m1_temp(2,Nts))
   end if
   
-  !bcast this thing
-  call mpi_bcast(Nts,1, mpi_integer,master,comm2d,ierror)
+  !bcast this thing  
   call mpi_bcast(m1_temp,2*Nts, mpi_integer,master,comm2d,ierror)
   call mpi_bcast(x0,Nts, mpi_double_precision,master,comm2d,ierror)
   call mpi_bcast(y0,Nts, mpi_double_precision,master,comm2d,ierror)

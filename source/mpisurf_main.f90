@@ -15,7 +15,7 @@ program main
     !write initial condition
     if (outopt==1) then      
       call outputmat_par
-      call outputgauges(treal)
+!       call outputgauges(treal)
     end if
    
     time_start=mpi_wtime()
@@ -48,7 +48,7 @@ program main
       !print current new results
       if (outopt==1) then
 	call outputmat_par
-	call outputgauges(treal)
+! 	call outputgauges(treal)
       end if
       
       !Actualization of the global variables (adimensionalized)

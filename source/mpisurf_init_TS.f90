@@ -17,21 +17,21 @@ SUBROUTINE init_TS
   logical :: f_exists
 
   ! Nts=1 ! Number of points for time series output
-  open(unit=60,file=trim(indir)//'/gauges.dat')
+  open(unit=600,file=trim(indir)//'/gauges.dat')
   !coordx-coordy
-  read(60,*) Nts
+  read(600,*) Nts
   ! dt_TS=0.05 ! timestep to save Time Series and LPT   
-  allocate (id0(Nts),x0(Nts), y0(Nts), i0(Nts), j0(Nts), r(Nts), s(Nts), H0(Nts), Uts(Nts), Vts(Nts), &
-		  x00(3,Nts), x01(3,Nts), x10(3,Nts), x11(3,Nts), STAT = error)
+  allocate (id0(Nts),x0(Nts), y0(Nts), STAT = error)
   allocate(m1_temp(2,Nts))
 
   level = 1
-  DO i=1,Nts    
-    read(60,*) id0(i),x0(i),y0(i)
+  DO i=1,Nts        
+    read(600,*) id0(i),x0(i),y0(i)
     m1_temp(:,i) = minloc((geom(level)%X-x0(i))*(geom(level)%X-x0(i))+ &
-			  (geom(level)%Y-y0(i))*(geom(level)%Y-y0(i)))    
+			  (geom(level)%Y-y0(i))*(geom(level)%Y-y0(i)))
+			
   END DO
-  close(unit=60)
+  close(unit=600)
   
 
 END SUBROUTINE init_TS
