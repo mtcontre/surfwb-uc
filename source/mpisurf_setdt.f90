@@ -21,7 +21,7 @@ subroutine setdt
   maxS1=maxval(S1_global)
   maxS2=maxval(S2_global)  
   maxUC=maxval((/maxS1,maxS2/))
-  
+
   ! check celerities in ghost cells
   if (flagxi0.eq.1) then    
     maxUC=maxval((/maxUC,maxval(Sxi0)/))
@@ -42,7 +42,6 @@ subroutine setdt
   !CFL condition
   dt=CFL*minxieta/maxUC		!This dt is adimensional
   dtreal=dt*L/U
-  
   ! now fix dtreal so it satisfies t+dtreal<=nt*dtboundary
   if (flagxi0.eq.1) then
     nt1=int(treal/dt_xi0g1)+1!satisfies nt1=min{n : n*dt_xi0g1>t}

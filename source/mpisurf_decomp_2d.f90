@@ -113,6 +113,10 @@ subroutine bcast_input_control
   !careful with datatypes!  
   call mpi_bcast(caso,	1,	mpi_integer,master,comm2d,ierror)
   call mpi_bcast(tinit,1,	mpi_double_precision,master,comm2d,ierror)
+  call mpi_bcast(treal,1,	mpi_double_precision,master,comm2d,ierror)
+  call mpi_bcast(t ,	1,	mpi_double_precision,master,comm2d,ierror)
+  call mpi_bcast(dt,	1,	mpi_double_precision,master,comm2d,ierror)
+  call mpi_bcast(dtreal,1,	mpi_double_precision,master,comm2d,ierror)
   call mpi_bcast(tfinal,1,	mpi_double_precision,master,comm2d,ierror)
   call mpi_bcast(cfl,	1,	mpi_double_precision,master,comm2d,ierror)
   call mpi_bcast(dxi,	1,	mpi_double_precision,master,comm2d,ierror)
@@ -131,6 +135,7 @@ subroutine bcast_input_control
   call mpi_bcast(fopt,	1,	mpi_integer,master,comm2d,ierror) 
   call mpi_bcast(outopt,1,	mpi_integer,master,comm2d,ierror)
   call mpi_bcast(outdir,255,	mpi_character,master,comm2d,ierror)
+  call mpi_bcast(indir,255,	mpi_character,master,comm2d,ierror)
   call mpi_bcast(Fr2,	1,	mpi_double_precision,master,comm2d,ierror)  
 end subroutine
 
@@ -141,7 +146,6 @@ subroutine bcast_friction
   use multigrid_surf
   implicit none
   integer::level
-  
   if (fopt==0) then
       Cf=0    !no need to bcast, each proc assigns a 0
       Coef=0.0D0
@@ -181,6 +185,8 @@ subroutine bcast_initq_grids
   use multigrid_surf
   implicit none
   integer::level,i,j
+  
+  print*,shape(geom(myzone)),Nbx,Nby,myrank
   if (myrank/=master) then
     allocate(geom(ngrids),initq(ngrids))
   end if
