@@ -26,13 +26,14 @@ plt.figure()
 plt.plot(etaL[:,0],etaL[:,1])
 plt.savefig('data/etaL.png')
 
+
 #=====================================
 #computational domain
 #=====================================
-n=100.
+n = 100
 x=np.linspace(0,10.,n)
 dx = np.diff(x)[0]
-y=np.linspace(-dx,dx,3)
+y=np.linspace(-dx*5,dx*5,11)
 x,y=np.meshgrid(x,y,indexing='ij')
 
 z = -d0 + 1./20.*x
@@ -51,8 +52,8 @@ np.savetxt(initqfiles[1],u)
 np.savetxt(initqfiles[2],v)
 
 plt.figure(figsize=(8.,3.))
-plt.fill_between(x[:,0],z[:,0]+h[:,0],z[:,0],color='b')
-plt.fill_between(x[:,0],z.min()*np.ones_like(z[:,0]),z[:,0],color='k')
+plt.fill_between(x[0,:],z[0,:],z[0,:]+h[0,:],color='b')
+plt.fill_between(x[0,:],0.*z[0,:],z[0,:],color='k')
 plt.tight_layout()
 plt.savefig('data/condicion_inicial.png',dpi=300)
 
@@ -76,7 +77,7 @@ f.close()
 caso=999
 tinit=-3.0
 tfinal=20.0
-cfl=.45
+cfl=.1
 nxi=x.shape[0]
 neta=y.shape[1]
 batiopt=1
@@ -96,7 +97,7 @@ bcxiN=1
 bceta0=1
 bcetaN=1
 dit=-1
-dtout=0.5
+dtout=.5
 kappa=1e-5
 rktype=1
 limtype=1

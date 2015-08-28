@@ -33,7 +33,7 @@ dx = np.diff(x[:,0])[0]
 
 xwall = x[:,0].max()*np.ones((2,x.shape[1]))
 xwall[0,:] += dx
-xwall[1,:] *= 2*dx
+xwall[1,:] += 2*dx
 
 ywall = np.zeros_like(xwall)
 ywall[0,:] = y[-1,:]

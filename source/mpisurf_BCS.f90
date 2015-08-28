@@ -215,16 +215,6 @@ subroutine bcs(fopt,Cf,Coef,pasoRK,t,dt,Fr2,caso,qn,z,&
 	  call genabs0xi_3_2(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,us1,hs1,h01,Nsenal1,&
 	    t,dt,qn,zt,xi,qA10,qA1,zA1)			
   	ELSE IF (GA1==9) THEN
-	  if ((t+dt).gt.maxval(timeS9)) then
-	    do j=3,Ny+2	
-	      qt(1,1,j)=qn(1,2,j-2)		!h-1=h2
-	      qt(1,2,j)=qn(1,1,j-2)		!h0=h1
-	      qt(2,1,j)=qn(2,2,j-2)		!u-1=-u2
-	      qt(2,2,j)=qn(2,1,j-2)		!u0=-u1	    
-	      qt(3,1,j)=qn(3,2,j-2)		!v-1=-v2
-	      qt(3,2,j)=qn(3,1,j-2)		!v0=-v1
-	    end do	  
-	  else
 	    call genabs0xi_9_2(fopt,Cf,Coef,Nx,Ny,Fr2,dxi,etaL9,timeS9,Nsenal1,h01,t,dt,qn,zt,xi,qA10,qA1,zA1)
 	    DO j=3,Ny+2
 	      qt(1,1,j)=qA1(1,j-2)		!h-1=h2
@@ -234,7 +224,6 @@ subroutine bcs(fopt,Cf,Coef,pasoRK,t,dt,Fr2,caso,qn,z,&
 	      qt(3,1,j)=qA1(3,j-2)		!v-1=-v2
 	      qt(3,2,j)=qA1(3,j-2)		!v0=-v1
 	    END DO	
-	  end if
   	END IF		
       END IF    	
   END SELECT

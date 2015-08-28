@@ -115,6 +115,7 @@ end if
 
 Rmenos=RR-0.5D0*dt/Fr2*(zepR*epxR**2.0D0+zepA*epxA**2.0D0)-0.5D0*(epxR*tauR+epxA*tauAo)*dt
 
+
 qA(1,j)=Fr2*(Rmas-Rmenos)**2.0D0/(16.0D0*epxA**2.0D0)
 qA(2,j)=(Rmas+Rmenos)/(2.0D0*epxA)
 qA(3,j)=0.0D0

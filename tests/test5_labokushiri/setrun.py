@@ -95,7 +95,7 @@ for i in range(x.shape[1]):
   etaxi0[i,:] = wave[:,1]
 np.savetxt('data/timexi0.dat',txi0)
 np.savetxt('data/etaxi0.dat',etaxi0)
-#np.savetxt('data/etaL.dat',wave)
+np.savetxt('data/etaL.dat',wave)
 
 plt.figure()  
 for i in range(etaxi0.shape[0]):
@@ -138,7 +138,7 @@ deta=1.
 L=1.
 H=1.
 U=1.
-bcxi0=1
+bcxi0=4
 if bcxi0==4:
   GA1=9
   if GA1==9 or GA1==1:

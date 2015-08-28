@@ -32,10 +32,10 @@ plt.savefig('data/etaL.png')
 n=100.
 x=np.linspace(0,10.,n)
 dx = np.diff(x)[0]
-y=np.linspace(-dx,dx,10)
+y=np.linspace(-dx*5,dx*5,10)
 x,y=np.meshgrid(x,y,indexing='ij')
 
-z=np.zeros(x.shape)
+z= -d0*np.ones(x.shape)
 h = d0*np.ones(x.shape)
 u = np.zeros(x.shape)
 v = np.zeros(x.shape)
@@ -52,7 +52,7 @@ np.savetxt(initqfiles[2],v)
 
 plt.figure(figsize=(8.,3.))
 plt.fill_between(x[:,0],z[:,0],z[:,0]+h[:,0],color='b')
-plt.fill_between(x[:,0],0.*z[:,0],z[:,0],color='k')
+#plt.fill_between(x[:,0],0.*z[:,0],z[:,0],color='k')
 plt.tight_layout()
 plt.savefig('data/condicion_inicial.png',dpi=300)
 
@@ -75,7 +75,7 @@ f.close()
 #=====================================
 caso=999
 tinit=-3.0
-tfinal=10.0
+tfinal=20.0
 cfl=.45
 nxi=x.shape[0]
 neta=y.shape[1]
@@ -87,7 +87,7 @@ deta=1.
 L=1.
 H=1.
 U=1.
-bcxi0=1
+bcxi0=4
 if bcxi0==4:
   GA1=1
   if GA1==9 or GA1==1:

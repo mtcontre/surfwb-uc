@@ -56,20 +56,39 @@ subroutine bcast_GA
   use mpi
   use global_variables, only: Nby
   implicit none
+
   
   call mpi_bcast(GA1,1,mpi_integer,master,comm2d,ierror)
   call mpi_bcast(Nsenal1,1,mpi_integer,master,comm2d,ierror)
   call mpi_bcast(h01,1,mpi_double_precision,master,comm2d,ierror)
-  
+
+    
+!   if (myrank==master) then
+    call readGA(1,GA1,Nsenal1)
+!   end if
+
   allocate(qA1(3,Nby),zA1(Nby))
   
-  if (GA1==1) then
-    if (myrank/=master) then
-      allocate(etaL1(Nsenal1,2))
-    end if
-    call mpi_bcast(etaL1,Nsenal1*2,mpi_double_precision,&
-		  master,comm2d,ierror)
-  end if
+!   if (GA1==1) then
+!     if (myrank/=master) then
+!       allocate(etaL1(Nsenal1,2))
+!     end if
+!     call mpi_bcast(etaL1,Nsenal1*2,mpi_double_precision,&
+! 		  master,comm2d,ierror)
+!   else if (GA1==9) then
+!     if (myrank/=master) then 
+!       allocate(etaL9(Nsenal1,Nby),timeS9(Nsenal1))
+!     else
+!       print*,shape(timeS9),shape(etaL9),Nby
+!     end if
+! 
+!     call mpi_bcast(etaL9,Nsenal1*Nby,mpi_double_precision,&
+! 		  master,comm2d,ierror)
+! 		  
+!     call mpi_bcast(timeS9,Nsenal1, mpi_double_precision,&
+! 		  master,comm2d,ierror)
+! 
+!   end if
 end subroutine
 
 subroutine bcast_coupling_bc_1(ntg1,dtg1,optg1,ntg2,dtg2,optg2,flag,comm)

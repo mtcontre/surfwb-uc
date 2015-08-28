@@ -15,9 +15,10 @@ select case(borde)
     allocate(etaL1(Ns,2))
     open(unit=50,file='data/etaL.dat')
     !read(50,*) h01
-    h01=0.2D0
+!     h01=0.135349999D0
+    h01 = 0.20d0
     DO i=1,Ns
-    read(50,*) etaL1(i,1), etaL1(i,2)
+      read(50,*) etaL1(i,1), etaL1(i,2)
     END DO
     close(unit=50)
     end if
@@ -75,9 +76,7 @@ select case(borde)
     read(90,*) ((etaL9(i,j),i=1,Ns),j=1,Nby)
 	!etaL9=etaL9+0.001D0
 	!etaL9=etaL9*1.5D0
-    close(unit=50)
-    print*,'fdsa',shape(etaL9)
-    print*,'Ns',Ns
+    close(unit=90)
     open(unit=91,file='data/timexi0.dat')
     read (91,*) (timeS9(i),i=1,Ns)
     close(unit=91)

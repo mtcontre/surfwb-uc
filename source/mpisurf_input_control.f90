@@ -75,7 +75,6 @@ subroutine input_control
     !Cienfuegos Generation-Absorption boundary condition
     read(1,*) GA1
     read(1,*) Nsenal1
-    call readGA(1,GA1,Nsenal1)
   end if
       
   !Boundary Condition for xi=nbx

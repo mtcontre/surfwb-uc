@@ -69,6 +69,7 @@ subroutine decomp_2d
   !bcast is simpler (way simpler) to (human) read!
   
   !bcast input control parameters
+  
   call bcast_input_control
   
   !distribute friction parameters
@@ -76,13 +77,15 @@ subroutine decomp_2d
   
   !distribuite geometries and initial condition
   call bcast_initq_grids
-  
+
   !properly assign boundary conditions...
   !in a separate file (a lot of lines)
   call bcast_bcs
-  
+! print*,'asdf',myrank      
   !bcast gauge points
+!   print*,'a',myrank
   call bcast_gauges
+!   print*,'b',myrank
 end subroutine decomp_2d
 
 subroutine bcast_input_control
@@ -240,13 +243,14 @@ subroutine bcast_gauges
   integer :: i,aloc
   character(len=100)::intchar
   !idea: use m1_temp to see if the point lies in mygrid
-  
+
   call mpi_bcast(Nts,1, mpi_integer,master,comm2d,ierror)
+  
   !let other procs allocate ids,x0,y0, and m1_temp
   if (myrank/=master) then
     allocate(x0(Nts),y0(Nts),id0(Nts), m1_temp(2,Nts))
   end if
-  
+
   !bcast this thing  
   call mpi_bcast(m1_temp,2*Nts, mpi_integer,master,comm2d,ierror)
   call mpi_bcast(x0,Nts, mpi_double_precision,master,comm2d,ierror)

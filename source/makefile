@@ -83,5 +83,13 @@ clean:
 test: 	
 	@ls $(SURF_SOURCES)
 	@ls $(SURF_OBJECTS)
-
+all:
+	make clean
+	make
+run1:
+	./xsurf
+	python ver_1d.py
+runpar: 
+	mpirun -np 4 xsurf
+	python ver_par.py
 	
