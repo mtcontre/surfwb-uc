@@ -79,7 +79,7 @@ def plotframes(outdir,plotdir):
 
 	eta = np.ma.masked_where(h<=1e-3,h+z[si:ei,sj:ej])
 	plt.pcolormesh(x[si:(ei+1),sj:(ej+1)],y[si:(ei+1),sj:(ej+1)],
-		      eta,vmin=-0.05,vmax=0.05)
+		      eta,vmin=-0.05,vmax=0.05,cmap=plt.cm.coolwarm)
 	#plt.plot(x[si:ei,0],h[:,0]+z[si:ei,0])
 	if i == dims[0]-1:
 	  ei-=1
