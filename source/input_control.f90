@@ -54,7 +54,7 @@ read(1,*) CB(1)	!Boundary Condition for xi_0,j
 !Boundary Condition for xi=0
   if (cb(1)==0) then 
     !user-defined values for boundary ghost cells
-    call custombc_xi0
+    call couplingbc_xi0
     flagxi0=1
   else
     flagxi0=0
@@ -78,7 +78,7 @@ read(1,*) CB(1)	!Boundary Condition for xi_0,j
   read(1,*) CB(2)	
   if (cb(2)==0) then 
     !Customized values for boundary ghost cells
-    call custombc_xiN
+    call couplingbc_xiN
     flagxiN=1
   else
     flagxiN=0
@@ -99,7 +99,7 @@ read(1,*) CB(1)	!Boundary Condition for xi_0,j
   read(1,*) CB(3)
   if (cb(3)==0) then 
     !Customized values for boundary ghost cells
-    call custombc_eta0
+    call couplingbc_eta0
     flageta0=1
   else
     flageta0=0
@@ -119,7 +119,7 @@ read(1,*) CB(1)	!Boundary Condition for xi_0,j
   read(1,*) CB(4)
   if (cb(4)==0) then 
     !Customized values for boundary ghost cells
-    call custombc_etaN
+    call couplingbc_etaN
     flagetaN=1
   else
     flagetaN=0
@@ -196,10 +196,10 @@ end if
 !$omp parallel private(omp_threadid, omp_nthreads)
 !$ omp_nthreads = omp_get_num_threads()
 !$ omp_threadid = omp_get_thread_num()
-if (omp_threadid==0) then
-  write(*,164) omp_nthreads
-164 FORMAT ('Usando nthreads: ', T30, 4I2)
-end if
+!$ if (omp_threadid==0) then
+!$   write(*,164) omp_nthreads
+!$ 164 FORMAT ('Usando nthreads: ', T30, 4I2)
+!$ end if
 !$omp end parallel
 
 

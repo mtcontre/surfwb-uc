@@ -19,8 +19,8 @@ USE coords
 !Borde xi=0
 
 implicit none
-real (kind=8):: C,t,dt,Fr2,h0,C0,etai, epA, hL, uL, epL, epxL, RL,dep, zepL, &
-epxA,zepA,tauL,epR,epxR,uR,hR,zepR, tauR,RR, Rmas, Rmenos
+real (kind=8):: C,t,dt,Fr2,h0,C0,etai, epA, hL, uL, epL, epxL, RL,dep, &
+  zepL, epxA,zepA,tauL,epR,epxR,uR,hR,zepR, tauR,RR, Rmas, Rmenos
 integer:: Nx,Ny,j,i, NL, fopt, tipo, borde
 real (kind=8), dimension(3,Nx,Ny)::q
 real (kind=8), dimension(Nx+4,Ny+4)::zt
@@ -121,7 +121,7 @@ SUBROUTINE genabs0xi_2_1(fopt,tipo,MC,Nx,Ny,Fr2,dep,qs,hs,h0,Ns,t,dt,q,zt,ep_x,q
 !Borde eta=0
 USE coords
 implicit none
-real (kind=8):: C,t,dt,Fr2,h0,C0,etai, epA,qL,hL, uL, epL, epxL, RL,dep,&
+real (kind=8):: C,t,dt,Fr2,h0,C0,etai, epA,qL,hL, uL, epL, epxL, RL,dep, &
   zepL, epxA,zepA,tauL,epR,epxR,uR,hR,zepR,tauR, RR, Rmas, Rmenos
 integer:: Nx,Ny,j,i, Ns, fopt, tipo, borde
 real (kind=8), dimension(3,Nx,Ny)::q
@@ -223,8 +223,8 @@ SUBROUTINE genabs0xi_3_1(fopt,tipo,MC,Nx,Ny,Fr2,dep,us,hs,h0,Ns,t,dt,q,zt,ep_x,q
 !Borde eta=0
 USE coords
 implicit none
-real (kind=8):: C,t,dt,Fr2,h0,C0,etai, epA,qL,hL, uL, epL, epxL, RL,dep, zepL, epxA,&
-  zepA,tauL,epR,epxR,uR,hR,zepR,tauR, RR, Rmas, Rmenos
+real (kind=8):: C,t,dt,Fr2,h0,C0,etai, epA,qL,hL, uL, epL, epxL, RL,dep, &
+  zepL, epxA,zepA,tauL,epR,epxR,uR,hR,zepR,tauR, RR, Rmas, Rmenos
 integer:: Nx,Ny,j,i, Ns, fopt, tipo, borde
 real (kind=8), dimension(3,Nx,Ny)::q
 real (kind=8), dimension(Nx+4,Ny+4)::zt
@@ -352,8 +352,8 @@ USE geometries
 !Borde xi=0
 
 implicit none
-real (kind=8):: C,t,dt,Fr2,h0,C0,etai,epA,hL,uL,epL,epxL,RL,dep,zepL,epxA,zepA,&
-  tauL,epR,epxR,uR,hR,zepR,tauR,RR,Rmas,Rmenos
+real (kind=8):: C,t,dt,Fr2,h0,C0,etai,epA,hL,uL,epL,epxL,RL,dep,zepL,&
+  epxA,zepA,tauL,epR,epxR,uR,hR,zepR,tauR,RR,Rmas,Rmenos
 integer:: Nx,Ny,j,i, NL, fopt, tipo, borde
 real (kind=8), dimension(3,Nx,Ny)::q
 real (kind=8), dimension(Nx+4,Ny+4)::zt
@@ -389,6 +389,7 @@ DO j=1,Ny
   DO i=1,Nx
   zep_x(i)=(zt(i+3,j+2)-zt(i+2,j+2))/dep	!j+2 porque incluye celdas ficticias
   END DO
+
   !ESSAI POUR LA CONDITION ENTRANTE!!!!
   !h0=h0-z_global(1,j)
 

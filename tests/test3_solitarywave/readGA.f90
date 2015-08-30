@@ -8,16 +8,15 @@ implicit none
 integer::GA,Ns,borde,i,j
 
 select case(borde)
+
     CASE(1) !Borde xi=0
     !allocate(qA1(3,Nby),zA1(Nby))
     if (GA==1) then
     allocate(etaL1(Ns,2))
-    open(unit=50,file=trim(indir)//'/etaL.dat')
-    !read(50,*) h01
-    h01=0.2D0
-    
+    open(unit=50,file='data/etaL.dat')
+    h01 = 0.20d0
     DO i=1,Ns
-    read(50,*) etaL1(i,1), etaL1(i,2)
+      read(50,*) etaL1(i,1), etaL1(i,2)
     END DO
     close(unit=50)
     end if
@@ -25,12 +24,12 @@ select case(borde)
     if (GA==2) then
     allocate(qs1(Ns,2),hs1(Ns,2))
     h01=0.41D0
-    open(unit=60,file=trim(indir)//'/qs1.dat')
+    open(unit=60,file='qs1.dat')
     DO i=1,Ns
     read(60,*) qs1(i,1), qs1(i,2)
     END DO
     close(unit=60)
-    open(unit=61,file=trim(indir)//'/hs1.dat')
+    open(unit=61,file='hs1.dat')
     DO i=1,Ns
     read(61,*) hs1(i,1), hs1(i,2)
     END DO
@@ -40,13 +39,13 @@ select case(borde)
     if (GA==3) then
     allocate(us1(Ns,2),hs1(Ns,2))
     h01=0.41D0
-    open(unit=70,file=trim(indir)//'/hs1.dat')
+    open(unit=70,file='hs1.dat')
     DO i=1,Ns
     read(70,*) hs1(i,1), hs1(i,2)
     END DO
     close(unit=70)
     
-    open(unit=71,file=trim(indir)//'/us1.dat')
+    open(unit=71,file='us1.dat')
     DO i=1,Ns
     read(71,*) us1(i,1), us1(i,2)
     END DO
@@ -70,17 +69,13 @@ select case(borde)
     allocate(etaL9(Ns,Nby),timeS9(Ns))
     
     !Cambiar nombre para otros casos
-    open(unit=90,file=trim(indir)//'/etaxi0.dat')
-    h01=0.97D0
+    open(unit=90,file='data/etaxi0.dat')
+    h01=0.0D0
     read(90,*) ((etaL9(i,j),i=1,Ns),j=1,Nby)
 	!etaL9=etaL9+0.001D0
 	!etaL9=etaL9*1.5D0
-    print*,'asdf',h01
-    
-    close(unit=50)
-    print*,'fdsa',shape(etaL9)
-    print*,'Ns',Ns
-    open(unit=91,file=trim(indir)//'/timexi0.dat')
+    close(unit=90)
+    open(unit=91,file='data/timexi0.dat')
     read (91,*) (timeS9(i),i=1,Ns)
     close(unit=91)
     end if

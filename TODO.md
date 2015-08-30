@@ -1,7 +1,5 @@
-TODO list
+#TODO
+new todo
 
-* clean makefiles
-* create run_all_tests.py
-* start new mpi branch
-* fix readGA.f90 to read h01 more smart
-* check and remove sources/oldsources/*.f90
+* create surfwb python package
+* update docs (par report)

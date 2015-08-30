@@ -15,7 +15,8 @@ select case(borde)
     allocate(etaL1(Ns,2))
     open(unit=50,file='data/etaL.dat')
     !read(50,*) h01
-    h01=0.135D0
+!     h01=0.135349999D0
+    h01 = 0.20d0
     DO i=1,Ns
       read(50,*) etaL1(i,1), etaL1(i,2)
     END DO
@@ -70,21 +71,15 @@ select case(borde)
     allocate(etaL9(Ns,Nby),timeS9(Ns))
     
     !Cambiar nombre para otros casos
-    open(unit=90,file=trim(indir)//'/etaxi0.dat')
-    h01=0.0d0
-    print*,Ns,Nby
+    open(unit=90,file='data/etaxi0.dat')
+    h01=0.0D0
     read(90,*) ((etaL9(i,j),i=1,Ns),j=1,Nby)
 	!etaL9=etaL9+0.001D0
 	!etaL9=etaL9*1.5D0
-    print*,'asdf',h01
-    
-    close(unit=50)
-    print*,'fdsa',shape(etaL9)
-    print*,'Ns',Ns
-    open(unit=91,file=trim(indir)//'/timexi0.dat')
+    close(unit=90)
+    open(unit=91,file='data/timexi0.dat')
     read (91,*) (timeS9(i),i=1,Ns)
     close(unit=91)
-    
     end if
         
 !     
@@ -236,6 +231,7 @@ select case(borde)
     END DO
     close(unit=161)
     end if
+
 END SELECT
 
 END SUBROUTINE readGA

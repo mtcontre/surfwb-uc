@@ -38,7 +38,7 @@ real (kind=8),dimension(2) ::hzminloc, ximas, ximenos, etamas, etamenos
 
 !Senales entrando al dominio
 integer,dimension(4)::CB
-
+ 
 !1.Minmod reconstruction of the state variables
 
 !Reconstruction of h,u y v (not h, hu, hv because ur,ul,vr,vl are needed)
@@ -50,14 +50,9 @@ integer,dimension(4)::CB
 !Osea desde i=2 a i=Nx+3
 
 
-!$omp parallel private(x, y, z, mm, maxm1, maxm2, &
-!$omp x1, y1, z1, mm1,  zm, zmj, &
-!$omp qmenos, ximenos, qmas, ximas, qs, etamenos, etamas, &
-!$omp U1, Fs, Fb, U2, Gs, Gb)
-
-!---------loop 1---------------x,y,z,mm,maxm1,maxm2
-!$omp do
 Do i=1,Nx+1; Do j=1,Ny
+
+ 
   !Se necesita QiL de la celda 1 a la N+1
   !Para calcularlo necesito tb i=0 y N+2
   !En términos de qt se usara i=2 a N+3
@@ -129,10 +124,7 @@ Do i=1,Nx+1; Do j=1,Ny
   
  
 End Do; End Do
-!$omp end do NOWAIT
 
-!---------loop 2---------------x,y,z,mm,maxm1,maxm2
-!$omp do
 Do i=1,Nx; Do j=1,Ny+1
   
   !Se necesita QjL de la celda 1 a la N+1
@@ -197,19 +189,16 @@ Do i=1,Nx; Do j=1,Ny+1
   END IF
   
 End Do; End Do
-!$omp end do NOWAIT
+
+
 
 !2.Linear Reconstruction of the free surface
 
-!---------loop 3--------------- no privates
-!$omp do
 DO i=1,(Nx+4); DO j=1,(Ny+4)
   hzt(i,j)=qt(1,i,j)+zt(i,j)
 END DO; END DO
-!$omp end do
 
-!---------loop 4---------------x1,y1,z1,mm1,maxm1,maxm2
-!$omp do
+
 Do i=1,Nx+1; Do j=1,Ny
 
   !Se necesita HZiL de la celda 1 a la N+1
@@ -268,10 +257,7 @@ Do i=1,Nx+1; Do j=1,Ny
   
   
 End Do; End Do
-!$omp end do NOWAIT
 
-!---------loop 5---------------x1,y1,z1,mm1,maxm1,maxm2
-!$omp do
 Do i=1,Nx; Do j=1,Ny+1
 
   !Se necesita HZjL de la celda 1 a la N+1
@@ -281,30 +267,17 @@ Do i=1,Nx; Do j=1,Ny+1
   x1=(hzt(i+2,j+2)-hzt(i+2,j+1))/deta
   y1=(hzt(i+2,j+3)-hzt(i+2,j+2))/deta
   z1=(hzt(i+2,j+3)-hzt(i+2,j+1))/(2.0D0*deta)
-  select case(mmopt)
-     case(1)
-      call minmod(x1,y1,mm1)
-     case(2)
-      call minmod((2.0D0*x1),y1,maxm1(1))
-      call minmod(x1,(2.0D0*y1),maxm2(1))
-      call maxmod(maxm1(1),maxm2(1),mm1)
-     case(3)
+  if (mmopt==1) then
+    call minmod(x1,y1,mm1)
+  else if (mmopt==2) then
+    call minmod((2.0D0*x1),y1,maxm1(1))
+    call minmod(x1,(2.0D0*y1),maxm2(1))
+    call maxmod(maxm1(1),maxm2(1),mm1)
+  else if (mmopt==3) then ! Double minmod
       call DOUBLEMINMOD(x1,y1,z1,mm1)
-     case default
-      call mc(2.0D0*x1,2.0D0*y1,z1,mm1)
-  end select
-  
-!   if (mmopt==1) then
-!     call minmod(x1,y1,mm1)
-!   else if (mmopt==2) then
-!     call minmod((2.0D0*x1),y1,maxm1(1))
-!     call minmod(x1,(2.0D0*y1),maxm2(1))
-!     call maxmod(maxm1(1),maxm2(1),mm1)
-!   else if (mmopt==3) then ! Double minmod
-!       call DOUBLEMINMOD(x1,y1,z1,mm1)
-!   else
-!     call mc(2.0D0*x1,2.0D0*y1,z1,mm1)
-!   end if
+  else
+    call mc(2.0D0*x1,2.0D0*y1,z1,mm1)
+  end if
   
   HzjL(i,j)=hzt(i+2,j+2)-0.5D0*deta*mm1
   
@@ -315,47 +288,31 @@ Do i=1,Nx; Do j=1,Ny+1
   x1=(hzt(i+2,j+1)-hzt(i+2,j))/deta
   y1=(hzt(i+2,j+2)-hzt(i+2,j+1))/deta
   z1=(hzt(i+2,j+2)-hzt(i+2,j))/(2.0D0*deta)
-  
-  select case (mmopt)
-    case(1)
-      call minmod(x1,y1,mm1)
-    case(2)
-      call minmod((2.0D0*x1),y1,maxm1(1))
-      call minmod(x1,(2.0D0*y1),maxm2(1))
-      call maxmod(maxm1(1),maxm2(1),mm1)
-    case(3)
+  if (mmopt==1) then
+    call minmod(x1,y1,mm1)
+  else if (mmopt==2) then
+    call minmod((2.0D0*x1),y1,maxm1(1))
+    call minmod(x1,(2.0D0*y1),maxm2(1))
+    call maxmod(maxm1(1),maxm2(1),mm1)
+  else if (mmopt==3) then ! Double minmod
       call DOUBLEMINMOD(x1,y1,z1,mm1)
-    case default
-      call mc(2.0D0*x1,2.0D0*y1,z1,mm1)
-  end select
-!   if (mmopt==1) then
-!     call minmod(x1,y1,mm1)
-!   else if (mmopt==2) then
-!     call minmod((2.0D0*x1),y1,maxm1(1))
-!     call minmod(x1,(2.0D0*y1),maxm2(1))
-!     call maxmod(maxm1(1),maxm2(1),mm1)
-!   else if (mmopt==3) then ! Double minmod
-!       call DOUBLEMINMOD(x1,y1,z1,mm1)
-!   else 
-!     call mc(2.0D0*x1,2.0D0*y1,z1,mm1)
-!   end if
+  else 
+    call mc(2.0D0*x1,2.0D0*y1,z1,mm1)
+  end if
   
   HzjR(i,j)=hzt(i+2,j+1)+0.5D0*deta*mm1
   
   IF (j==1.AND.(CB(3)==4.OR.CB(3)==5)) THEN
-    HzjR(i,1)=qA3(1,i)+zA3(i)
+  HzjR(i,1)=qA3(1,i)+zA3(i)
   END IF
   IF (j==Ny+1.AND.(CB(4)==4.OR.CB(4)==5)) THEN
-    HzjL(i,Ny+1)=qA4(1,i)+zA4(i)
+  HzjL(i,Ny+1)=qA4(1,i)+zA4(i)
   END IF
   
 End Do; End Do
-!$omp end do
 
 !3.Bathymethry Reconstruction using the linear reconstruction of the free surface
 
-!---------loop 6--------------- no privates
-!$omp do
 Do i=1,Nx+1; Do j=1,Ny
 
   ZiL(i,j)=HziL(i,j)-QiL(1,i,j) !De la celda 1 a la N+1
@@ -369,10 +326,7 @@ Do i=1,Nx+1; Do j=1,Ny
   ZiL(Nx+1,j)=zA2(j)
   END IF
 End Do; End Do
-!$omp end do NOWAIT
 
-!---------loop 7---------------no privates
-!$omp do
 Do i=1,Nx; Do j=1,Ny+1
   ZjL(i,j)=HzjL(i,j)-QjL(1,i,j)
   ZjR(i,j)=HzjR(i,j)-QjR(1,i,j)
@@ -384,15 +338,12 @@ Do i=1,Nx; Do j=1,Ny+1
   ZjL(i,Ny+1)=zA4(i)
   END IF
 End Do; End Do
-!$omp end do
 
 !4.Hydrostatic Reconstruction of the water heigh
 
 !hmas contiene h_i+1/2mas desde i=0+1/2 a i=N+1/2
 !hmenos contiene h_i+1/2menos desde i=0+1/2 a i=N+1/2
 
-!---------loop 8---------------zm
-!$omp do
 DO i=1,Nx+1; DO j=1,Ny
 zm=max(ZiR(i,j),ZiL(i,j))	!Max(Z0R,Z1L)	!Max(ZNR,ZN+1L) !MAX(ZiR,Zi+1L)
 
@@ -411,10 +362,8 @@ QiL(3,i,j)=0.0D0
 end if
 
 END DO; END DO
-!$omp end do NOWAIT
 
-!---------loop 9---------------
-!$omp do
+
 DO i=1,Nx; DO j=1,Ny+1
 zmj=max(ZjR(i,j),ZjL(i,j))
 
@@ -431,9 +380,8 @@ if (hmasj(i,j)==0.0D0) then
 QjL(2,i,j)=0.0D0
 QjL(3,i,j)=0.0D0
 end if
-END DO; END DO
-!$omp end do NOWAIT
 
+END DO; END DO
 
 !5.Fluxes Calculations: -Riemann solver using the values from the hydrostatic reconstruction
 !			-Plus balancing source term
@@ -444,29 +392,21 @@ END DO; END DO
 !Jac_global_eta: Jac desde eta 0+1/2 a eta Ny+1/2 para i de 1 a Nx, Jacobiano en los bordes de la celda
 !Jac_global: Jac de (xi,eta)=(1,1) a (Nx,Ny), Jacobiano centrado en la celda
 ! 
-
-!---------loop 10---------------
-!$omp do
-DO i=2,Nx+2; DO j=3,Ny+2
+DO i=2,Nx+3; DO j=3,Ny+2
 xi(:,i-1,j-2)=xit(:,i,j)
 !Jac1(i-1,j-2)=xit(1,i,j)*etat(2,i,j)-xit(2,i,j)*etat(1,i,j) !Ji+1/2,j, calculo J i=0 a i=Nx+1, j=1 a j=Ny
 END DO; END DO
-!$omp end do NOWAIT
 
-!---------loop 11---------------
-!$omp do
-DO i=3,Nx+2; DO j=2,Ny+2
+
+DO i=3,Nx+2; DO j=2,Ny+3
 eta(:,i-2,j-1)=etat(:,i,j)
 !Jac2(i-2,j-1)=xit(1,i,j)*etat(2,i,j)-xit(2,i,j)*etat(1,i,j) !Ji,j+1/2, calculo J j=0 a j=Ny+1, i=1 a i=Nx
 END DO; END DO
-!$omp end do
 
 
 !Qstar
 !Variables en cada Qstar, de la interfaz 0 a N
 
-!---------loop 12--------------- qmenos,ximenos, qmas,ximas, qs
-!$omp do
 do i=1,Nx+1; do j=1,Ny
 !Parto con la interfaz  0+1/2,j hasta la interfaz N+1/2, en total son N+1 interfaces
 
@@ -489,10 +429,9 @@ Qstari(:,i,j)=qs(:)
 ! end if
 
 end do; end do
-!$omp end do NOWAIT
 
-!---------loop 13---------------qmenos,etamenos, qmas,etamas, qs
-!$omp do
+! print*, Qstari(1,Nx+1,3),Qstari(2,Nx+1,3),hmenosi(Nx+1,3),hmasi(Nx+1,3),QiR(2,Nx+1,3),QiL(2,Nx+1,3)
+
 do i=1,Nx; do j=1,Ny+1
 
 qmenos(1)=hmenosj(i,j)
@@ -509,14 +448,12 @@ call vfroencv(i,j,FR2,qmas,qmenos,etamas,etamenos,hmin,qs)
 Qstarj(:,i,j)=qs(:)
 
 end do; end do
-!$omp end do
+
 !FLUXES
 
 !F fluxes
-
-!---------loop 14---------------U1,Fs,Fb
-!$omp do
 DO i=1,Nx; DO j=1,Ny
+
 
 !Fmas=F_i-1/2 + =F0+1!2+ a FN+1/2+
 
@@ -561,12 +498,8 @@ Jac_global(i,j)-hmenosi(i+1,j)**2.0D0*xi(2,i+1,j)/Jac_global_xi(i+1,j))
 Fmenos(:,i,j)=Fs+Fb
 
 End do; End do
-!$omp end do NOWAIT
 
 !G fluxes
-
-!---------loop 15---------------U2,Gs,Gb
-!$omp do
 DO i=1,Nx; DO j=1,Ny
 
 U2=Qstarj(2,i,j)*eta(1,i,j)+Qstarj(3,i,j)*eta(2,i,j)
@@ -603,12 +536,10 @@ Gb(3)=1.0D0/(2.0D0*FR2)*(QjR(1,i,j+1)**2.0D0*eta(2,i,j+1)/Jac_global(i,j)-hmenos
 Gmenos(:,i,j)=Gs+Gb
 
 END DO; END DO
-!$omp end do NOWAIT
+
+
 
 !6. Centered Source Term
-
-!---------loop 16---------------no privates
-!$omp do
 DO i=1,Nx; DO j=1,Ny
 
 !Balancing term for F fluxes
@@ -626,9 +557,9 @@ SC(2,i,j)=SF(2,i,j)+SG(2,i,j)
 SC(3,i,j)=SF(3,i,j)+SG(3,i,j)
 
 END DO; END DO
-!$omp end do
 
-!$omp end parallel
+
+
 
 END SUBROUTINE FLUXES
 
@@ -670,11 +601,8 @@ END IF
 END SUBROUTINE mc
 
 SUBROUTINE DOUBLEMINMOD(x,y,z,r)
-  real (kind=8) :: x, y, z, r, tmp1
-  tmp1=min(2.0D0*x,2.0D0*y,z)
-  r=max(0.0D0,tmp1)
+real (kind=8) :: x, y, z, r, tmp1
+tmp1=min(2.0D0*x,2.0D0*y,z)
+r=max(0.0D0,tmp1)
 
 END SUBROUTINE DOUBLEMINMOD
-
-!1p 27.23
-!2p 27.12

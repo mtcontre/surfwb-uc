@@ -19,7 +19,7 @@ PROGRAM MAIN !Ponerle un nombre decente
   !Declare variables that are used here and only here if it is necessary
 
   integer::i,j,k
-  real (kind=8) :: mindxdy,minxieta,maxUC, maxV, maxC, zmax, maxS1, maxS2, pVol1,dtreal
+  real (kind=8) :: mindxdy,minxieta,maxUC, maxV, maxC, zmax, maxS1, maxS2, pVol1
   real (kind=8), dimension(2) :: xieta, loc
   real (kind=8), dimension(:), allocatable:: dxdy
   real (kind=8) :: time_start,time_finish, time_estim
@@ -81,7 +81,7 @@ PROGRAM MAIN !Ponerle un nombre decente
   DO while(treal<=tfinal+1.d-10)
     !1. Calculate time step with the CFL condition
     !    and boundary timestep
-    call tstep(dtreal)    
+    call tstep    
   
     !2.Calling main_solver, which solves the 4 stages of RK method, and calculates qnew_global(h,u,v)
     if (fopt==0) then

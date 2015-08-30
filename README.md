@@ -1,14 +1,22 @@
 # SurfWB-UC #
 
-A two-dimensional shallow water model that accurately reproduces shock-waves and steady states through a shock-capturing well-balanced scheme using boundary fitted curvilinear grids (Guerra et al., 2014). It was initially developed by Maricarmen Guerra, and has had several additions by Leandro Suarez, José Galaz and María Teresa Contreras. This is the main repository for the code.
+A two-dimensional shallow water model that accurately reproduces shock-waves and steady states through a shock-capturing well-balanced scheme using boundary fitted curvilinear grids (Guerra et al., 2014). Its core was written by Maricarmen Guerra during her Master's thesis, and the mpi-parallelized version was written by José Galaz. It has had several contributions by Leandro Suarez, and María Teresa Contreras. 
+
+This is the main repository for the code and is currently administrated by José Galaz.
 
 ## System requirements
-Under linux the requirements are
+Under linux the requirements are (
 
 * gfortran
+* openmpi 1.6.0 or greater (or some mpich)
+
+and for pre and post processing tools
+
 * python 2.7
 * numpy
 * matplotlib
+
+these can be easily installed with the anaconda-python distribution.
 
 ## Installation instructions
 First clone the repository in your home directory with
@@ -33,24 +41,32 @@ and now pick one of them, for example the two dimensional partial dambreak
 
     cd test2_db2d
 
-if you have the gnu fortran compiler gfortran, then try compiling with
+if you have all dependencies then you should compile with
 
      make clean
      make
 
-now you need all python 2.7, numpy and matplotlib to run
+and for the data you need all python 2.7, numpy and matplotlib to run
 
      python setrun.py
 
-this will create directories data/ and results/, and inside data/ you can see the bathymetry and initial condition in .png files. Now we are ready to run
+this will create directories data/ and results/, and inside data/ you can see the bathymetry and initial condition in .png files. Tell the computer where the input data directory is by typing
 
+    export INDIR=data
+
+now we are ready to run the model, say with 4 cores, through
+
+    mpirun -np 4 xsurf
+
+or with just one core just run
+    
     ./xsurf
 
-and to see some results, you can try
+To visualize your results just execute
 
      python ver.py
 
-which should produce many png files with frames of the simulation in vis/*.png.
+which should produce many png files with frames of the simulation in ver/*.png.
 
 ## Contribution guidelines
 

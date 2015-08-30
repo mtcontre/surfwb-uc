@@ -18,9 +18,9 @@ USE coords
 !Borde xi=0
 
 implicit none
-real (kind=8):: C,t,dt,Fr2,h0,C0,etai, epA, hL, uL, epL, epxL, RL,dep, zepL
-real (kind=8)::epxA,zepA,tauL,epR,epxR,uR,hR
-real (kind=8)::zepR, tauR,RR, Rmas, Rmenos,hAo,uAo,tauAo
+real (kind=8):: C,t,dt,Fr2,h0,C0,etai, epA, hL, uL, epL, epxL, RL,dep, zepL, &
+  epxA,zepA,tauL,epR,epxR,uR,hR,zepR, tauR,RR, Rmas, Rmenos, &
+		hAo,uAo,tauAo
 integer:: Nx,Ny,j,i, NL, fopt, tipo, borde
 real (kind=8), dimension(3,Nx,Ny)::q
 real (kind=8), dimension(Nx+4,Ny+4)::zt
@@ -48,7 +48,8 @@ END DO
 
 !L
 !h0=0.0D0-zt(3,j+2) !!!!SOLO MATAQUITO!!!!!
- C0=sqrt(h0/Fr2) 
+ C0=sqrt(h0/Fr2)
+ 
 epL=epA-dt*C0
 hL=etai+h0
 uL=(hL/Fr2)**0.5D0*(etai)/hL
@@ -114,6 +115,7 @@ end if
 
 Rmenos=RR-0.5D0*dt/Fr2*(zepR*epxR**2.0D0+zepA*epxA**2.0D0)-0.5D0*(epxR*tauR+epxA*tauAo)*dt
 
+
 qA(1,j)=Fr2*(Rmas-Rmenos)**2.0D0/(16.0D0*epxA**2.0D0)
 qA(2,j)=(Rmas+Rmenos)/(2.0D0*epxA)
 qA(3,j)=0.0D0
@@ -129,8 +131,9 @@ SUBROUTINE genabs0xi_2_2(fopt,tipo,MC,Nx,Ny,Fr2,dep,qs,hs,h0,Ns,t,dt,q,zt,ep_x,q
 !Borde eta=0
 USE coords
 implicit none
-real (kind=8):: C,t,dt,Fr2,h0,C0,etai, epA, qL,hL, uL, epL, epxL, RL,dep, zepL, epxA,zepA,&
-  tauL,epR,epxR,uR,hR,zepR, tauR,RR, Rmas, Rmenos,hAo,uAo,tauAo
+real (kind=8):: C,t,dt,Fr2,h0,C0,etai, epA, qL,hL, uL, epL, epxL, RL,dep, zepL,&
+  epxA,zepA,tauL,epR,epxR,uR,hR,zepR, tauR,RR, Rmas, Rmenos, &
+		hAo,uAo,tauAo
 integer:: Nx,Ny,j,i, Ns, fopt, tipo, borde
 real (kind=8), dimension(3,Nx,Ny)::q
 real (kind=8), dimension(Nx+4,Ny+4)::zt
@@ -246,8 +249,9 @@ SUBROUTINE genabs0xi_3_2(fopt,tipo,MC,Nx,Ny,Fr2,dep,us,hs,h0,Ns,t,dt,q,zt,ep_x,q
 !Borde eta=0
 USE coords
 implicit none
-real (kind=8):: C,t,dt,Fr2,h0,C0,etai, epA, qL,hL, uL, epL, epxL, RL,dep, zepL, epxA,zepA,tauL,&
-epR,epxR,uR,hR,zepR, tauR,RR, Rmas, Rmenos, hAo,uAo,tauAo
+real (kind=8):: C,t,dt,Fr2,h0,C0,etai, epA, qL,hL, uL, epL, epxL, RL,dep, zepL,&
+  epxA,zepA,tauL,epR,epxR,uR,hR,zepR, tauR,RR, Rmas, Rmenos, &
+		hAo,uAo,tauAo
 integer:: Nx,Ny,j,i, Ns, fopt, tipo, borde
 real (kind=8), dimension(3,Nx,Ny)::q
 real (kind=8), dimension(Nx+4,Ny+4)::zt
@@ -381,8 +385,9 @@ USE geometries
 !Borde xi=0
 
 implicit none
-real (kind=8):: C,t,dt,Fr2,h0,C0,etai, epA, hL, uL, epL, epxL, RL,dep, zepL, epxA,zepA,&
-tauL,epR,epxR,uR,hR,zepR, tauR,RR, Rmas, Rmenos, hAo,uAo,tauAo
+real (kind=8):: C,t,dt,Fr2,h0,C0,etai, epA, hL, uL, epL, epxL, RL,dep, zepL,&
+  epxA,zepA,tauL,epR,epxR,uR,hR,zepR, tauR,RR, Rmas, Rmenos, &
+		hAo,uAo,tauAo
 integer:: Nx,Ny,j,i, NL, fopt, tipo, borde
 real (kind=8), dimension(3,Nx,Ny)::q
 real (kind=8), dimension(Nx+4,Ny+4)::zt
@@ -390,8 +395,8 @@ real (kind=8), dimension(2,Nx,Ny)::ep_x
 real (kind=8), dimension(3,Ny)::qA0,qA
 real (kind=8), dimension(Ny)::zA
 real (kind=8), dimension(Nx)::h,u,zep_x,epx
-real (kind=8), dimension(NL,Ny)::etaL, etaL_tmp
-real (kind=8), dimension(NL)::timeS
+real (kind=8), dimension(NL,2)::etaL, etaL_tmp
+real (kind=8), dimension(NL,2)::timeS
 real (kind=8), dimension(Nx,Ny)::MC
 
 borde=1

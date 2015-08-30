@@ -1,6 +1,9 @@
 import numpy as np
+import matplotlib
+#matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import os
+
 import urllib
 os.system('mkdir data')
 os.system('mkdir results')
@@ -33,7 +36,7 @@ dx = np.diff(x[:,0])[0]
 
 xwall = x[:,0].max()*np.ones((2,x.shape[1]))
 xwall[0,:] += dx
-xwall[1,:] *= 2*dx
+xwall[1,:] += 2*dx
 
 ywall = np.zeros_like(xwall)
 ywall[0,:] = y[-1,:]
@@ -92,7 +95,7 @@ for i in range(x.shape[1]):
   etaxi0[i,:] = wave[:,1]
 np.savetxt('data/timexi0.dat',txi0)
 np.savetxt('data/etaxi0.dat',etaxi0)
-#np.savetxt('data/etaL.dat',wave)
+np.savetxt('data/etaL.dat',wave)
 
 plt.figure()  
 for i in range(etaxi0.shape[0]):

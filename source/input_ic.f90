@@ -21,7 +21,6 @@ allocate (qnew_global(3,Nbx,Nby), qold_global(3,Nbx,Nby), &
 !GA
 allocate(qA1(3,Nby),qA2(3,Nby),qA3(3,Nbx),qA4(3,Nbx),zA1(Nby),zA2(Nby),zA3(Nbx),zA4(Nbx))
 
-
 SELECT CASE (int(initqopt))
   CASE(0)
     open(unit=2,file=initqname(1),form='unformatted')

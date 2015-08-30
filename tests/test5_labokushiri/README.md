@@ -1,0 +1,1 @@
+* it is still a bit bugged: can't make it work with GA1=1, thats why im using GA1=9

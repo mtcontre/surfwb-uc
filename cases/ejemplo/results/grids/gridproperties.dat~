@@ -1,9 +1,0 @@
-nproc 004
-dims 002 002
-ngrids 001
-nxi  0100
-neta 0100
- data/gridX.dat data/gridY.dat data/gridZ.dat
- data/gridX2.dat data/gridY2.dat data/gridZ2.dat
- 
- 

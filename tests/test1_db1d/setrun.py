@@ -13,7 +13,7 @@ dx=0.45/20
 n=int(5.6/dx)
 
 x=np.linspace(0,5.6,n)
-y=np.linspace(-dx,dx,3)
+y=np.linspace(-dx*5,dx*5,11)
 x,y=np.meshgrid(x,y)
 
 z=np.zeros(x.shape)

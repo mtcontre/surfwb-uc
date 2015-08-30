@@ -1,6 +1,4 @@
 !Rutina que lee la batimetria y la guarda en x_global, y_global, z_global
-
-
 SUBROUTINE input_geom
 
 !Programa que crea batimetria para ir probando el codigo, 
