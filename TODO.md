@@ -1,9 +1,9 @@
 #TODO
 new todo
 
-* clean setrun2.py files in tests
 * create surfwb python package?
-* ...think of more todo's ...
-* maybe update docs (par report)
-* update README!
+* update docs (par report)
+* update README file!!!
 * i should merge, definitely....D:
+* and still dont know why test5 cant run with GA=1 =(
+* but runs sith GA=9...
