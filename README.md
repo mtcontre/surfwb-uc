@@ -19,11 +19,11 @@ and for pre and post processing tools
 these can be easily installed with the anaconda-python distribution.
 
 ## Installation instructions
-First clone the repository in your home directory with
+First download the software from
 
-    git clone https://JoseGalazM@bitbucket.org/JoseGalazM/surfwb-uc.git
+    https://bitbucket.org/JoseGalazM/surfwb-uc/downloads/surfwb-uc.zip
 
-then add to your .bashrc
+an extract all files in a folder, say surfwb-uc in your home directory and then add to your .bashrc
 
     export SURF=/home/username/surfwb-uc/
 
